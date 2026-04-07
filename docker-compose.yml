@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   payload:
     image: node:18-alpine
@@ -11,21 +9,31 @@ services:
     working_dir: /home/node/app/
     command: sh -c "yarn install && yarn dev"
     depends_on:
-      - mongo
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/troop771-website
 
-  mongo:
-    image: mongo:latest
+  postgres:
+    image: postgres:16-alpine
     ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: troop771-website
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
-      - data:/data/db
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d troop771-website']
+      interval: 10s
+      timeout: 5s
+      retries: 5
     logging:
       driver: none
 
 volumes:
-  data:
+  postgres_data:
   node_modules:
