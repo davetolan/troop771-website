@@ -9,7 +9,7 @@ export function WhyJoinSection() {
   return (
     <section
       aria-labelledby="why-join-heading"
-      className="bg-slate-950 py-20 text-white sm:py-24"
+      className="bg-[linear-gradient(135deg,#1c1917,#292524,#1f3a2c)] py-20 text-white sm:py-24"
       id="why-join"
     >
       <div className="container">
@@ -23,13 +23,13 @@ export function WhyJoinSection() {
             />
 
             <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-white/6 p-6 backdrop-blur-sm">
-              <div className="flex items-center gap-3 text-emerald-200">
+              <div className="flex items-center gap-3 text-amber-200">
                 <Stars className="h-5 w-5" aria-hidden="true" />
                 <p className="text-sm font-semibold uppercase tracking-[0.22em]">
                   What parents often value most
                 </p>
               </div>
-              <p className="mt-4 text-base leading-7 text-slate-200">
+              <p className="mt-4 text-base leading-7 text-stone-200">
                 A credible troop should offer more than good intentions. It should create repeated
                 opportunities for responsibility, challenge, and practical learning in a safe,
                 structured environment.
@@ -47,12 +47,12 @@ export function WhyJoinSection() {
                   key={point.title}
                 >
                   <div className="flex gap-4">
-                    <div className="mt-1 rounded-2xl bg-emerald-400/10 p-3 text-emerald-300 ring-1 ring-emerald-300/20">
+                    <div className="mt-1 rounded-2xl bg-amber-200/10 p-3 text-amber-200 ring-1 ring-amber-100/15">
                       <Icon className="h-6 w-6" aria-hidden="true" />
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold tracking-tight text-white">{point.title}</h3>
-                      <p className="mt-3 text-sm leading-7 text-slate-300">{point.description}</p>
+                      <p className="mt-3 text-sm leading-7 text-stone-300">{point.description}</p>
                     </div>
                   </div>
                 </article>

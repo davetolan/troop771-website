@@ -38,8 +38,8 @@ export const featuredActivities = [
     detail: 'Challenge, focus, and courage in a controlled environment.',
   },
   {
-    name: 'Sailing',
-    detail: 'Adventure and teamwork with practical skills on the water.',
+    name: 'Rafting',
+    detail: 'Fast-moving water, teamwork, and challenge that build confidence and resilience.',
   },
 ] as const
 
@@ -87,7 +87,5 @@ export const resources = [
 export const siteNav = [
   { label: 'About', href: '#why-join' },
   { label: 'Activities', href: '#activities' },
-  { label: 'Fundraiser', href: '#fundraiser' },
-  { label: 'Resources', href: '#resources' },
   { label: 'Join', href: '#join' },
 ] as const
