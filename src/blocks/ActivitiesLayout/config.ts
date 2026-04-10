@@ -3,6 +3,11 @@ import type { Block } from 'payload'
 export const ActivitiesLayout: Block = {
   slug: 'activitiesLayout',
   interfaceName: 'ActivitiesLayoutBlock',
+  admin: {
+    images: {
+      thumbnail: '/block-activities-layout.svg',
+    },
+  },
   fields: [
     {
       name: 'eyebrow',

@@ -10,6 +10,11 @@ import {
 export const FormBlock: Block = {
   slug: 'formBlock',
   interfaceName: 'FormBlock',
+  admin: {
+    images: {
+      thumbnail: '/block-form-block.svg',
+    },
+  },
   fields: [
     {
       name: 'form',
