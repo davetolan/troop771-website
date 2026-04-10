@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
+import { ActivitiesLayoutBlock } from '@/blocks/ActivitiesLayout/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
@@ -14,6 +15,7 @@ import { SplitSectionBlock } from '@/blocks/SplitSection/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
+  activitiesLayout: ActivitiesLayoutBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   featureGrid: FeatureGridBlock,

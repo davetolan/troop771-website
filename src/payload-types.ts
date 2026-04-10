@@ -204,6 +204,7 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
+    | ActivitiesLayoutBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -450,6 +451,27 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ActivitiesLayoutBlock".
+ */
+export interface ActivitiesLayoutBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  /**
+   * Inclusive start date for which planned activities should appear.
+   */
+  startDate: string;
+  /**
+   * Inclusive end date for which planned activities should appear.
+   */
+  endDate: string;
+  emptyMessage?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'activitiesLayout';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1274,6 +1296,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        activitiesLayout?: T | ActivitiesLayoutBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1297,6 +1320,20 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ActivitiesLayoutBlock_select".
+ */
+export interface ActivitiesLayoutBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  startDate?: T;
+  endDate?: T;
+  emptyMessage?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

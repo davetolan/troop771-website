@@ -2,6 +2,7 @@ import * as migration_20260410_011720_initial_schema from './20260410_011720_ini
 import * as migration_20260410_013514_add_marketing_blocks from './20260410_013514_add_marketing_blocks';
 import * as migration_20260410_021400_add_upcoming_activities from './20260410_021400_add_upcoming_activities';
 import * as migration_20260410_022300_rename_upcoming_activities_to_activities from './20260410_022300_rename_upcoming_activities_to_activities';
+import * as migration_20260410_223800_add_activities_layout_block from './20260410_223800_add_activities_layout_block';
 
 export const migrations = [
   {
@@ -23,5 +24,10 @@ export const migrations = [
     up: migration_20260410_022300_rename_upcoming_activities_to_activities.up,
     down: migration_20260410_022300_rename_upcoming_activities_to_activities.down,
     name: '20260410_022300_rename_upcoming_activities_to_activities'
+  },
+  {
+    up: migration_20260410_223800_add_activities_layout_block.up,
+    down: migration_20260410_223800_add_activities_layout_block.down,
+    name: '20260410_223800_add_activities_layout_block'
   },
 ];
