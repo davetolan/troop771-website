@@ -85,7 +85,7 @@ export const resources = [
 ] as const
 
 export const siteNav = [
-  { label: 'About', href: '#why-join' },
+  { label: 'About', href: '/why-join' },
   { label: 'Activities', href: '#activities' },
   { label: 'Join', href: '#join' },
 ] as const

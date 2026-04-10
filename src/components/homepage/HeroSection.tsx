@@ -71,7 +71,7 @@ export function HeroSection() {
               </Link>
               <Link
                 className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/8 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/14 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                href="#why-join"
+                href="/why-join"
               >
                 Learn More
               </Link>
