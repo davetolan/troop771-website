@@ -57,7 +57,7 @@ export const Activities: CollectionConfig<'activities'> = {
     {
       name: 'year',
       type: 'number',
-      min: 2026,
+      min: 2025,
       max: 2100,
       required: true,
     },
