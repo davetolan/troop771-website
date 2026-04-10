@@ -83,59 +83,6 @@ export function FeaturedActivitiesSection() {
             )
           })}
         </div>
-
-        <div className="mt-12 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="relative min-h-[22rem] overflow-hidden rounded-[1.75rem] border border-stone-200">
-            <Image
-              alt="Scouts canoeing together during a troop outing"
-              className="object-cover"
-              fill
-              sizes="(max-width: 1024px) 100vw, 66vw"
-              src="/Canoeing.JPG"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,25,23,0.75),rgba(28,25,23,0.18),transparent)]" />
-            <div className="absolute inset-x-0 bottom-0 p-6 text-left text-white">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-amber-200">
-                On the water
-              </p>
-              <p className="mt-3 max-w-md text-base leading-7 text-stone-100">
-                High-adventure experiences help scouts build teamwork, confidence, and calm
-                decision-making in the outdoors.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid gap-5">
-            <div className="relative min-h-[10.5rem] overflow-hidden rounded-[1.75rem] border border-stone-200">
-              <Image
-                alt="Scouts climbing during a troop adventure outing"
-                className="object-cover"
-                fill
-                sizes="(max-width: 1024px) 100vw, 33vw"
-                src="/Climbing2.JPG"
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,25,23,0.72),rgba(28,25,23,0.15),transparent)]" />
-              <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">
-                  Climbing
-                </p>
-              </div>
-            </div>
-
-            <div className="rounded-[1.75rem] border border-stone-200 bg-[#f6f1e8] p-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#4f5d3a]">
-                Troop in action
-              </p>
-              <h3 className="mt-4 text-2xl font-semibold tracking-tight text-stone-950">
-                Real photos, real adventure
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-stone-700">
-                These moments help show the kind of active, outdoors-focused experience Troop 771
-                is built to provide.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

@@ -5,15 +5,23 @@ import type { Page } from '@/payload-types'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { PhotoCardGridBlock } from '@/blocks/PhotoCardGrid/Component'
+import { SectionIntroBlock } from '@/blocks/SectionIntro/Component'
+import { SplitSectionBlock } from '@/blocks/SplitSection/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
+  featureGrid: FeatureGridBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  photoCardGrid: PhotoCardGridBlock,
+  sectionIntro: SectionIntroBlock,
+  splitSection: SplitSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{

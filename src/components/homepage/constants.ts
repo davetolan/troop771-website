@@ -72,8 +72,8 @@ export const whyJoinPoints = [
 ] as const
 
 export const upcomingHighlights = [
-  { month: 'April', activity: 'Fishing' },
-  { month: 'May', activity: 'White Water Rafting' },
+  { month: 'April', year: 2026, activity: 'Fishing' },
+  { month: 'May', year: 2026, activity: 'White Water Rafting' },
 ] as const
 
 export const resources = [
