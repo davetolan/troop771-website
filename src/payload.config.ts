@@ -18,6 +18,7 @@ import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const maxUploadFileSize = 4 * 1024 * 1024
 
 export default buildConfig({
   admin: {
@@ -67,8 +68,17 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
+  serverURL: getServerSideURL(),
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+  upload: {
+    abortOnLimit: true,
+    limits: {
+      // Keep server-side uploads below Vercel's request-size ceiling.
+      fileSize: maxUploadFileSize,
+    },
+    responseOnLimit: 'File is too large. Please upload a file smaller than 4 MB.',
+  },
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
