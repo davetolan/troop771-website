@@ -13,6 +13,8 @@ import { authenticated } from '../access/authenticated'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const localStaticDir = path.resolve(dirname, '../../public/media')
+const isUsingBlobStorage = Boolean(process.env.BLOB_READ_WRITE_TOKEN)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -40,8 +42,12 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
+    ...(isUsingBlobStorage
+      ? {}
+      : {
+          // Local dev writes uploads to Next's public directory.
+          staticDir: localStaticDir,
+        }),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
