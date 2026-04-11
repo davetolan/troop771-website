@@ -62,32 +62,33 @@ export const whyJoinPage = ({
   meta: {
     title: 'Why Join Troop 771',
     description:
-      'Learn what makes Troop 771 in Argyle, Texas a strong fit for families seeking leadership, outdoor experience, and practical growth.',
+      'Learn how Troop 771 helps scouts grow through leadership, outdoor adventure, practical skills, service, and real responsibility.',
     image: featureImage,
   },
   hero: {
     type: 'lowImpact',
     richText: richText(
-      heading('Why Join Troop 771', 'h1'),
+      heading('More Than Camping — A Program That Builds Leaders', 'h1'),
       paragraph(
-        'Troop 771 helps scouts grow through real responsibility, outdoor challenge, and consistent leadership opportunities in a boy-led program.',
+        'Troop 771 helps boys grow into capable leaders through outdoor adventure, practical skill-building, service, and real responsibility. From campouts and first aid to high-adventure trips and youth leadership, scouts gain experiences that build confidence and character over time.',
       ),
     ),
     links: [
       {
         link: {
           type: 'custom',
-          url: '/',
-          label: 'Back to Home',
-          appearance: 'outline',
+          url: 'https://my.scouting.org/online-registration/ff7b3db4-1e7a-4889-8bed-c1d376fef3d5/applicant-type',
+          label: 'Join the Troop',
+          appearance: 'default',
+          newTab: true,
         },
       },
       {
         link: {
           type: 'custom',
-          url: '#reasons',
-          label: 'See the Reasons',
-          appearance: 'default',
+          url: '/contact',
+          label: 'Contact Us',
+          appearance: 'outline',
         },
       },
     ],
@@ -95,161 +96,221 @@ export const whyJoinPage = ({
   layout: [
     {
       blockType: 'sectionIntro',
-      eyebrow: 'What Families Notice',
-      title: 'A troop built around growth, challenge, and real responsibility',
+      blockName: 'core-pillars-intro',
+      eyebrow: 'Core Pillars',
+      title: 'Why families choose a program that stretches scouts in the right ways',
       description:
-        'The best troop experiences come from repeated opportunities to lead, serve, and take on meaningful outdoor challenge. Troop 771 is designed around that idea.',
+        'Troop 771 is built around the kinds of experiences that help boys grow over time: challenge, responsibility, service, and practical readiness.',
       alignment: 'center',
       theme: 'stone',
-      links: [
-        {
-          link: {
-            type: 'custom',
-            url: '/',
-            label: 'Explore the Homepage',
-            appearance: 'outline',
-          },
-        },
-      ],
     },
     {
-      blockType: 'splitSection',
-      eyebrow: 'Boy-Led by Design',
-      title: 'Leadership is practiced, not just talked about',
+      blockType: 'featureGrid',
+      blockName: 'core-pillars',
+      eyebrow: 'What Scouts Experience',
+      title: 'Four pillars that shape the troop experience',
       description:
-        'Scouts are expected to participate, plan, and lead. Adults provide support and safety, but the program is structured to help boys grow into capable leaders.',
-      body: richText(
-        paragraph(
-          'That means scouts help shape meetings, campouts, and decisions instead of simply following a schedule made for them.',
-        ),
-        paragraph(
-          'Over time, they gain confidence by handling real responsibility in an environment that values teamwork, preparation, and follow-through.',
-        ),
-      ),
-      media: leadershipImage,
-      mediaPosition: 'right',
+        'Each part of the program reinforces growth, confidence, and character rather than just filling a calendar.',
       theme: 'light',
-      links: [
+      features: [
         {
-          link: {
-            type: 'custom',
-            url: '#reasons',
-            label: 'See More Reasons',
-            appearance: 'default',
-          },
+          title: 'High Adventure',
+          description:
+            'Sailing, climbing, rafting, caving, and challenging outdoor experiences that build confidence and resilience.',
+        },
+        {
+          title: 'Outdoor Skills',
+          description:
+            'Camping, cooking, navigation, first aid, and practical readiness for real-world situations.',
+        },
+        {
+          title: 'Leadership Development',
+          description:
+            'A boy-led structure where scouts learn by planning, leading, and taking responsibility.',
+        },
+        {
+          title: 'Service & Character',
+          description:
+            'Service opportunities and shared values that reinforce integrity, teamwork, and responsibility.',
         },
       ],
     },
     {
       blockType: 'featureGrid',
-      blockName: 'why-join-reasons',
-      eyebrow: 'Why It Matters',
-      title: 'Five reasons families choose Troop 771',
+      blockName: 'what-makes-us-different',
+      eyebrow: 'What Makes Troop 771 Different',
+      title: 'A troop culture built for steady growth',
       description:
-        'This block recreates the strongest part of the old homepage section, but now as a reusable Payload layout.',
+        'Parents are often looking for more than activity. They want a program where challenge, leadership, and maturity are developed on purpose.',
       theme: 'dark',
       features: [
         {
           title: 'True Boy-Led Leadership',
           description:
-            'Scouts plan, lead, and run meetings, campouts, and decisions with guidance that helps them grow into capable leaders.',
+            'Scouts actively plan, lead, and run meetings, campouts, and decisions.',
         },
         {
           title: 'Consistent High Adventure',
           description:
-            'Major high-adventure trips every other year are paired with regular outdoor challenges that keep the program active and engaging.',
+            'Major high-adventure trips every other year, plus regular outdoor challenges.',
         },
         {
           title: 'Broad Outdoor Experience',
           description:
-            'Scouts gain exposure to diverse activities including sailing, caving, climbing, hiking, fishing, and rafting.',
+            'Exposure to activities like sailing, caving, climbing, hiking, and fishing.',
         },
         {
           title: 'Practical Life Skills',
           description:
-            'The program emphasizes self-reliance, first aid, cooking, preparedness, and confidence in real situations.',
+            'Emphasis on self-reliance, first aid, cooking, preparedness, and responsibility.',
         },
         {
-          title: 'A Proven Growth Environment',
+          title: 'Proven Growth Environment',
           description:
-            'Over time, scouts build responsibility, resilience, and leadership through meaningful experiences and clear expectations.',
+            'A clear path for building confidence, maturity, and leadership over time.',
         },
       ],
     },
     {
       blockType: 'splitSection',
-      eyebrow: 'Adventure With Purpose',
-      title: 'Outdoor challenge is a tool for growth',
+      blockName: 'what-a-scout-gains',
+      eyebrow: 'What A Scout Gains',
+      title: 'The outcomes parents hope to see',
       description:
-        'Troop 771 uses the outdoors to build maturity, confidence, and practical readiness rather than treating activities as isolated events.',
+        'This is about more than keeping boys busy. The goal is to help them become more capable, responsible, and confident as they grow.',
       body: richText(
         paragraph(
-          'Camping, hiking, climbing, rafting, and service projects all contribute to a program that helps scouts become more self-reliant.',
+          'Scouts gain confidence and independence by taking on real responsibility, solving problems, communicating with others, and learning how to operate well as part of a team.',
         ),
         paragraph(
-          'The result is a troop experience that feels active and memorable while still reinforcing the values parents care about most.',
+          'Parents often see growth in leadership experience, problem-solving ability, teamwork, communication, preparedness, and resilience as boys stay engaged in the program.',
         ),
       ),
-      media: featureImage,
-      mediaPosition: 'left',
-      theme: 'dark',
-      links: [
+      media: leadershipImage,
+      mediaPosition: 'right',
+      theme: 'light',
+    },
+    {
+      blockType: 'featureGrid',
+      blockName: 'outcomes',
+      eyebrow: 'Parent-Focused Benefits',
+      title: 'What families want their sons to carry with them',
+      description:
+        'These are the kinds of strengths that extend beyond scouting and into school, friendships, work, and adult life.',
+      theme: 'light',
+      features: [
         {
-          link: {
-            type: 'custom',
-            url: '/#join',
-            label: 'Ready to Visit?',
-            appearance: 'default',
-          },
+          title: 'Confidence and independence',
+          description:
+            'Scouts learn to handle challenges, speak up, and take initiative with growing confidence.',
+        },
+        {
+          title: 'Leadership experience',
+          description:
+            'Leadership becomes something they practice, not just hear about.',
+        },
+        {
+          title: 'Problem-solving ability',
+          description:
+            'They learn to think clearly, adapt, and work through real situations outdoors and with others.',
+        },
+        {
+          title: 'Teamwork and communication',
+          description:
+            'Scouts grow by listening, collaborating, and contributing as part of a group.',
+        },
+        {
+          title: 'Preparedness and resilience',
+          description:
+            'They build habits of readiness, persistence, and responsibility that matter in everyday life.',
         },
       ],
     },
     {
       blockType: 'photoCardGrid',
-      eyebrow: 'Program Snapshot',
-      title: 'Moments that reflect the troop experience',
+      blockName: 'participation-rhythm',
+      eyebrow: 'What Participation Looks Like',
+      title: 'A steady rhythm of meetings, outings, and growth',
       description:
-        'This gallery-style block gives editors a polished way to combine photos, short descriptions, and optional links on other marketing pages too.',
+        'Participation stays active and purposeful without sharing private schedules or sensitive logistics on the public site.',
       columns: 'three',
       cards: [
         {
           media: leadershipImage,
-          title: 'Leadership in Action',
-          description:
-            'Scouts build confidence by leading, planning, and learning to carry real responsibility over time.',
+          title: 'Weekly Meetings',
+          description: 'Weekly meetings in the Argyle area.',
+          enableLink: false,
+        },
+        {
+          media: featureImage,
+          title: 'Regular Campouts',
+          description: 'Regular campouts throughout the year.',
           enableLink: false,
         },
         {
           media: hikingImage,
-          title: 'Outdoor Readiness',
-          description:
-            'Hiking, navigation, camp skills, and preparedness help scouts become capable in real-world situations.',
+          title: 'Summer Camp',
+          description: 'Summer camp participation as a core part of the program.',
+          enableLink: false,
+        },
+        {
+          media: featureImage,
+          title: 'High Adventure',
+          description: 'High-adventure trips every other year.',
           enableLink: false,
         },
         {
           media: serviceImage,
-          title: 'Service and Character',
-          description:
-            'Service projects and shared values reinforce integrity, teamwork, and the habit of contributing to the community.',
+          title: 'Service and Leadership',
+          description: 'Ongoing opportunities for service and leadership development.',
           enableLink: false,
         },
       ],
     },
     {
-      blockType: 'sectionIntro',
-      eyebrow: 'Take the Next Step',
-      title: 'Visit, ask questions, and see if Troop 771 is the right fit',
+      blockType: 'splitSection',
+      blockName: 'for-parents',
+      eyebrow: 'For Parents',
+      title: 'A structured, active program with room for scouts to lead',
       description:
-        'Families usually get the clearest picture by seeing the troop in person. If the program sounds like a good fit, the next step is simple.',
-      alignment: 'center',
-      theme: 'dark',
+        'Parents want to know that a troop is well-led, worthwhile, and safe. Troop 771 is designed to give boys real responsibility while maintaining adult leadership and oversight.',
+      body: richText(
+        paragraph(
+          'Adults are present to provide structure, supervision, and support. At the same time, scouts are encouraged to plan, lead, and grow instead of relying on adults to do everything for them.',
+        ),
+        paragraph(
+          'Parents can be involved and informed, while private logistics and member communication are handled outside the public website.',
+        ),
+      ),
+      media: serviceImage,
+      mediaPosition: 'left',
+      theme: 'stone',
+    },
+    {
+      blockType: 'cta',
+      blockName: 'final-cta',
+      richText: richText(
+        heading('Ready to See if Troop 771 Is a Good Fit?', 'h2'),
+        paragraph(
+          'Visit, learn more, and see firsthand how Troop 771 helps scouts grow through leadership, adventure, and service.',
+        ),
+      ),
       links: [
         {
           link: {
             type: 'custom',
-            url: '/#join',
-            label: 'How to Join',
+            url: 'https://my.scouting.org/online-registration/ff7b3db4-1e7a-4889-8bed-c1d376fef3d5/applicant-type',
+            label: 'Join the Troop',
             appearance: 'default',
+            newTab: true,
+          },
+        },
+        {
+          link: {
+            type: 'custom',
+            url: '/contact',
+            label: 'Learn More / Contact Us',
+            appearance: 'outline',
           },
         },
       ],

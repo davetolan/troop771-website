@@ -9,6 +9,7 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { whyJoinPage as whyJoinPageData } from './why-join-page'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -203,7 +204,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [_, contactPage, whyJoinPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -213,6 +214,16 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: contactPageData({ contactForm: contactForm }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: whyJoinPageData({
+        featureImage: imageHomeDoc,
+        leadershipImage: image1Doc,
+        serviceImage: image2Doc,
+        hikingImage: image3Doc,
+      }),
     }),
   ])
 
@@ -228,6 +239,16 @@ export const seed = async ({
               type: 'custom',
               label: 'Posts',
               url: '/posts',
+            },
+          },
+          {
+            link: {
+              type: 'reference',
+              label: 'Why Join',
+              reference: {
+                relationTo: 'pages',
+                value: whyJoinPage.id,
+              },
             },
           },
           {
