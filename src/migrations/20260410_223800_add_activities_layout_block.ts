@@ -10,8 +10,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       "eyebrow" varchar,
       "title" varchar,
       "description" varchar,
-      "start_date" timestamp(3) with time zone NOT NULL,
-      "end_date" timestamp(3) with time zone NOT NULL,
+      "start_date" timestamp(3) with time zone,
+      "end_date" timestamp(3) with time zone,
       "empty_message" varchar DEFAULT 'No activities are scheduled in this date range yet.',
       "block_name" varchar
     );
@@ -24,8 +24,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       "eyebrow" varchar,
       "title" varchar,
       "description" varchar,
-      "start_date" timestamp(3) with time zone NOT NULL,
-      "end_date" timestamp(3) with time zone NOT NULL,
+      "start_date" timestamp(3) with time zone,
+      "end_date" timestamp(3) with time zone,
       "empty_message" varchar DEFAULT 'No activities are scheduled in this date range yet.',
       "_uuid" varchar,
       "block_name" varchar

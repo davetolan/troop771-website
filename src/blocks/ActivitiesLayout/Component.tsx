@@ -23,6 +23,29 @@ export const ActivitiesLayoutBlock = async (
   },
 ) => {
   const { id, eyebrow, title, description, startDate, endDate, emptyMessage } = props
+  const resolvedTitle = title || 'Activities'
+  const hasDateRange = Boolean(startDate && endDate)
+
+  if (!hasDateRange) {
+    return (
+      <section
+        className="bg-[linear-gradient(to_bottom,rgba(250,250,249,1),rgba(245,245,244,1))] py-20 sm:py-24"
+        id={id ? `block-${id}` : undefined}
+      >
+        <div className="container">
+          <SectionHeading
+            eyebrow={eyebrow || 'Activities'}
+            title={resolvedTitle}
+            description={description || undefined}
+          />
+
+          <div className="mt-12 rounded-[1.75rem] border border-dashed border-stone-300 bg-white p-8 text-sm leading-7 text-stone-600 shadow-[0_18px_40px_-38px_rgba(41,37,36,0.35)]">
+            Add a start date and end date to preview activities in this layout.
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   const payload = await getPayload({ config: configPromise })
   const rangeStart = new Date(startDate)
@@ -69,7 +92,7 @@ export const ActivitiesLayoutBlock = async (
       <div className="container">
         <SectionHeading
           eyebrow={eyebrow || 'Activities'}
-          title={title}
+          title={resolvedTitle}
           description={description || undefined}
         />
 
