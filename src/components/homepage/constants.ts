@@ -41,6 +41,14 @@ export const featuredActivities = [
     name: 'Rafting',
     detail: 'Fast-moving water, teamwork, and challenge that build confidence and resilience.',
   },
+  {
+    name: 'Caving',
+    detail: 'Underground exploration that rewards preparation, awareness, and teamwork.',
+  },
+  {
+    name: 'Canoeing',
+    detail: 'Paddling skills, coordination, and steady teamwork on the water.',
+  },
 ] as const
 
 export const whyJoinPoints = [
