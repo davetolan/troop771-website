@@ -14,6 +14,15 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN
+const isVercelDeployment = process.env.VERCEL === '1'
+
+if (isVercelDeployment && !blobToken) {
+  throw new Error(
+    'BLOB_READ_WRITE_TOKEN is required on Vercel for the media collection. Without it, Payload falls back to local filesystem uploads, which are not supported on Vercel.',
+  )
+}
+
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
 }
@@ -26,11 +35,11 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 
 export const plugins: Plugin[] = [
   vercelBlobStorage({
-    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    enabled: Boolean(blobToken),
     collections: {
       media: true,
     },
-    token: process.env.BLOB_READ_WRITE_TOKEN,
+    token: blobToken,
   }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
