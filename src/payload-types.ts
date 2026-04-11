@@ -824,6 +824,7 @@ export interface FeatureGridBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  media?: (number | null) | Media;
   theme?: ('dark' | 'light') | null;
   features?:
     | {
@@ -1428,6 +1429,7 @@ export interface FeatureGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  media?: T;
   theme?: T;
   features?:
     | T

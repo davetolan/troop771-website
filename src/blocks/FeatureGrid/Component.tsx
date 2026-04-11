@@ -3,12 +3,14 @@ import React from 'react'
 
 import type { FeatureGridBlock as FeatureGridBlockProps } from '@/payload-types'
 
+import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
 export const FeatureGridBlock: React.FC<FeatureGridBlockProps> = ({
   description,
   eyebrow,
   features,
+  media,
   theme = 'dark',
   title,
 }) => {
@@ -35,13 +37,20 @@ export const FeatureGridBlock: React.FC<FeatureGridBlockProps> = ({
           </div>
 
           <div className="relative min-h-[16rem] overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_24px_90px_-55px_rgba(0,0,0,0.45)]">
-            <Image
-              alt="Scouts in a leadership and high-adventure setting"
-              className="object-cover"
-              fill
-              sizes="(max-width: 1024px) 100vw, 30rem"
-              src={isDark ? '/high-adventure.JPG' : '/leadership.JPG'}
-            />
+            {media ? (
+              <Media
+                imgClassName="h-full min-h-[16rem] w-full rounded-none border-0 object-cover"
+                resource={media}
+              />
+            ) : (
+              <Image
+                alt="Scouts in a leadership and high-adventure setting"
+                className="object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 30rem"
+                src={isDark ? '/high-adventure.JPG' : '/leadership.JPG'}
+              />
+            )}
             <div
               className={cn(
                 'absolute inset-0',

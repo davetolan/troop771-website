@@ -1,9 +1,14 @@
-import Link from 'next/link'
 import React from 'react'
 
-import { siteNav } from '@/components/homepage/constants'
+import type { Footer as FooterType } from '@/payload-types'
+
+import { CMSLink } from '@/components/Link'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 
 export async function Footer() {
+  const footerData: FooterType = await getCachedGlobal('footer', 1)()
+  const navItems = footerData?.navItems || []
+
   return (
     <footer className="mt-auto border-t border-stone-200 bg-[#f6f1e8]">
       <div className="container flex flex-col gap-8 py-10 md:flex-row md:items-end md:justify-between">
@@ -16,14 +21,13 @@ export async function Footer() {
         </div>
 
         <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-3">
-          {siteNav.map((item) => (
-            <Link
+          {navItems.map(({ link }, index) => (
+            <CMSLink
+              {...link}
               className="text-sm font-medium text-stone-600 transition hover:text-stone-950"
-              href={item.href}
-              key={item.label}
-            >
-              {item.label}
-            </Link>
+              appearance="inline"
+              key={index}
+            />
           ))}
         </nav>
       </div>

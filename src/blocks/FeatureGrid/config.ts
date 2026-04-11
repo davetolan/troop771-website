@@ -23,6 +23,11 @@ export const FeatureGrid: Block = {
       type: 'textarea',
     },
     {
+      name: 'media',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'theme',
       type: 'select',
       defaultValue: 'dark',
