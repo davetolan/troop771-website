@@ -7,6 +7,8 @@ import { CMSLink } from '@/components/Link'
 import { registrationUrl } from '@/components/homepage/constants'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
+import { MobileNav } from './MobileNav'
+
 export async function Header() {
   const headerData: HeaderType = await getCachedGlobal('header', 1)()
   const navItems = headerData?.navItems || []
@@ -34,14 +36,18 @@ export async function Header() {
           ))}
         </nav>
 
-        <Link
-          className="inline-flex shrink-0 items-center justify-center rounded-full bg-amber-300 px-4 py-2 text-sm font-semibold text-stone-950 transition hover:bg-amber-200"
-          href={registrationUrl}
-          rel="noreferrer"
-          target="_blank"
-        >
-          Join the Troop
-        </Link>
+        <div className="flex shrink-0 items-center gap-3">
+          <Link
+            className="hidden items-center justify-center rounded-full bg-amber-300 px-4 py-2 text-sm font-semibold text-stone-950 transition hover:bg-amber-200 lg:inline-flex"
+            href={registrationUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Join the Troop
+          </Link>
+
+          <MobileNav navItems={navItems} />
+        </div>
       </div>
     </header>
   )
