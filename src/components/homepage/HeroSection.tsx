@@ -42,7 +42,7 @@ export function HeroSection() {
                   className="object-cover object-[72%_center] opacity-42"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  src="/Climbing.JPG"
+                  src="/rafting.jpg"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(17,24,39,0.9),rgba(17,24,39,0.58)_42%,rgba(17,24,39,0.78)),radial-gradient(circle_at_78%_26%,rgba(255,255,255,0.1),transparent_22%)]" />
                 <div className="absolute right-0 top-0 h-full w-[44%] bg-[linear-gradient(to_left,rgba(255,255,255,0.08),transparent)]" />
