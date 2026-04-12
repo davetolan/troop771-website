@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { canSaveDraft } from '../../access/canSaveDraft'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { ActivitiesLayout } from '../../blocks/ActivitiesLayout/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
@@ -29,10 +30,10 @@ import {
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
-    create: authenticated,
+    create: canSaveDraft,
     delete: authenticated,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: canSaveDraft,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
