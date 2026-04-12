@@ -1,14 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  Anchor,
-  Compass,
-  Mountain,
-  ShieldCheck,
-  TentTree,
-  Trees,
-  Waves,
-} from 'lucide-react'
+import { Anchor, Compass, Mountain, ShieldCheck, TentTree, Trees, Waves } from 'lucide-react'
 
 import { registrationUrl } from './constants'
 
@@ -57,7 +49,9 @@ export function HeroSection() {
               </div>
 
               <div className="relative z-10 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-sm text-white/85 backdrop-blur">
-                <span className="font-semibold uppercase tracking-[0.22em] text-stone-200">Troop 771</span>
+                <span className="font-semibold uppercase tracking-[0.22em] text-stone-200">
+                  Troop 771
+                </span>
                 <span className="h-1 w-1 rounded-full bg-white/40" />
                 <span>Argyle, TX</span>
                 <span className="hidden h-1 w-1 rounded-full bg-white/40 sm:block" />

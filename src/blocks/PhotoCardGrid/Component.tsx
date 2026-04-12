@@ -8,6 +8,7 @@ import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
 export const PhotoCardGridBlock: React.FC<PhotoCardGridBlockProps> = ({
+  backgroundMedia,
   cards,
   columns = 'three',
   description,
@@ -24,14 +25,21 @@ export const PhotoCardGridBlock: React.FC<PhotoCardGridBlockProps> = ({
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(to_bottom,rgba(255,255,255,1),rgba(250,250,249,1))] py-16 sm:py-20">
       <div className="absolute inset-x-0 top-0 h-72">
-        <Image
-          alt=""
-          aria-hidden="true"
-          className="object-cover object-center opacity-18"
-          fill
-          sizes="100vw"
-          src="/Canoeing.JPG"
-        />
+        {backgroundMedia ? (
+          <Media
+            imgClassName="h-full w-full rounded-none border-0 object-cover object-center opacity-18"
+            resource={backgroundMedia}
+          />
+        ) : (
+          <Image
+            alt=""
+            aria-hidden="true"
+            className="object-cover object-center opacity-18"
+            fill
+            sizes="100vw"
+            src="/Canoeing.JPG"
+          />
+        )}
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.96),rgba(250,250,249,0.88),transparent)]" />
       </div>
       <div className="container">

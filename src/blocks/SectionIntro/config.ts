@@ -25,6 +25,11 @@ export const SectionIntro: Block = {
       type: 'textarea',
     },
     {
+      name: 'media',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'alignment',
       type: 'select',
       defaultValue: 'left',

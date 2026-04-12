@@ -18,7 +18,7 @@ export function HighlightsSection() {
           id="activities-heading"
           eyebrow="What Scouts Experience"
           title="A program built for adventure, growth, and practical confidence"
-          description="Parents can quickly see what makes Troop 771 active, purposeful, and worth joining."
+          description="See what makes Troop 771 active, purposeful, and worth joining."
         />
 
         <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -41,10 +41,10 @@ export function HighlightsSection() {
                         isHighAdventureCard
                           ? 'Scouts on a high-adventure outing'
                           : isOutdoorSkillsCard
-                          ? 'Scouts practicing outdoor skills during a troop activity'
-                          : isLeadershipCard
-                            ? 'Scouts leading during a troop activity'
-                          : 'Scouts serving together during a troop service project'
+                            ? 'Scouts practicing outdoor skills during a troop activity'
+                            : isLeadershipCard
+                              ? 'Scouts leading during a troop activity'
+                              : 'Scouts serving together during a troop service project'
                       }
                       className="object-cover"
                       fill
@@ -53,10 +53,10 @@ export function HighlightsSection() {
                         isHighAdventureCard
                           ? '/high-adventure.JPG'
                           : isOutdoorSkillsCard
-                          ? '/outdoor.JPG'
-                          : isLeadershipCard
-                            ? '/leadership.JPG'
-                            : '/service.JPG'
+                            ? '/outdoor.JPG'
+                            : isLeadershipCard
+                              ? '/leadership.JPG'
+                              : '/service.JPG'
                       }
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,25,23,0.68),rgba(28,25,23,0.12),transparent)]" />

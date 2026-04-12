@@ -4,6 +4,7 @@ import React from 'react'
 import type { SectionIntroBlock as SectionIntroBlockProps } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
 export const SectionIntroBlock: React.FC<SectionIntroBlockProps> = ({
@@ -11,6 +12,7 @@ export const SectionIntroBlock: React.FC<SectionIntroBlockProps> = ({
   description,
   eyebrow,
   links,
+  media,
   theme = 'light',
   title,
 }) => {
@@ -30,14 +32,21 @@ export const SectionIntroBlock: React.FC<SectionIntroBlockProps> = ({
       )}
     >
       <div className="absolute inset-x-0 top-0 h-56">
-        <Image
-          alt=""
-          aria-hidden="true"
-          className="object-cover object-center opacity-25"
-          fill
-          sizes="100vw"
-          src={isDark ? '/OnTheWater.JPG' : isStone ? '/Trail.JPG' : '/outdoor.JPG'}
-        />
+        {media ? (
+          <Media
+            imgClassName="h-full w-full rounded-none border-0 object-cover opacity-25"
+            resource={media}
+          />
+        ) : (
+          <Image
+            alt=""
+            aria-hidden="true"
+            className="object-cover object-center opacity-25"
+            fill
+            sizes="100vw"
+            src={isDark ? '/OnTheWater.JPG' : isStone ? '/Trail.JPG' : '/outdoor.JPG'}
+          />
+        )}
         <div
           className={cn(
             'absolute inset-0',

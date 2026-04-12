@@ -845,6 +845,7 @@ export interface SectionIntroBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  media?: (number | null) | Media;
   alignment?: ('left' | 'center') | null;
   theme?: ('light' | 'stone' | 'dark') | null;
   links?:
@@ -937,6 +938,7 @@ export interface PhotoCardGridBlock {
   eyebrow?: string | null;
   title: string;
   description?: string | null;
+  backgroundMedia?: (number | null) | Media;
   columns?: ('two' | 'three' | 'four') | null;
   cards?:
     | {
@@ -1449,6 +1451,7 @@ export interface SectionIntroBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  media?: T;
   alignment?: T;
   theme?: T;
   links?:
@@ -1507,6 +1510,7 @@ export interface PhotoCardGridBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  backgroundMedia?: T;
   columns?: T;
   cards?:
     | T

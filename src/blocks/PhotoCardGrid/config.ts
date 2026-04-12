@@ -25,6 +25,11 @@ export const PhotoCardGrid: Block = {
       type: 'textarea',
     },
     {
+      name: 'backgroundMedia',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'columns',
       type: 'select',
       defaultValue: 'three',
