@@ -73,6 +73,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    'scout-change-reports': ScoutChangeReport;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -96,6 +97,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'scout-change-reports': ScoutChangeReportsSelect<false> | ScoutChangeReportsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -995,6 +997,30 @@ export interface Activity {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scout-change-reports".
+ */
+export interface ScoutChangeReport {
+  id: number;
+  occurredAt: string;
+  actor: number | User;
+  actorName?: string | null;
+  actorEmail: string;
+  actorRole: 'scout';
+  action: 'create' | 'update' | 'delete';
+  targetType: 'collection' | 'global';
+  targetSlug: string;
+  targetID?: string | null;
+  changedFields?:
+    | {
+        field: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1206,6 +1232,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'scout-change-reports';
+        value: number | ScoutChangeReport;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1713,6 +1743,29 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "scout-change-reports_select".
+ */
+export interface ScoutChangeReportsSelect<T extends boolean = true> {
+  occurredAt?: T;
+  actor?: T;
+  actorName?: T;
+  actorEmail?: T;
+  actorRole?: T;
+  action?: T;
+  targetType?: T;
+  targetSlug?: T;
+  targetID?: T;
+  changedFields?:
+    | T
+    | {
+        field?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -6,6 +6,10 @@ import {
   revalidateUpcomingActivities,
   revalidateUpcomingActivityDelete,
 } from './hooks/revalidateUpcomingActivities'
+import {
+  createScoutCollectionAfterChangeHook,
+  createScoutCollectionBeforeDeleteHook,
+} from '@/hooks/logScoutChanges'
 
 export const monthOptions = [
   { label: 'January', value: 'january' },
@@ -73,7 +77,8 @@ export const Activities: CollectionConfig<'activities'> = {
     },
   ],
   hooks: {
-    afterChange: [revalidateUpcomingActivities],
+    afterChange: [createScoutCollectionAfterChangeHook('activities'), revalidateUpcomingActivities],
+    beforeDelete: [createScoutCollectionBeforeDeleteHook('activities')],
     afterDelete: [revalidateUpcomingActivityDelete],
   },
 }
