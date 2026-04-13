@@ -1,5 +1,4 @@
 import type { Access, CollectionConfig } from 'payload'
-import type { User } from '@/payload-types'
 
 import { authenticated } from '../../access/authenticated'
 
@@ -15,7 +14,7 @@ const isAdminUser = async (req: Parameters<Access>[0]['req']): Promise<boolean> 
     req,
   })
 
-  return (currentUser as User | null)?.role === 'admin'
+  return (currentUser as { role?: string } | null)?.role === 'admin'
 }
 
 const canManageRoles = async ({
@@ -26,41 +25,16 @@ const canManageRoles = async ({
   return isAdminUser(req)
 }
 
-const canCreateUser: Access = async ({ req }) => {
-  if (await isAdminUser(req)) return true
-
-  const userCount = await req.payload.count({
-    collection: 'users',
-    req,
-  })
-
-  return userCount.totalDocs === 0
-}
-
-const adminOrSelf: Access = ({ req, id }) => {
-  if (!req.user) return false
-
-  if (id) {
-    if (id === req.user.id) return true
-  } else {
-    return {
-      id: {
-        equals: req.user.id,
-      },
-    }
-  }
-
-  return isAdminUser(req)
-}
+const canAccessRoleField = ({ req }: { req: { user?: unknown } }) => Boolean(req.user)
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
     admin: authenticated,
-    create: canCreateUser,
-    delete: canManageRoles,
-    read: adminOrSelf,
-    update: adminOrSelf,
+    create: authenticated,
+    delete: authenticated,
+    read: authenticated,
+    update: authenticated,
   },
   admin: {
     defaultColumns: ['name', 'email', 'role'],
@@ -110,7 +84,7 @@ export const Users: CollectionConfig = {
       required: true,
       saveToJWT: true,
       access: {
-        create: canManageRoles,
+        create: canAccessRoleField,
         update: canManageRoles,
       },
     },
