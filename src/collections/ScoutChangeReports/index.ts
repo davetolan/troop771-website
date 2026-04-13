@@ -5,7 +5,12 @@ const isAdmin = ({ req: { user } }: { req: { user: { role?: string } | null } })
 
 export const ScoutChangeReports: CollectionConfig = {
   slug: 'scout-change-reports',
+  labels: {
+    plural: 'Scout Change Reports',
+    singular: 'Scout Change Report',
+  },
   access: {
+    admin: isAdmin,
     create: isAdmin,
     delete: isAdmin,
     read: isAdmin,
