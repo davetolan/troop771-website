@@ -1,7 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
-const isAdmin = ({ req: { user } }: { req: { user: { role?: string } | null } }) =>
-  user?.role === 'admin'
+import { adminOnly } from '@/access/adminOnly'
+
+const canAccessScoutChangeReportsAdmin = ({
+  req: { user },
+}: {
+  req: { user: { role?: string } | null }
+}) => user?.role === 'admin'
 
 export const ScoutChangeReports: CollectionConfig = {
   slug: 'scout-change-reports',
@@ -10,17 +15,42 @@ export const ScoutChangeReports: CollectionConfig = {
     singular: 'Scout Change Report',
   },
   access: {
-    admin: isAdmin,
-    create: isAdmin,
-    delete: isAdmin,
-    read: isAdmin,
-    update: isAdmin,
+    admin: canAccessScoutChangeReportsAdmin,
+    create: adminOnly,
+    delete: adminOnly,
+    read: adminOnly,
+    update: adminOnly,
   },
   admin: {
-    defaultColumns: ['occurredAt', 'actorName', 'action', 'targetType', 'targetSlug', 'targetID'],
+    defaultColumns: [
+      'reviewStatus',
+      'occurredAt',
+      'actorName',
+      'action',
+      'targetType',
+      'targetSlug',
+      'targetLabel',
+      'targetID',
+    ],
     useAsTitle: 'targetSlug',
   },
   fields: [
+    {
+      name: 'reviewStatus',
+      type: 'select',
+      options: [
+        {
+          label: 'Pending review',
+          value: 'pending',
+        },
+        {
+          label: 'Published',
+          value: 'published',
+        },
+      ],
+      defaultValue: 'pending',
+      required: true,
+    },
     {
       name: 'occurredAt',
       type: 'date',
@@ -101,6 +131,10 @@ export const ScoutChangeReports: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'targetLabel',
+      type: 'text',
+    },
+    {
       name: 'changedFields',
       type: 'array',
       fields: [
@@ -110,6 +144,20 @@ export const ScoutChangeReports: CollectionConfig = {
           required: true,
         },
       ],
+    },
+    {
+      name: 'reviewedAt',
+      type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
+    },
+    {
+      name: 'reviewedBy',
+      type: 'relationship',
+      relationTo: 'users',
     },
   ],
 }

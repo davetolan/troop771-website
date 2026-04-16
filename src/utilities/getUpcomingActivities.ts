@@ -20,6 +20,7 @@ async function getUpcomingActivities() {
     collection: 'activities',
     depth: 0,
     limit: 100,
+    overrideAccess: false,
     sort: 'year',
     where: {
       active: {

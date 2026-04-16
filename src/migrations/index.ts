@@ -9,6 +9,7 @@ import * as migration_20260411_180624_add_feature_grid_media from './20260411_18
 import * as migration_20260411_184500_add_marketing_block_media_fields from './20260411_184500_add_marketing_block_media_fields';
 import * as migration_20260413_010000_add_scout_change_reports from './20260413_010000_add_scout_change_reports';
 import * as migration_20260413_020000_backfill_scout_change_reports_locked_rels from './20260413_020000_backfill_scout_change_reports_locked_rels';
+import * as migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots from './20260415_211859_add_activity_drafts_and_scout_report_snapshots';
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260413_020000_backfill_scout_change_reports_locked_rels.up,
     down: migration_20260413_020000_backfill_scout_change_reports_locked_rels.down,
     name: '20260413_020000_backfill_scout_change_reports_locked_rels'
+  },
+  {
+    up: migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots.up,
+    down: migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots.down,
+    name: '20260415_211859_add_activity_drafts_and_scout_report_snapshots'
   },
 ];

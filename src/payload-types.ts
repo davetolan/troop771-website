@@ -994,6 +994,7 @@ export interface Activity {
   active?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1001,6 +1002,7 @@ export interface Activity {
  */
 export interface ScoutChangeReport {
   id: number;
+  reviewStatus: 'pending' | 'published';
   occurredAt: string;
   actor: number | User;
   actorName?: string | null;
@@ -1010,12 +1012,15 @@ export interface ScoutChangeReport {
   targetType: 'collection' | 'global';
   targetSlug: string;
   targetID?: string | null;
+  targetLabel?: string | null;
   changedFields?:
     | {
         field: string;
         id?: string | null;
       }[]
     | null;
+  reviewedAt?: string | null;
+  reviewedBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1605,6 +1610,7 @@ export interface ActivitiesSelect<T extends boolean = true> {
   active?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1749,6 +1755,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "scout-change-reports_select".
  */
 export interface ScoutChangeReportsSelect<T extends boolean = true> {
+  reviewStatus?: T;
   occurredAt?: T;
   actor?: T;
   actorName?: T;
@@ -1758,12 +1765,15 @@ export interface ScoutChangeReportsSelect<T extends boolean = true> {
   targetType?: T;
   targetSlug?: T;
   targetID?: T;
+  targetLabel?: T;
   changedFields?:
     | T
     | {
         field?: T;
         id?: T;
       };
+  reviewedAt?: T;
+  reviewedBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2172,6 +2182,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'activities';
+          value: number | Activity;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

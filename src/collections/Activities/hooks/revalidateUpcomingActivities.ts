@@ -6,9 +6,13 @@ import type { Activity } from '../../../payload-types'
 
 export const revalidateUpcomingActivities: CollectionAfterChangeHook<Activity> = ({
   doc,
+  previousDoc,
   req: { payload, context },
 }) => {
-  if (!context.disableRevalidate) {
+  const isPublished = doc._status === 'published'
+  const wasPublished = previousDoc?._status === 'published'
+
+  if (!context.disableRevalidate && (isPublished || wasPublished)) {
     payload.logger.info('Revalidating homepage activities')
 
     revalidatePath('/')
