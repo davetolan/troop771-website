@@ -55,6 +55,7 @@ export const ActivitiesLayoutBlock = async (
     collection: 'activities',
     depth: 0,
     limit: 200,
+    overrideAccess: false,
     sort: 'year',
   })
 

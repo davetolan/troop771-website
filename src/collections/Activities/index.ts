@@ -1,7 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { anyone } from '../../access/anyone'
+import { adminOnly } from '../../access/adminOnly'
+import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { canSaveDraft } from '../../access/canSaveDraft'
 import {
   revalidateUpcomingActivities,
   revalidateUpcomingActivityDelete,
@@ -41,10 +42,10 @@ export const Activities: CollectionConfig<'activities'> = {
     singular: 'Activity',
   },
   access: {
-    read: anyone,
-    create: authenticated,
-    update: authenticated,
-    delete: authenticated,
+    read: authenticatedOrPublished,
+    create: canSaveDraft,
+    update: canSaveDraft,
+    delete: adminOnly,
   },
   admin: {
     defaultColumns: ['month', 'year', 'activity', 'active', 'updatedAt'],
@@ -80,5 +81,14 @@ export const Activities: CollectionConfig<'activities'> = {
     afterChange: [createScoutCollectionAfterChangeHook('activities'), revalidateUpcomingActivities],
     beforeDelete: [createScoutCollectionBeforeDeleteHook('activities')],
     afterDelete: [revalidateUpcomingActivityDelete],
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
   },
 }

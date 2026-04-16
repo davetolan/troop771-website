@@ -9,8 +9,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { adminOnly } from '../../access/adminOnly'
 import { canSaveDraft } from '../../access/canSaveDraft'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
@@ -36,7 +36,7 @@ export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
     create: canSaveDraft,
-    delete: authenticated,
+    delete: adminOnly,
     read: authenticatedOrPublished,
     update: canSaveDraft,
   },

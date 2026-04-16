@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { adminOnly } from '../../access/adminOnly'
 import { canSaveDraft } from '../../access/canSaveDraft'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { ActivitiesLayout } from '../../blocks/ActivitiesLayout/config'
@@ -35,7 +35,7 @@ export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
     create: canSaveDraft,
-    delete: authenticated,
+    delete: adminOnly,
     read: authenticatedOrPublished,
     update: canSaveDraft,
   },

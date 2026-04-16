@@ -5,7 +5,9 @@ import type {
 } from 'payload'
 
 const SCOUT_ROLE = 'scout'
+const ADMIN_ROLE = 'admin'
 const MAX_CHANGED_FIELDS = 25
+const REPORT_COLLECTION = 'scout-change-reports'
 
 const getChangedFields = (
   previousDoc: Record<string, unknown> | null | undefined,
@@ -25,12 +27,159 @@ const getChangedFields = (
   return changed.slice(0, MAX_CHANGED_FIELDS)
 }
 
+const getTargetLabel = (doc: Record<string, unknown> | null | undefined): string | undefined => {
+  const value = doc?.title ?? doc?.activity ?? doc?.name ?? doc?.slug
+  return typeof value === 'string' && value.length > 0 ? value : undefined
+}
+
+const mergeChangedFields = (existingFields: unknown, nextFields: string[]): { field: string }[] => {
+  const fieldNames = new Set<string>()
+
+  if (Array.isArray(existingFields)) {
+    for (const item of existingFields) {
+      const field = item && typeof item === 'object' ? item.field : undefined
+
+      if (typeof field === 'string' && field.length > 0) {
+        fieldNames.add(field)
+      }
+    }
+  }
+
+  for (const field of nextFields) {
+    fieldNames.add(field)
+  }
+
+  return [...fieldNames].slice(0, MAX_CHANGED_FIELDS).map((field) => ({ field }))
+}
+
+const findPendingScoutChangeReport = async ({
+  actorID,
+  targetID,
+  targetSlug,
+  targetType,
+  req,
+}: {
+  actorID: number | string
+  targetID?: string
+  targetSlug: string
+  targetType: 'collection' | 'global'
+  req: Parameters<CollectionAfterChangeHook>[0]['req']
+}) => {
+  const existing = await req.payload.find({
+    collection: REPORT_COLLECTION,
+    depth: 0,
+    limit: 1,
+    pagination: false,
+    req,
+    sort: '-occurredAt',
+    where: {
+      and: [
+        {
+          actor: {
+            equals: actorID,
+          },
+        },
+        {
+          reviewStatus: {
+            equals: 'pending',
+          },
+        },
+        {
+          targetSlug: {
+            equals: targetSlug,
+          },
+        },
+        {
+          targetType: {
+            equals: targetType,
+          },
+        },
+        ...(targetID
+          ? [
+              {
+                targetID: {
+                  equals: targetID,
+                },
+              },
+            ]
+          : []),
+      ],
+    },
+  })
+
+  return existing.docs[0]
+}
+
+const markScoutChangeReportsAsPublished = async ({
+  req,
+  targetID,
+  targetSlug,
+}: {
+  req: Parameters<CollectionAfterChangeHook>[0]['req']
+  targetID: string
+  targetSlug: string
+}) => {
+  const reviewer = req.user
+
+  if (!reviewer || reviewer.role !== ADMIN_ROLE) {
+    return
+  }
+
+  const { docs } = await req.payload.find({
+    collection: REPORT_COLLECTION,
+    depth: 0,
+    limit: 100,
+    pagination: false,
+    req,
+    where: {
+      and: [
+        {
+          reviewStatus: {
+            equals: 'pending',
+          },
+        },
+        {
+          targetSlug: {
+            equals: targetSlug,
+          },
+        },
+        {
+          targetType: {
+            equals: 'collection',
+          },
+        },
+        {
+          targetID: {
+            equals: targetID,
+          },
+        },
+      ],
+    },
+  })
+
+  await Promise.all(
+    docs.map((report) =>
+      req.payload.update({
+        id: report.id,
+        collection: REPORT_COLLECTION,
+        data: {
+          reviewStatus: 'published',
+          reviewedAt: new Date().toISOString(),
+          reviewedBy: reviewer.id,
+        },
+        req,
+      }),
+    ),
+  )
+}
+
 type LogScoutChangeArgs = {
   req: Parameters<CollectionAfterChangeHook>[0]['req']
   action: 'create' | 'update' | 'delete'
   targetType: 'collection' | 'global'
   targetSlug: string
   targetID?: string
+  targetLabel?: string
   changedFields?: string[]
 }
 
@@ -40,6 +189,7 @@ const logScoutChange = async ({
   targetType,
   targetSlug,
   targetID,
+  targetLabel,
   changedFields = [],
 }: LogScoutChangeArgs): Promise<void> => {
   const actor = req.user
@@ -48,17 +198,46 @@ const logScoutChange = async ({
     return
   }
 
+  const existingPendingReport = await findPendingScoutChangeReport({
+    actorID: actor.id,
+    req,
+    targetID,
+    targetSlug,
+    targetType,
+  })
+
+  const nextChangedFields = mergeChangedFields(existingPendingReport?.changedFields, changedFields)
+  const occurredAt = new Date().toISOString()
+
+  if (existingPendingReport) {
+    await req.payload.update({
+      id: existingPendingReport.id,
+      collection: REPORT_COLLECTION,
+      data: {
+        action: existingPendingReport.action === 'create' ? 'create' : action,
+        changedFields: nextChangedFields,
+        occurredAt,
+        targetLabel,
+      },
+      req,
+    })
+
+    return
+  }
+
   await req.payload.create({
-    collection: 'scout-change-reports',
+    collection: REPORT_COLLECTION,
     data: {
       action,
       actor: actor.id,
       actorEmail: actor.email,
       actorName: actor.name,
       actorRole: actor.role,
-      changedFields: changedFields.map((field) => ({ field })),
-      occurredAt: new Date().toISOString(),
+      changedFields: nextChangedFields,
+      occurredAt,
+      reviewStatus: 'pending',
       targetID,
+      targetLabel,
       targetSlug,
       targetType,
     },
@@ -70,12 +249,20 @@ export const createScoutCollectionAfterChangeHook = (
   slug: string,
 ): CollectionAfterChangeHook => {
   return async ({ doc, operation, previousDoc, req }) => {
+    const currentDoc = (doc as Record<string, unknown> | undefined) ?? null
+    const previousSnapshot = (previousDoc as Record<string, unknown> | undefined) ?? null
+
+    if (req.user?.role === ADMIN_ROLE && doc._status === 'published') {
+      await markScoutChangeReportsAsPublished({
+        req,
+        targetID: String(doc.id),
+        targetSlug: slug,
+      })
+    }
+
     const changedFields =
       operation === 'update'
-        ? getChangedFields(
-            (previousDoc as Record<string, unknown> | undefined) ?? null,
-            (doc as Record<string, unknown> | undefined) ?? null,
-          )
+        ? getChangedFields(previousSnapshot, currentDoc)
         : []
 
     await logScoutChange({
@@ -83,6 +270,7 @@ export const createScoutCollectionAfterChangeHook = (
       action: operation,
       changedFields,
       targetID: String(doc.id),
+      targetLabel: getTargetLabel(currentDoc),
       targetSlug: slug,
       targetType: 'collection',
     })
@@ -116,6 +304,7 @@ export const createScoutGlobalAfterChangeHook = (slug: string): GlobalAfterChang
       req,
       action: 'update',
       changedFields,
+      targetLabel: getTargetLabel((doc as Record<string, unknown> | undefined) ?? null),
       targetSlug: slug,
       targetType: 'global',
     })
