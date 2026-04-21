@@ -7,7 +7,7 @@ declare global {
       PAYLOAD_SERVER_URL?: string
       NEXT_PUBLIC_SERVER_URL: string
       VERCEL_BLOB_CALLBACK_URL?: string
-      VERCEL_PROJECT_PRODUCTION_URL: string
+      VERCEL_PROJECT_PRODUCTION_URL?: string
     }
   }
 }
