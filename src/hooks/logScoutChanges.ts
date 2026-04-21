@@ -3,6 +3,7 @@ import type {
   CollectionBeforeDeleteHook,
   GlobalAfterChangeHook,
 } from 'payload'
+import { getRequestUserRole } from '@/access/getRequestUserRole'
 
 const SCOUT_ROLE = 'scout'
 const ADMIN_ROLE = 'admin'
@@ -120,8 +121,9 @@ const markScoutChangeReportsAsPublished = async ({
   targetSlug: string
 }) => {
   const reviewer = req.user
+  const reviewerRole = await getRequestUserRole(req)
 
-  if (!reviewer || reviewer.role !== ADMIN_ROLE) {
+  if (!reviewer || reviewerRole !== ADMIN_ROLE) {
     return
   }
 
@@ -193,8 +195,9 @@ const logScoutChange = async ({
   changedFields = [],
 }: LogScoutChangeArgs): Promise<void> => {
   const actor = req.user
+  const actorRole = await getRequestUserRole(req)
 
-  if (!actor || actor.role !== SCOUT_ROLE) {
+  if (!actor || actorRole !== SCOUT_ROLE) {
     return
   }
 
@@ -232,7 +235,7 @@ const logScoutChange = async ({
       actor: actor.id,
       actorEmail: actor.email,
       actorName: actor.name,
-      actorRole: actor.role,
+      actorRole,
       changedFields: nextChangedFields,
       occurredAt,
       reviewStatus: 'pending',
