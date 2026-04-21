@@ -1,18 +1,16 @@
 import type { Access } from 'payload'
-
-type UserWithRole = {
-  role?: 'admin' | 'scout'
-}
+import { getRequestUserRole } from './getRequestUserRole'
 
 type VersionedData = {
   _status?: 'draft' | 'published'
 }
 
-export const canSaveDraft: Access = ({ req, data }) => {
-  const user = req.user as UserWithRole | null
+export const canSaveDraft: Access = async ({ req, data }) => {
+  if (!req.user) return false
 
-  if (!user) return false
-  if (user.role === 'admin') return true
+  const role = await getRequestUserRole(req)
+
+  if (role === 'admin') return true
 
   const nextStatus = (data as VersionedData | undefined)?._status
 

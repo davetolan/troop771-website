@@ -1,9 +1,42 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
+import { getRequestUserRole } from '@/access/getRequestUserRole'
 
-const canManageRoles = ({ req: { user } }: { req: { user: { role?: string } | null } }) =>
-  user?.role === 'admin'
+const canManageRoles: NonNullable<
+  NonNullable<NonNullable<CollectionConfig['fields']>[number]['access']>['update']
+> = async ({ req }) => {
+  if (!req.user) {
+    return false
+  }
+
+  const role = await getRequestUserRole(req)
+
+  return role === 'admin'
+}
+
+const assignAdminRoleToFirstUser: NonNullable<CollectionConfig['hooks']>['beforeChange'][number] =
+  async ({ data, operation, req }) => {
+    if (operation !== 'create') {
+      return data
+    }
+
+    const existingUsers = await req.payload.find({
+      collection: 'users',
+      depth: 0,
+      limit: 1,
+      req,
+    })
+
+    if (existingUsers.totalDocs === 0) {
+      return {
+        ...data,
+        role: 'admin',
+      }
+    }
+
+    return data
+  }
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -19,6 +52,9 @@ export const Users: CollectionConfig = {
     useAsTitle: 'name',
   },
   auth: true,
+  hooks: {
+    beforeChange: [assignAdminRoleToFirstUser],
+  },
   fields: [
     {
       name: 'name',

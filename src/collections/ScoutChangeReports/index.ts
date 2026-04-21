@@ -1,12 +1,17 @@
 import type { CollectionConfig } from 'payload'
 
 import { adminOnly } from '@/access/adminOnly'
+import { getRequestUserRole } from '@/access/getRequestUserRole'
 
-const canAccessScoutChangeReportsAdmin = ({
-  req: { user },
-}: {
-  req: { user: { role?: string } | null }
-}) => user?.role === 'admin'
+const canAccessScoutChangeReportsAdmin: CollectionConfig['access']['admin'] = async ({ req }) => {
+  if (!req.user) {
+    return false
+  }
+
+  const role = await getRequestUserRole(req)
+
+  return role === 'admin'
+}
 
 export const ScoutChangeReports: CollectionConfig = {
   slug: 'scout-change-reports',
