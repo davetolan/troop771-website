@@ -7,6 +7,23 @@ import { NextRequest } from 'next/server'
 
 import configPromise from '@payload-config'
 
+const AUTH_INVALID_LOG_TAG = 'preview-auth-invalid-token'
+
+const isAuthInvalidError = (error: unknown): boolean => {
+  if (!(error instanceof Error)) return false
+
+  const message = error.message.toLowerCase()
+
+  return [
+    'invalid token',
+    'token expired',
+    'jwt expired',
+    'jwt malformed',
+    'jwt must be provided',
+    'unauthorized',
+  ].some((match) => message.includes(match))
+}
+
 export async function GET(req: NextRequest): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
 
@@ -37,7 +54,15 @@ export async function GET(req: NextRequest): Promise<Response> {
       headers: req.headers,
     })
   } catch (error) {
-    payload.logger.error({ err: error }, 'Error verifying token for live preview')
+    const draft = await draftMode()
+    draft.disable()
+
+    if (isAuthInvalidError(error)) {
+      payload.logger.info({ path, tag: AUTH_INVALID_LOG_TAG }, 'Preview authentication rejected')
+    } else {
+      payload.logger.error({ err: error, path, tag: AUTH_INVALID_LOG_TAG }, 'Error verifying token for live preview')
+    }
+
     return new Response('You are not allowed to preview this page', { status: 403 })
   }
 
