@@ -5,6 +5,7 @@ declare global {
       PAYLOAD_SECRET: string
       DATABASE_URL: string
       PAYLOAD_SERVER_URL?: string
+      PAYLOAD_CORS_ORIGINS?: string
       NEXT_PUBLIC_SERVER_URL: string
       VERCEL_BLOB_CALLBACK_URL?: string
       VERCEL_PROJECT_PRODUCTION_URL?: string
