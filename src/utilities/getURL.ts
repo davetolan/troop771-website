@@ -48,10 +48,16 @@ export const getCorsOriginsFromEnv = () => {
     return configuredOrigins
   }
 
-  return [
-    firstValidURL(['http://localhost:3000']),
-    firstValidURL(['http://127.0.0.1:3000']),
+  const defaultOrigins = [
+    process.env.NEXT_PUBLIC_SERVER_URL,
+    process.env.PAYLOAD_SERVER_URL,
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
   ]
+    .map((origin) => (origin ? normalizeURL(origin) : null))
+    .filter((origin): origin is string => Boolean(origin))
+
+  return [...new Set(defaultOrigins)]
 }
 
 export const getServerSideURL = () => {
