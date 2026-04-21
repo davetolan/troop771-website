@@ -6,6 +6,7 @@ type LegacyRoles = UserRole[] | UserRole | null | undefined
 
 type UserWithRole = {
   id?: number | string
+  _id?: number | string
   role?: UserRole | null
   roles?: LegacyRoles
 }
@@ -37,14 +38,16 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
     return requestRole
   }
 
-  if (!user.id) {
+  const userID = user.id ?? user._id
+
+  if (!userID) {
     return undefined
   }
 
   try {
     const userDoc = (await req.payload.findByID({
       collection: 'users',
-      id: user.id,
+      id: String(userID),
       depth: 0,
       req,
       // Fallback only when role is missing from JWT; use elevated read so
@@ -55,7 +58,7 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
     return coerceRole(userDoc.role) ?? getRoleFromLegacyRoles(userDoc.roles)
   } catch {
     req.payload.logger?.debug?.(
-      `getRequestUserRole: user lookup failed, treating as unauthenticated (user id: ${String(user.id)})`,
+      `getRequestUserRole: user lookup failed, treating as unauthenticated (user id: ${String(userID)})`,
     )
 
     return undefined
