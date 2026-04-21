@@ -3,7 +3,9 @@ import type { CollectionConfig } from 'payload'
 import { adminOnly } from '@/access/adminOnly'
 import { getRequestUserRole } from '@/access/getRequestUserRole'
 
-const canAccessScoutChangeReportsAdmin: CollectionConfig['access']['admin'] = async ({ req }) => {
+const canAccessScoutChangeReportsAdmin: NonNullable<CollectionConfig['access']>['admin'] = async ({
+  req,
+}) => {
   if (!req.user) {
     return false
   }
