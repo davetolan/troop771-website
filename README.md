@@ -196,6 +196,13 @@ Recommended deployment target: Vercel
 - Configure environment variables for Payload
 - Use secure file storage and avoid publicly exposed buckets for sensitive uploads
 
+Required production URL env vars on Vercel:
+
+- `PAYLOAD_SERVER_URL=https://troop771.com`
+- `NEXT_PUBLIC_SERVER_URL=https://troop771.com`
+
+Set both to the same canonical origin (including protocol, no trailing slash).
+
 ## Future Considerations
 
 Not currently in scope:

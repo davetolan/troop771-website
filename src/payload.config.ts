@@ -20,6 +20,9 @@ import { getPayloadServerURL, getServerSideURL } from './utilities/getURL'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const maxUploadFileSize = 4 * 1024 * 1024
+const serverURL = getPayloadServerURL()
+
+console.info(`[payload] serverURL configured as: ${serverURL}`)
 
 export default buildConfig({
   admin: {
@@ -66,10 +69,10 @@ export default buildConfig({
     },
   }),
   collections: [Pages, Posts, Activities, Media, Categories, Users, ScoutChangeReports],
-  cors: [getPayloadServerURL()].filter(Boolean),
+  cors: [serverURL].filter(Boolean),
   globals: [Header, Footer],
   plugins,
-  serverURL: getPayloadServerURL(),
+  serverURL,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   upload: {
