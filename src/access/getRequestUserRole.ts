@@ -26,8 +26,9 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
     collection: 'users',
     id: user.id,
     depth: 0,
-    overrideAccess: false,
-    req,
+    // Fallback only when role is missing from JWT; use elevated read so
+    // auth/session edge-cases do not fail collection access checks.
+    overrideAccess: true,
   })
 
   return userDoc.role ?? undefined
