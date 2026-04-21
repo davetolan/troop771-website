@@ -1,5 +1,15 @@
 import canUseDOM from './canUseDOM'
 
+export const getPayloadServerURL = () => {
+  return (
+    process.env.PAYLOAD_SERVER_URL ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'http://localhost:3000')
+  )
+}
+
 export const getServerSideURL = () => {
   return (
     process.env.NEXT_PUBLIC_SERVER_URL ||

@@ -4,6 +4,7 @@ declare global {
       BLOB_READ_WRITE_TOKEN: string
       PAYLOAD_SECRET: string
       DATABASE_URL: string
+      PAYLOAD_SERVER_URL?: string
       NEXT_PUBLIC_SERVER_URL: string
       VERCEL_BLOB_CALLBACK_URL?: string
       VERCEL_PROJECT_PRODUCTION_URL: string
