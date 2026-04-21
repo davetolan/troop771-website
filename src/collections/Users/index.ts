@@ -1,9 +1,9 @@
-import type { Access, CollectionBeforeChangeHook, CollectionConfig } from 'payload'
+import type { CollectionBeforeChangeHook, CollectionConfig, FieldAccess } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { getRequestUserRole } from '@/access/getRequestUserRole'
 
-const canManageRoles: Access = async ({ req }) => {
+const canManageRoles: FieldAccess = async ({ req }) => {
   if (!req.user) {
     return false
   }
