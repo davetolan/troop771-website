@@ -1,4 +1,4 @@
-import type { Access, CollectionConfig } from 'payload'
+import type { Access, CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { getRequestUserRole } from '@/access/getRequestUserRole'
@@ -13,28 +13,31 @@ const canManageRoles: Access = async ({ req }) => {
   return role === 'admin'
 }
 
-const assignAdminRoleToFirstUser: NonNullable<CollectionConfig['hooks']>['beforeChange'][number] =
-  async ({ data, operation, req }) => {
-    if (operation !== 'create') {
-      return data
-    }
-
-    const existingUsers = await req.payload.find({
-      collection: 'users',
-      depth: 0,
-      limit: 1,
-      req,
-    })
-
-    if (existingUsers.totalDocs === 0) {
-      return {
-        ...data,
-        role: 'admin',
-      }
-    }
-
+const assignAdminRoleToFirstUser: CollectionBeforeChangeHook = async ({
+  data,
+  operation,
+  req,
+}) => {
+  if (operation !== 'create') {
     return data
   }
+
+  const existingUsers = await req.payload.find({
+    collection: 'users',
+    depth: 0,
+    limit: 1,
+    req,
+  })
+
+  if (existingUsers.totalDocs === 0) {
+    return {
+      ...data,
+      role: 'admin',
+    }
+  }
+
+  return data
+}
 
 export const Users: CollectionConfig = {
   slug: 'users',
