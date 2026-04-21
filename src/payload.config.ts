@@ -15,14 +15,20 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
-import { getPayloadServerURL, getServerSideURL } from './utilities/getURL'
+import { getPayloadServerURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const maxUploadFileSize = 4 * 1024 * 1024
 const serverURL = getPayloadServerURL()
+const localCorsFallbackOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000']
+const configuredCorsOrigins = (process.env.PAYLOAD_CORS_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+const corsOrigins = configuredCorsOrigins.length > 0 ? configuredCorsOrigins : localCorsFallbackOrigins
 
-console.info(`[payload] serverURL configured as: ${serverURL}`)
+console.info(`[payload] serverURL=${serverURL}; corsOrigins=${corsOrigins.join(', ') || '(none)'}`)
 
 export default buildConfig({
   admin: {
@@ -69,7 +75,7 @@ export default buildConfig({
     },
   }),
   collections: [Pages, Posts, Activities, Media, Categories, Users, ScoutChangeReports],
-  cors: [serverURL].filter(Boolean),
+  cors: corsOrigins,
   globals: [Header, Footer],
   plugins,
   serverURL,
