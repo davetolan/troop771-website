@@ -22,14 +22,22 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
     return undefined
   }
 
-  const userDoc = await req.payload.findByID({
-    collection: 'users',
-    id: user.id,
-    depth: 0,
-    // Fallback only when role is missing from JWT; use elevated read so
-    // auth/session edge-cases do not fail collection access checks.
-    overrideAccess: true,
-  })
+  try {
+    const userDoc = await req.payload.findByID({
+      collection: 'users',
+      id: user.id,
+      depth: 0,
+      // Fallback only when role is missing from JWT; use elevated read so
+      // auth/session edge-cases do not fail collection access checks.
+      overrideAccess: true,
+    })
 
-  return userDoc.role ?? undefined
+    return userDoc.role ?? undefined
+  } catch {
+    req.payload.logger?.debug?.(
+      `getRequestUserRole: user lookup failed, treating as unauthenticated (user id: ${String(user.id)})`,
+    )
+
+    return undefined
+  }
 }
