@@ -1,11 +1,9 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { getRequestUserRole } from '@/access/getRequestUserRole'
 
-const canManageRoles: NonNullable<
-  NonNullable<NonNullable<CollectionConfig['fields']>[number]['access']>['update']
-> = async ({ req }) => {
+const canManageRoles: Access = async ({ req }) => {
   if (!req.user) {
     return false
   }
