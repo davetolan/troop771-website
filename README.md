@@ -203,6 +203,8 @@ Required production URL env vars on Vercel:
 
 Set both to the same canonical origin (including protocol, no trailing slash).
 
+If these values are missing or do not match in production, admin saves can fail due to cookie and CORS mismatches.
+
 ## Future Considerations
 
 Not currently in scope:
