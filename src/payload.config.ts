@@ -15,11 +15,12 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
-import { getCorsOriginsFromEnv, getPayloadServerURL } from './utilities/getURL'
+import { getCorsOriginsFromEnv, getPayloadServerURL, validateURLConfiguration } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 const maxUploadFileSize = 4 * 1024 * 1024
+validateURLConfiguration()
 const serverURL = getPayloadServerURL()
 const corsOrigins = getCorsOriginsFromEnv()
 
