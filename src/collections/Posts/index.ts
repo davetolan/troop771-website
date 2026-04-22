@@ -18,10 +18,6 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
-import {
-  createScoutCollectionAfterChangeHook,
-  createScoutCollectionBeforeDeleteHook,
-} from '@/hooks/logScoutChanges'
 
 import {
   MetaDescriptionField,
@@ -222,9 +218,8 @@ export const Posts: CollectionConfig<'posts'> = {
     slugField(),
   ],
   hooks: {
-    afterChange: [createScoutCollectionAfterChangeHook('posts'), revalidatePost],
+    afterChange: [revalidatePost],
     afterRead: [populateAuthors],
-    beforeDelete: [createScoutCollectionBeforeDeleteHook('posts')],
     afterDelete: [revalidateDelete],
   },
   versions: {

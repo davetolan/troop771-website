@@ -73,7 +73,6 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
-    'scout-change-reports': ScoutChangeReport;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -97,7 +96,6 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    'scout-change-reports': ScoutChangeReportsSelect<false> | ScoutChangeReportsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -435,7 +433,6 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
-  role: 'admin' | 'scout';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -998,34 +995,6 @@ export interface Activity {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scout-change-reports".
- */
-export interface ScoutChangeReport {
-  id: number;
-  reviewStatus: 'pending' | 'published';
-  occurredAt: string;
-  actor: number | User;
-  actorName?: string | null;
-  actorEmail: string;
-  actorRole: 'scout';
-  action: 'create' | 'update' | 'delete';
-  targetType: 'collection' | 'global';
-  targetSlug: string;
-  targetID?: string | null;
-  targetLabel?: string | null;
-  changedFields?:
-    | {
-        field: string;
-        id?: string | null;
-      }[]
-    | null;
-  reviewedAt?: string | null;
-  reviewedBy?: (number | null) | User;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1237,10 +1206,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
-      } | null)
-    | ({
-        relationTo: 'scout-change-reports';
-        value: number | ScoutChangeReport;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1732,7 +1697,6 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
-  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1749,33 +1713,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "scout-change-reports_select".
- */
-export interface ScoutChangeReportsSelect<T extends boolean = true> {
-  reviewStatus?: T;
-  occurredAt?: T;
-  actor?: T;
-  actorName?: T;
-  actorEmail?: T;
-  actorRole?: T;
-  action?: T;
-  targetType?: T;
-  targetSlug?: T;
-  targetID?: T;
-  targetLabel?: T;
-  changedFields?:
-    | T
-    | {
-        field?: T;
-        id?: T;
-      };
-  reviewedAt?: T;
-  reviewedBy?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

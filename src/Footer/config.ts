@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
-import { createScoutGlobalAfterChangeHook } from '@/hooks/logScoutChanges'
 import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
@@ -28,6 +27,6 @@ export const Footer: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [createScoutGlobalAfterChangeHook('footer'), revalidateFooter],
+    afterChange: [revalidateFooter],
   },
 }

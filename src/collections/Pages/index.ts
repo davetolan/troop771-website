@@ -18,10 +18,6 @@ import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
-import {
-  createScoutCollectionAfterChangeHook,
-  createScoutCollectionBeforeDeleteHook,
-} from '@/hooks/logScoutChanges'
 
 import {
   MetaDescriptionField,
@@ -141,9 +137,8 @@ export const Pages: CollectionConfig<'pages'> = {
     slugField(),
   ],
   hooks: {
-    afterChange: [createScoutCollectionAfterChangeHook('pages'), revalidatePage],
+    afterChange: [revalidatePage],
     beforeChange: [populatePublishedAt],
-    beforeDelete: [createScoutCollectionBeforeDeleteHook('pages')],
     afterDelete: [revalidateDelete],
   },
   versions: {

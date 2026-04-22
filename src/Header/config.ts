@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
-import { createScoutGlobalAfterChangeHook } from '@/hooks/logScoutChanges'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
@@ -28,6 +27,6 @@ export const Header: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [createScoutGlobalAfterChangeHook('header'), revalidateHeader],
+    afterChange: [revalidateHeader],
   },
 }
