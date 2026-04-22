@@ -7,6 +7,7 @@ type LegacyRoles = UserRole[] | UserRole | null | undefined
 type UserWithRole = {
   id?: number | string
   _id?: number | string
+  email?: string | null
   role?: UserRole | null
   roles?: LegacyRoles
 }
@@ -47,7 +48,7 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
   try {
     const userDoc = (await req.payload.findByID({
       collection: 'users',
-      id: String(userID),
+      id: userID,
       depth: 0,
       req,
       // Fallback only when role is missing from JWT; use elevated read so
@@ -78,6 +79,32 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
 
     if (firstUserID != null && String(firstUserID) === String(userID)) {
       return 'admin'
+    }
+
+    const userEmail = typeof user.email === 'string' ? user.email.toLowerCase() : undefined
+
+    if (userEmail) {
+      const userByEmail = await req.payload.find({
+        collection: 'users',
+        depth: 0,
+        limit: 1,
+        pagination: false,
+        req,
+        overrideAccess: true,
+        where: {
+          email: {
+            equals: userEmail,
+          },
+        },
+      })
+
+      const persistedRoleByEmail =
+        coerceRole((userByEmail.docs[0] as UserWithRole | undefined)?.role) ??
+        getRoleFromLegacyRoles((userByEmail.docs[0] as UserWithRole | undefined)?.roles)
+
+      if (persistedRoleByEmail) {
+        return persistedRoleByEmail
+      }
     }
 
     return undefined

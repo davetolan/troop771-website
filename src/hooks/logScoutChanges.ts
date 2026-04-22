@@ -255,7 +255,9 @@ export const createScoutCollectionAfterChangeHook = (
     const currentDoc = (doc as Record<string, unknown> | undefined) ?? null
     const previousSnapshot = (previousDoc as Record<string, unknown> | undefined) ?? null
 
-    if (req.user?.role === ADMIN_ROLE && doc._status === 'published') {
+    const requestUserRole = await getRequestUserRole(req)
+
+    if (requestUserRole === ADMIN_ROLE && doc._status === 'published') {
       await markScoutChangeReportsAsPublished({
         req,
         targetID: String(doc.id),
