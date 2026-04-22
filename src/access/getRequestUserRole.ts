@@ -55,7 +55,32 @@ export const getRequestUserRole = async (req: PayloadRequest): Promise<UserRole 
       overrideAccess: true,
     })) as UserWithRole
 
-    return coerceRole(userDoc.role) ?? getRoleFromLegacyRoles(userDoc.roles)
+    const persistedRole = coerceRole(userDoc.role) ?? getRoleFromLegacyRoles(userDoc.roles)
+
+    if (persistedRole) {
+      return persistedRole
+    }
+
+    // Legacy recovery path:
+    // If no explicit role is stored, treat the earliest account as admin so
+    // a deployment cannot lock out all administrative edits.
+    const firstUser = await req.payload.find({
+      collection: 'users',
+      depth: 0,
+      limit: 1,
+      pagination: false,
+      sort: 'createdAt',
+      req,
+      overrideAccess: true,
+    })
+
+    const firstUserID = firstUser.docs[0]?.id
+
+    if (firstUserID != null && String(firstUserID) === String(userID)) {
+      return 'admin'
+    }
+
+    return undefined
   } catch {
     req.payload.logger?.debug?.(
       `getRequestUserRole: user lookup failed, treating as unauthenticated (user id: ${String(userID)})`,
