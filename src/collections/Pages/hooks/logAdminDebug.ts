@@ -1,6 +1,8 @@
 import type {
+  CollectionAfterDeleteHook,
   CollectionAfterReadHook,
   CollectionBeforeChangeHook,
+  CollectionBeforeDeleteHook,
   PayloadRequest,
 } from 'payload'
 import { getRequestUserRole } from '@/access/getRequestUserRole'
@@ -89,4 +91,44 @@ export const logPagesSaveAttemptContext: CollectionBeforeChangeHook = async ({
   })
 
   return data
+}
+
+export const logPagesDeleteAttemptContext: CollectionBeforeDeleteHook = async ({ id, req }) => {
+  const { user, userEmail, userID, jwtRole, legacyRoles } = getUserMeta(req)
+  const resolvedRole = user ? await getRequestUserRole(req) : undefined
+
+  req.payload.logger.info({
+    event: 'pages.delete.attempt-context',
+    collection: 'pages',
+    documentID: id,
+    userID,
+    userEmail,
+    hasUser: Boolean(user),
+    jwtRole,
+    legacyRoles,
+    resolvedRole: resolvedRole ?? null,
+    request: getRequestContext(req),
+  })
+}
+
+export const logPagesDeleteResultContext: CollectionAfterDeleteHook = async ({ doc, req }) => {
+  const { user, userEmail, userID, jwtRole, legacyRoles } = getUserMeta(req)
+  const resolvedRole = user ? await getRequestUserRole(req) : undefined
+
+  req.payload.logger.info({
+    event: 'pages.delete.result-context',
+    collection: 'pages',
+    documentID: doc?.id,
+    documentSlug: doc?.slug,
+    documentStatus: doc?._status,
+    userID,
+    userEmail,
+    hasUser: Boolean(user),
+    jwtRole,
+    legacyRoles,
+    resolvedRole: resolvedRole ?? null,
+    request: getRequestContext(req),
+  })
+
+  return doc
 }
