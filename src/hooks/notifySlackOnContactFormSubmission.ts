@@ -1,6 +1,6 @@
 import type { CollectionAfterChangeHook } from 'payload'
 
-import type { FormSubmission } from '@payloadcms/plugin-form-builder/types'
+import type { FormSubmission } from '@/payload-types'
 
 const CONTACT_FORM_TITLE = process.env.SLACK_CONTACT_FORM_TITLE || 'Contact Form'
 
