@@ -57,6 +57,7 @@ export const Activities: CollectionConfig<'activities'> = {
       name: 'month',
       type: 'select',
       options: [...monthOptions],
+      defaultValue: 'january',
       required: true,
     },
     {
@@ -64,11 +65,13 @@ export const Activities: CollectionConfig<'activities'> = {
       type: 'number',
       min: 2025,
       max: 2100,
+      defaultValue: new Date().getUTCFullYear(),
       required: true,
     },
     {
       name: 'activity',
       type: 'text',
+      defaultValue: 'New activity',
       required: true,
     },
     {
