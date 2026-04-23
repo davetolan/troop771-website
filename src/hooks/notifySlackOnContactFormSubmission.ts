@@ -59,7 +59,7 @@ export const notifySlackOnContactFormSubmission: CollectionAfterChangeHook<FormS
 
   if (typeof doc.form === 'object' && doc.form?.title) {
     formTitle = doc.form.title
-  } else if (doc.form) {
+  } else if (typeof doc.form === 'number' || typeof doc.form === 'string') {
     try {
       const formDoc = await req.payload.findByID({
         collection: 'forms',
