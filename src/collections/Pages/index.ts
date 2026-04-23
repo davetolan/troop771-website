@@ -18,6 +18,7 @@ import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { logPagesEditReadContext, logPagesSaveAttemptContext } from './hooks/logAdminDebug'
 import {
   createScoutCollectionAfterChangeHook,
   createScoutCollectionBeforeDeleteHook,
@@ -142,7 +143,8 @@ export const Pages: CollectionConfig<'pages'> = {
   ],
   hooks: {
     afterChange: [createScoutCollectionAfterChangeHook('pages'), revalidatePage],
-    beforeChange: [populatePublishedAt],
+    afterRead: [logPagesEditReadContext],
+    beforeChange: [logPagesSaveAttemptContext, populatePublishedAt],
     beforeDelete: [createScoutCollectionBeforeDeleteHook('pages')],
     afterDelete: [revalidateDelete],
   },
