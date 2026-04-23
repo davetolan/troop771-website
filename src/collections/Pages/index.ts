@@ -16,6 +16,7 @@ import { SplitSection } from '../../blocks/SplitSection/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
+import { ensurePageSlug } from './hooks/ensurePageSlug'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { logPagesEditReadContext, logPagesSaveAttemptContext } from './hooks/logAdminDebug'
@@ -144,6 +145,7 @@ export const Pages: CollectionConfig<'pages'> = {
   hooks: {
     afterChange: [createScoutCollectionAfterChangeHook('pages'), revalidatePage],
     afterRead: [logPagesEditReadContext],
+    beforeValidate: [ensurePageSlug],
     beforeChange: [logPagesSaveAttemptContext, populatePublishedAt],
     beforeDelete: [createScoutCollectionBeforeDeleteHook('pages')],
     afterDelete: [revalidateDelete],
