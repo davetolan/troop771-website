@@ -13,9 +13,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
 
   return (
     <nav className="flex gap-3 items-center">
-      {navItems.map(({ link }, i) => {
-        return <CMSLink key={i} {...link} appearance="link" />
-      })}
+      {navItems.map(({ link, subItems }, i) => (
+        <React.Fragment key={i}>
+          <CMSLink {...link} appearance="link" />
+          {subItems?.map(({ link: subLink }, subIndex) => (
+            <CMSLink key={`${i}-${subIndex}`} {...subLink} appearance="link" />
+          ))}
+        </React.Fragment>
+      ))}
       <Link href="/search">
         <span className="sr-only">Search</span>
         <SearchIcon className="w-5 text-primary" />
