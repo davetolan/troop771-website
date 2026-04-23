@@ -48,6 +48,13 @@ export const notifySlackOnContactFormSubmission: CollectionAfterChangeHook<FormS
   const botToken = process.env.SLACK_BOT_TOKEN
   const channelID = process.env.SLACK_WEBSITE_NOTIFICATIONS_CHANNEL_ID
 
+  req.payload.logger.info({
+    msg: 'Contact form Slack hook triggered.',
+    formSubmissionID: doc.id,
+    hasBotToken: Boolean(botToken),
+    hasChannelID: Boolean(channelID),
+  })
+
   if (!botToken || !channelID) {
     req.payload.logger.warn(
       'Skipping Slack notification for contact form submission because Slack env vars are missing.',
@@ -76,7 +83,21 @@ export const notifySlackOnContactFormSubmission: CollectionAfterChangeHook<FormS
     }
   }
 
+  req.payload.logger.info({
+    msg: 'Resolved form title for Slack notification.',
+    expectedFormTitle: CONTACT_FORM_TITLE,
+    formSubmissionID: doc.id,
+    resolvedFormTitle: formTitle,
+  })
+
   if (formTitle !== CONTACT_FORM_TITLE) {
+    req.payload.logger.info({
+      msg: 'Skipping Slack notification because form title did not match.',
+      expectedFormTitle: CONTACT_FORM_TITLE,
+      formSubmissionID: doc.id,
+      resolvedFormTitle: formTitle,
+    })
+
     return doc
   }
 
@@ -97,7 +118,17 @@ export const notifySlackOnContactFormSubmission: CollectionAfterChangeHook<FormS
     }),
   })
 
-  const result = (await response.json()) as { error?: string; ok?: boolean }
+  const result = (await response.json()) as { error?: string; ok?: boolean; ts?: string }
+
+  req.payload.logger.info({
+    msg: 'Slack API responded for contact form submission.',
+    formSubmissionID: doc.id,
+    responseStatus: response.status,
+    slackChannelID: channelID,
+    slackMessageTS: result.ts,
+    slackOK: result.ok,
+    slackError: result.error,
+  })
 
   if (!response.ok || !result.ok) {
     req.payload.logger.error({
