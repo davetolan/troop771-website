@@ -16,6 +16,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getCorsOriginsFromEnv, getPayloadServerURL, validateURLConfiguration } from './utilities/getURL'
+import { logPayloadError } from './hooks/logPayloadError'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -71,6 +72,9 @@ export default buildConfig({
     },
   }),
   collections: [Pages, Posts, Activities, Media, Categories, Users, ScoutChangeReports],
+  hooks: {
+    afterError: [logPayloadError],
+  },
   cors: corsOrigins,
   globals: [Header, Footer],
   plugins,
