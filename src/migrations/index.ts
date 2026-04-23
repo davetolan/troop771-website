@@ -11,6 +11,7 @@ import * as migration_20260413_010000_add_scout_change_reports from './20260413_
 import * as migration_20260413_020000_backfill_scout_change_reports_locked_rels from './20260413_020000_backfill_scout_change_reports_locked_rels';
 import * as migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots from './20260415_211859_add_activity_drafts_and_scout_report_snapshots';
 import * as migration_20260423_022500_fix_scout_change_reports_target_id_column from './20260423_022500_fix_scout_change_reports_target_id_column';
+import * as migration_20260423_120000_add_header_nav_sub_items from './20260423_120000_add_header_nav_sub_items';
 
 export const migrations = [
   {
@@ -77,5 +78,10 @@ export const migrations = [
     up: migration_20260423_022500_fix_scout_change_reports_target_id_column.up,
     down: migration_20260423_022500_fix_scout_change_reports_target_id_column.down,
     name: '20260423_022500_fix_scout_change_reports_target_id_column'
+  },
+  {
+    up: migration_20260423_120000_add_header_nav_sub_items.up,
+    down: migration_20260423_120000_add_header_nav_sub_items.down,
+    name: '20260423_120000_add_header_nav_sub_items'
   },
 ];

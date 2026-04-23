@@ -26,13 +26,30 @@ export async function Header() {
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
-          {navItems.map(({ link }, index) => (
-            <CMSLink
-              {...link}
-              appearance="inline"
-              className="text-sm font-medium text-stone-200 transition hover:text-white"
-              key={index}
-            />
+          {navItems.map(({ link, subItems }, index) => (
+            <div className="group relative" key={index}>
+              <CMSLink
+                {...link}
+                appearance="inline"
+                className="text-sm font-medium text-stone-200 transition hover:text-white"
+              />
+
+              {subItems && subItems.length > 0 ? (
+                <div className="invisible absolute left-0 top-full z-40 mt-2 min-w-56 rounded-xl border border-white/10 bg-stone-950/95 p-2 opacity-0 shadow-xl transition-all group-hover:visible group-hover:opacity-100">
+                  <ul className="flex flex-col gap-1">
+                    {subItems.map(({ link: subLink }, subIndex) => (
+                      <li key={subIndex}>
+                        <CMSLink
+                          {...subLink}
+                          appearance="inline"
+                          className="block rounded-md px-3 py-2 text-sm text-stone-100 transition hover:bg-white/5 hover:text-white"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
           ))}
         </nav>
 
