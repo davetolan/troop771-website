@@ -26,31 +26,43 @@ export async function Header() {
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex">
-          {navItems.map(({ link, subItems }, index) => (
-            <div className="group relative" key={index}>
-              <CMSLink
-                {...link}
-                appearance="inline"
-                className="text-sm font-medium text-stone-200 transition hover:text-white"
-              />
+          {navItems.map(({ link, subItems }, index) => {
+            const dropdownItems = subItems ?? []
+            const hasSubItems = dropdownItems.length > 0
+            const hasLinkTarget =
+              (link?.type === 'custom' && Boolean(link?.url)) ||
+              (link?.type === 'reference' && Boolean(link?.reference))
 
-              {subItems && subItems.length > 0 ? (
-                <div className="invisible absolute left-0 top-full z-40 mt-2 min-w-56 rounded-xl border border-white/10 bg-stone-950/95 p-2 opacity-0 shadow-xl transition-all group-hover:visible group-hover:opacity-100">
-                  <ul className="flex flex-col gap-1">
-                    {subItems.map(({ link: subLink }, subIndex) => (
-                      <li key={subIndex}>
-                        <CMSLink
-                          {...subLink}
-                          appearance="inline"
-                          className="block rounded-md px-3 py-2 text-sm text-stone-100 transition hover:bg-white/5 hover:text-white"
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-            </div>
-          ))}
+            return (
+              <div className="group relative" key={index}>
+                {hasLinkTarget ? (
+                  <CMSLink
+                    {...link}
+                    appearance="inline"
+                    className="text-sm font-medium text-stone-200 transition hover:text-white"
+                  />
+                ) : hasSubItems ? (
+                  <span className="text-sm font-medium text-stone-200">{link?.label}</span>
+                ) : null}
+
+                {hasSubItems ? (
+                  <div className="invisible absolute left-0 top-full z-40 mt-2 min-w-56 rounded-xl border border-white/10 bg-stone-950/95 p-2 opacity-0 shadow-xl transition-all group-hover:visible group-hover:opacity-100">
+                    <ul className="flex flex-col gap-1">
+                      {dropdownItems.map(({ link: subLink }, subIndex) => (
+                        <li key={subIndex}>
+                          <CMSLink
+                            {...subLink}
+                            appearance="inline"
+                            className="block rounded-md px-3 py-2 text-sm text-stone-100 transition hover:bg-white/5 hover:text-white"
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+            )
+          })}
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
