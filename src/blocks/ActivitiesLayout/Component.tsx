@@ -64,11 +64,6 @@ export const ActivitiesLayoutBlock = async (
       limit: 200,
       overrideAccess: false,
       sort: 'year',
-      where: {
-        active: {
-          equals: true,
-        },
-      },
     })
 
     activities = docs
