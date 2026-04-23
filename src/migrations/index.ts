@@ -10,6 +10,7 @@ import * as migration_20260411_184500_add_marketing_block_media_fields from './2
 import * as migration_20260413_010000_add_scout_change_reports from './20260413_010000_add_scout_change_reports';
 import * as migration_20260413_020000_backfill_scout_change_reports_locked_rels from './20260413_020000_backfill_scout_change_reports_locked_rels';
 import * as migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots from './20260415_211859_add_activity_drafts_and_scout_report_snapshots';
+import * as migration_20260423_022500_fix_scout_change_reports_target_id_column from './20260423_022500_fix_scout_change_reports_target_id_column';
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots.up,
     down: migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots.down,
     name: '20260415_211859_add_activity_drafts_and_scout_report_snapshots'
+  },
+  {
+    up: migration_20260423_022500_fix_scout_change_reports_target_id_column.up,
+    down: migration_20260423_022500_fix_scout_change_reports_target_id_column.down,
+    name: '20260423_022500_fix_scout_change_reports_target_id_column'
   },
 ];
