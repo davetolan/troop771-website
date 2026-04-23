@@ -18,10 +18,30 @@ export const appearanceOptions: Record<LinkAppearances, { label: string; value: 
 type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
   disableLabel?: boolean
+  requireTarget?: boolean | ((args: { data?: unknown; siblingData?: unknown }) => boolean)
   overrides?: Partial<GroupField>
 }) => Field
 
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const link: LinkType = ({
+  appearances,
+  disableLabel = false,
+  requireTarget = true,
+  overrides = {},
+} = {}) => {
+  const shouldRequireTarget = ({
+    data,
+    siblingData,
+  }: {
+    data?: unknown
+    siblingData?: unknown
+  }): boolean => {
+    if (typeof requireTarget === 'function') {
+      return requireTarget({ data, siblingData })
+    }
+
+    return requireTarget
+  }
+
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
@@ -76,7 +96,15 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       },
       label: 'Document to link to',
       relationTo: ['pages', 'posts'],
-      required: true,
+      validate: (
+        value: unknown,
+        { data, siblingData }: { data?: unknown; siblingData?: { type?: string } },
+      ) => {
+        if (!shouldRequireTarget({ data, siblingData })) return true
+        if (siblingData?.type !== 'reference') return true
+
+        return Boolean(value) || 'Document to link to is required'
+      },
     },
     {
       name: 'url',
@@ -85,7 +113,15 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         condition: (_, siblingData) => siblingData?.type === 'custom',
       },
       label: 'Custom URL',
-      required: true,
+      validate: (
+        value: unknown,
+        { data, siblingData }: { data?: unknown; siblingData?: { type?: string } },
+      ) => {
+        if (!shouldRequireTarget({ data, siblingData })) return true
+        if (siblingData?.type !== 'custom') return true
+
+        return Boolean(value) || 'Custom URL is required'
+      },
     },
   ]
 

@@ -16,6 +16,15 @@ export const Header: GlobalConfig = {
       fields: [
         link({
           appearances: false,
+          requireTarget: ({ data }) => {
+            if (!data || typeof data !== 'object' || !('subItems' in data)) {
+              return true
+            }
+
+            const { subItems } = data as { subItems?: unknown }
+
+            return !Array.isArray(subItems) || subItems.length === 0
+          },
         }),
         {
           name: 'subItems',
