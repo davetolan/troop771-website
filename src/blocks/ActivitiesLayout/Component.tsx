@@ -55,40 +55,51 @@ export const ActivitiesLayoutBlock = async (
   const startMonthIndex = getYearMonthIndex(rangeStart)
   const endMonthIndex = getYearMonthIndex(rangeEnd)
 
-  const { docs } = await payload.find({
-    collection: 'activities',
-    depth: 0,
-    limit: 200,
-    overrideAccess: false,
-    sort: 'year',
-    where: {
-      active: {
-        equals: true,
+  let activities: ActivityListItem[] = []
+
+  try {
+    const { docs } = await payload.find({
+      collection: 'activities',
+      depth: 0,
+      limit: 200,
+      overrideAccess: false,
+      sort: 'year',
+      where: {
+        active: {
+          equals: true,
+        },
       },
-    },
-  })
-
-  const activities = docs
-    .filter((doc) => {
-      const activityMonthIndex = getYearMonthIndex(getActivityDate(doc.year, doc.month))
-      return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
     })
-    .sort((left, right) => {
-      if (left.year !== right.year) {
-        return left.year - right.year
-      }
 
-      return monthOrder[left.month] - monthOrder[right.month]
+    activities = docs
+      .filter((doc) => {
+        const activityMonthIndex = getYearMonthIndex(getActivityDate(doc.year, doc.month))
+        return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
+      })
+      .sort((left, right) => {
+        if (left.year !== right.year) {
+          return left.year - right.year
+        }
+
+        return monthOrder[left.month] - monthOrder[right.month]
+      })
+      .map(
+        (doc): ActivityListItem => ({
+          id: doc.id,
+          activity: doc.activity,
+          month: monthLabels[doc.month],
+          monthNumber: monthOrder[doc.month],
+          year: doc.year,
+        }),
+      )
+  } catch (error) {
+    payload.logger.error({
+      err: error,
+      msg: 'Failed to load activities for ActivitiesLayoutBlock',
+      startDate,
+      endDate,
     })
-    .map(
-      (doc): ActivityListItem => ({
-        id: doc.id,
-        activity: doc.activity,
-        month: monthLabels[doc.month],
-        monthNumber: monthOrder[doc.month],
-        year: doc.year,
-      }),
-    )
+  }
 
   const groupedActivities = activities.reduce<Map<number, ActivityListItem[]>>((groups, activity) => {
     const currentGroup = groups.get(activity.year) ?? []
