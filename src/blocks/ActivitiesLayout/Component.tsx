@@ -17,6 +17,8 @@ type ActivityListItem = {
 const getActivityDate = (year: number, month: keyof typeof monthLabels) =>
   new Date(Date.UTC(year, monthOrder[month] - 1, 1))
 
+const getYearMonthIndex = (date: Date) => date.getUTCFullYear() * 12 + date.getUTCMonth()
+
 export const ActivitiesLayoutBlock = async (
   props: ActivitiesLayoutBlockProps & {
     id?: string
@@ -50,6 +52,8 @@ export const ActivitiesLayoutBlock = async (
   const payload = await getPayload({ config: configPromise })
   const rangeStart = new Date(startDate)
   const rangeEnd = new Date(endDate)
+  const startMonthIndex = getYearMonthIndex(rangeStart)
+  const endMonthIndex = getYearMonthIndex(rangeEnd)
 
   const { docs } = await payload.find({
     collection: 'activities',
@@ -57,12 +61,17 @@ export const ActivitiesLayoutBlock = async (
     limit: 200,
     overrideAccess: false,
     sort: 'year',
+    where: {
+      active: {
+        equals: true,
+      },
+    },
   })
 
   const activities = docs
     .filter((doc) => {
-      const activityDate = getActivityDate(doc.year, doc.month)
-      return activityDate >= rangeStart && activityDate <= rangeEnd
+      const activityMonthIndex = getYearMonthIndex(getActivityDate(doc.year, doc.month))
+      return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
     })
     .sort((left, right) => {
       if (left.year !== right.year) {
