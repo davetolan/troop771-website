@@ -5,10 +5,11 @@ type VersionedData = {
   _status?: 'draft' | 'published'
 }
 
-export const canSaveDraft: Access = async ({ req, data }) => {
+export const canSaveDraft: Access = async ({ req, data, id }) => {
   const nextStatus = (data as VersionedData | undefined)?._status
   const requestMethod = req.method ?? ''
   const requestURL = (req as { url?: string }).url ?? ''
+  const normalizedMethod = requestMethod.toUpperCase()
 
   if (!req.user) {
     req.payload.logger.info({
@@ -24,15 +25,20 @@ export const canSaveDraft: Access = async ({ req, data }) => {
     return false
   }
 
-  const isReadOnlyMethod = ['GET', 'HEAD', 'OPTIONS'].includes(requestMethod.toUpperCase())
-  const isAdminAccessProbe = requestURL.includes('/api/access')
+  const isReadOnlyMethod = !normalizedMethod || ['GET', 'HEAD', 'OPTIONS'].includes(normalizedMethod)
+  const isAdminAccessProbe = requestURL.includes('/api/access') || requestURL.includes('/access')
+  const isCreateAccessProbe = !id && typeof data === 'undefined'
 
-  if (isReadOnlyMethod || isAdminAccessProbe) {
+  if (isReadOnlyMethod || isAdminAccessProbe || isCreateAccessProbe) {
     req.payload.logger.info({
       event: 'access.canSaveDraft',
       collection: 'unknown',
       allowed: true,
-      reason: isReadOnlyMethod ? 'read-only-method' : 'admin-access-probe',
+      reason: isReadOnlyMethod
+        ? 'read-only-method'
+        : isAdminAccessProbe
+          ? 'admin-access-probe'
+          : 'create-access-probe',
       nextStatus: nextStatus ?? null,
       userID: req.user?.id,
       userEmail: req.user?.email,
