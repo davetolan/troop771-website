@@ -17,6 +17,8 @@ type ActivityListItem = {
 const getActivityDate = (year: number, month: keyof typeof monthLabels) =>
   new Date(Date.UTC(year, monthOrder[month] - 1, 1))
 
+const getYearMonthIndex = (date: Date) => date.getUTCFullYear() * 12 + date.getUTCMonth()
+
 export const ActivitiesLayoutBlock = async (
   props: ActivitiesLayoutBlockProps & {
     id?: string
@@ -50,36 +52,49 @@ export const ActivitiesLayoutBlock = async (
   const payload = await getPayload({ config: configPromise })
   const rangeStart = new Date(startDate)
   const rangeEnd = new Date(endDate)
+  const startMonthIndex = getYearMonthIndex(rangeStart)
+  const endMonthIndex = getYearMonthIndex(rangeEnd)
 
-  const { docs } = await payload.find({
-    collection: 'activities',
-    depth: 0,
-    limit: 200,
-    overrideAccess: false,
-    sort: 'year',
-  })
+  let activities: ActivityListItem[] = []
 
-  const activities = docs
-    .filter((doc) => {
-      const activityDate = getActivityDate(doc.year, doc.month)
-      return activityDate >= rangeStart && activityDate <= rangeEnd
+  try {
+    const { docs } = await payload.find({
+      collection: 'activities',
+      depth: 0,
+      limit: 200,
+      overrideAccess: false,
+      sort: 'year',
     })
-    .sort((left, right) => {
-      if (left.year !== right.year) {
-        return left.year - right.year
-      }
 
-      return monthOrder[left.month] - monthOrder[right.month]
+    activities = docs
+      .filter((doc) => {
+        const activityMonthIndex = getYearMonthIndex(getActivityDate(doc.year, doc.month))
+        return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
+      })
+      .sort((left, right) => {
+        if (left.year !== right.year) {
+          return left.year - right.year
+        }
+
+        return monthOrder[left.month] - monthOrder[right.month]
+      })
+      .map(
+        (doc): ActivityListItem => ({
+          id: doc.id,
+          activity: doc.activity,
+          month: monthLabels[doc.month],
+          monthNumber: monthOrder[doc.month],
+          year: doc.year,
+        }),
+      )
+  } catch (error) {
+    payload.logger.error({
+      err: error,
+      msg: 'Failed to load activities for ActivitiesLayoutBlock',
+      startDate,
+      endDate,
     })
-    .map(
-      (doc): ActivityListItem => ({
-        id: doc.id,
-        activity: doc.activity,
-        month: monthLabels[doc.month],
-        monthNumber: monthOrder[doc.month],
-        year: doc.year,
-      }),
-    )
+  }
 
   const groupedActivities = activities.reduce<Map<number, ActivityListItem[]>>((groups, activity) => {
     const currentGroup = groups.get(activity.year) ?? []
