@@ -61,7 +61,11 @@ export function MobileNav({ navItems }: MobileNavProps) {
         onClick={() => setIsOpen((previousState) => !previousState)}
         type="button"
       >
-        {isOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
+        {isOpen ? (
+          <X aria-hidden="true" className="h-5 w-5" />
+        ) : (
+          <Menu aria-hidden="true" className="h-5 w-5" />
+        )}
       </button>
 
       <div
@@ -82,28 +86,42 @@ export function MobileNav({ navItems }: MobileNavProps) {
               }
             }}
           >
-            {navItems.map(({ link, subItems }, index) => (
-              <li key={index}>
-                <CMSLink
-                  {...link}
-                  appearance="inline"
-                  className="block rounded-md px-3 py-2 text-sm font-medium text-stone-100 transition hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-                />
-                {subItems && subItems.length > 0 ? (
-                  <ul className="mt-1 ml-3 flex flex-col gap-1 border-l border-white/10 pl-3">
-                    {subItems.map(({ link: subLink }, subIndex) => (
-                      <li key={subIndex}>
-                        <CMSLink
-                          {...subLink}
-                          appearance="inline"
-                          className="block rounded-md px-3 py-2 text-xs font-medium text-stone-300 transition hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </li>
-            ))}
+            {navItems.map(({ link, subItems }, index) => {
+              const dropdownItems = subItems ?? []
+              const hasSubItems = dropdownItems.length > 0
+              const hasLinkTarget =
+                (link?.type === 'custom' && Boolean(link?.url)) ||
+                (link?.type === 'reference' && Boolean(link?.reference))
+
+              return (
+                <li key={index}>
+                  {hasLinkTarget ? (
+                    <CMSLink
+                      {...link}
+                      appearance="inline"
+                      className="block rounded-md px-3 py-2 text-sm font-medium text-stone-100 transition hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+                    />
+                  ) : hasSubItems ? (
+                    <span className="block rounded-md px-3 py-2 text-sm font-medium text-stone-100">
+                      {link?.label}
+                    </span>
+                  ) : null}
+                  {hasSubItems ? (
+                    <ul className="mt-1 ml-3 flex flex-col gap-1 border-l border-white/10 pl-3">
+                      {dropdownItems.map(({ link: subLink }, subIndex) => (
+                        <li key={subIndex}>
+                          <CMSLink
+                            {...subLink}
+                            appearance="inline"
+                            className="block rounded-md px-3 py-2 text-xs font-medium text-stone-300 transition hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </li>
+              )
+            })}
           </ul>
         </nav>
 
