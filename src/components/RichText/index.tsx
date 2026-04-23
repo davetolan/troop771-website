@@ -61,8 +61,35 @@ type Props = {
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
+const sanitizeRichTextValue = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => sanitizeRichTextValue(item))
+      .filter((item) => item !== null)
+  }
+
+  if (!value || typeof value !== 'object') {
+    return value
+  }
+
+  const record = value as Record<string, unknown>
+  const tag = typeof record.tag === 'string' ? record.tag.toLowerCase() : undefined
+  const type = typeof record.type === 'string' ? record.type.toLowerCase() : undefined
+
+  if (tag === 'script' || type === 'script') {
+    return null
+  }
+
+  return Object.fromEntries(
+    Object.entries(record)
+      .map(([key, entryValue]) => [key, sanitizeRichTextValue(entryValue)] as const)
+      .filter(([, entryValue]) => entryValue !== null),
+  )
+}
+
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
+  const { className, data, enableProse = true, enableGutter = true, ...rest } = props
+
   return (
     <ConvertRichText
       converters={jsxConverters}
@@ -75,6 +102,7 @@ export default function RichText(props: Props) {
         },
         className,
       )}
+      data={sanitizeRichTextValue(data) as DefaultTypedEditorState}
       {...rest}
     />
   )

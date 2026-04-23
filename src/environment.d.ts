@@ -7,6 +7,9 @@ declare global {
       PAYLOAD_SERVER_URL?: string
       PAYLOAD_CORS_ORIGINS?: string
       NEXT_PUBLIC_SERVER_URL: string
+      SLACK_BOT_TOKEN?: string
+      SLACK_CONTACT_FORM_TITLE?: string
+      SLACK_WEBSITE_NOTIFICATIONS_CHANNEL_ID?: string
       VERCEL_BLOB_CALLBACK_URL?: string
       VERCEL_PROJECT_PRODUCTION_URL?: string
     }
