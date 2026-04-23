@@ -14,10 +14,19 @@ type ActivityListItem = {
   year: number
 }
 
-const getActivityDate = (year: number, month: keyof typeof monthLabels) =>
-  new Date(Date.UTC(year, monthOrder[month] - 1, 1))
+const getYearMonthIndex = (year: number, month: number) => year * 12 + (month - 1)
 
-const getYearMonthIndex = (date: Date) => date.getUTCFullYear() * 12 + date.getUTCMonth()
+const getYearMonthFromDateString = (value: string) => {
+  const [yearPart, monthPart] = value.split('T')[0]?.split('-') ?? []
+  const year = Number(yearPart)
+  const month = Number(monthPart)
+
+  if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
+    return null
+  }
+
+  return { year, month }
+}
 
 export const ActivitiesLayoutBlock = async (
   props: ActivitiesLayoutBlockProps & {
@@ -50,10 +59,17 @@ export const ActivitiesLayoutBlock = async (
   }
 
   const payload = await getPayload({ config: configPromise })
-  const rangeStart = new Date(startDate)
-  const rangeEnd = new Date(endDate)
-  const startMonthIndex = getYearMonthIndex(rangeStart)
-  const endMonthIndex = getYearMonthIndex(rangeEnd)
+  const parsedStart = getYearMonthFromDateString(startDate)
+  const parsedEnd = getYearMonthFromDateString(endDate)
+  const fallbackStartDate = new Date(startDate)
+  const fallbackEndDate = new Date(endDate)
+
+  const startMonthIndex = parsedStart
+    ? getYearMonthIndex(parsedStart.year, parsedStart.month)
+    : getYearMonthIndex(fallbackStartDate.getUTCFullYear(), fallbackStartDate.getUTCMonth() + 1)
+  const endMonthIndex = parsedEnd
+    ? getYearMonthIndex(parsedEnd.year, parsedEnd.month)
+    : getYearMonthIndex(fallbackEndDate.getUTCFullYear(), fallbackEndDate.getUTCMonth() + 1)
 
   let activities: ActivityListItem[] = []
 
@@ -68,7 +84,7 @@ export const ActivitiesLayoutBlock = async (
 
     activities = docs
       .filter((doc) => {
-        const activityMonthIndex = getYearMonthIndex(getActivityDate(doc.year, doc.month))
+        const activityMonthIndex = getYearMonthIndex(doc.year, monthOrder[doc.month])
         return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
       })
       .sort((left, right) => {
