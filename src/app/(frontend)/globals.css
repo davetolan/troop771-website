@@ -222,3 +222,67 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+@media print {
+  @page {
+    margin: 0.5in;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  body > div,
+  body > header,
+  body > footer,
+  .no-print {
+    display: none !important;
+  }
+
+  .philmont-page {
+    background: white !important;
+  }
+
+  .philmont-page > section {
+    background: white !important;
+    color: black !important;
+    padding-block: 0.25in !important;
+  }
+
+  .philmont-page img,
+  .philmont-page .absolute,
+  .philmont-page aside,
+  .philmont-page figure,
+  .philmont-page section:first-child,
+  .philmont-page section:nth-child(2),
+  .philmont-page section:last-child {
+    display: none !important;
+  }
+
+  .philmont-page .container {
+    max-width: none !important;
+    padding-inline: 0 !important;
+  }
+
+  .gear-section {
+    break-inside: avoid;
+    border: 1px solid #d6d3d1 !important;
+    box-shadow: none !important;
+  }
+
+  .gear-section h3,
+  .gear-section span {
+    color: black !important;
+  }
+
+  .gear-section table {
+    min-width: 0 !important;
+    font-size: 10pt !important;
+  }
+
+  .gear-section th,
+  .gear-section td {
+    padding: 6pt 8pt !important;
+  }
+}
