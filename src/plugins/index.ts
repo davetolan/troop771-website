@@ -25,7 +25,7 @@ if (isVercelDeployment && !blobToken) {
 }
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | Troop 771` : 'Troop 771 | Argyle, TX'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {

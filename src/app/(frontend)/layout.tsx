@@ -48,6 +48,9 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
+    title: 'Troop 771 | Argyle, TX',
+    description:
+      'Scout Troop 771 in Argyle, Texas offers a boy-led program focused on high adventure, outdoor skills, leadership, and character development.',
+    images: [`${getServerSideURL()}/high-adventure.JPG`],
   },
 }
