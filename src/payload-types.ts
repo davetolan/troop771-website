@@ -69,9 +69,11 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    recipes: Recipe;
     activities: Activity;
     media: Media;
     categories: Category;
+    'recipe-categories': RecipeCategory;
     users: User;
     'scout-change-reports': ScoutChangeReport;
     redirects: Redirect;
@@ -93,9 +95,11 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    recipes: RecipesSelect<false> | RecipesSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    'recipe-categories': RecipeCategoriesSelect<false> | RecipeCategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'scout-change-reports': ScoutChangeReportsSelect<false> | ScoutChangeReportsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -972,6 +976,81 @@ export interface PhotoCardGridBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes".
+ */
+export interface Recipe {
+  id: number;
+  title: string;
+  /**
+   * Short description shown in recipe cards and previews.
+   */
+  summary: string;
+  featuredImage?: (number | null) | Media;
+  mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert';
+  cookMethod: 'no-cook' | 'dutch-oven' | 'griddle' | 'camp-stove' | 'backpacking-stove' | 'campfire';
+  difficulty: 'easy' | 'moderate' | 'advanced';
+  prepMinutes: number;
+  cookMinutes: number;
+  servings: number;
+  /**
+   * Tag recipes with categories like No Cook Breakfast, Dutch Oven, Griddle, Backpacking.
+   */
+  categories: (number | RecipeCategory)[];
+  ingredients: {
+    item: string;
+    amount?: string | null;
+    optional?: boolean | null;
+    id?: string | null;
+  }[];
+  instructions: {
+    step: string;
+    id?: string | null;
+  }[];
+  notes?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipe-categories".
+ */
+export interface RecipeCategory {
+  id: number;
+  title: string;
+  /**
+   * Optional context for where this category is useful (e.g. campout style or gear).
+   */
+  description?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "activities".
  */
 export interface Activity {
@@ -1223,6 +1302,10 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'recipes';
+        value: number | Recipe;
+      } | null)
+    | ({
         relationTo: 'activities';
         value: number | Activity;
       } | null)
@@ -1233,6 +1316,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'recipe-categories';
+        value: number | RecipeCategory;
       } | null)
     | ({
         relationTo: 'users';
@@ -1601,6 +1688,42 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes_select".
+ */
+export interface RecipesSelect<T extends boolean = true> {
+  title?: T;
+  summary?: T;
+  featuredImage?: T;
+  mealType?: T;
+  cookMethod?: T;
+  difficulty?: T;
+  prepMinutes?: T;
+  cookMinutes?: T;
+  servings?: T;
+  categories?: T;
+  ingredients?:
+    | T
+    | {
+        item?: T;
+        amount?: T;
+        optional?: T;
+        id?: T;
+      };
+  instructions?:
+    | T
+    | {
+        step?: T;
+        id?: T;
+      };
+  notes?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "activities_select".
  */
 export interface ActivitiesSelect<T extends boolean = true> {
@@ -1723,6 +1846,18 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipe-categories_select".
+ */
+export interface RecipeCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2216,6 +2351,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'recipes';
+          value: number | Recipe;
         } | null)
       | ({
           relationTo: 'activities';

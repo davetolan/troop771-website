@@ -9,6 +9,7 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { whyEagleScoutMattersPage as whyEagleScoutMattersPageData } from './why-eagle-scout-matters-page'
 import { whyJoinPage as whyJoinPageData } from './why-join-page'
 
 const collections: CollectionSlug[] = [
@@ -204,7 +205,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage, whyJoinPage] = await Promise.all([
+  const [_, contactPage, whyJoinPage, whyEagleScoutMattersPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -223,6 +224,16 @@ export const seed = async ({
         leadershipImage: image1Doc,
         serviceImage: image2Doc,
         hikingImage: image3Doc,
+      }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: whyEagleScoutMattersPageData({
+        challengeImage: imageHomeDoc,
+        leadershipImage: image1Doc,
+        serviceImage: image2Doc,
+        trailImage: image3Doc,
       }),
     }),
   ])
@@ -248,6 +259,16 @@ export const seed = async ({
               reference: {
                 relationTo: 'pages',
                 value: whyJoinPage.id,
+              },
+            },
+          },
+          {
+            link: {
+              type: 'reference',
+              label: 'Why Eagle Scout Matters',
+              reference: {
+                relationTo: 'pages',
+                value: whyEagleScoutMattersPage.id,
               },
             },
           },
