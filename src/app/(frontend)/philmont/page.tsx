@@ -86,24 +86,14 @@ export default async function PhilmontPage() {
           <Image
             alt=""
             aria-hidden="true"
-            className="object-cover object-center opacity-42"
+            className="object-cover object-center opacity-60"
             fill
             priority
             sizes="100vw"
             src="/philmont-hiking.jpg"
           />
-          <div className="absolute inset-y-0 right-0 hidden w-[45%] overflow-hidden lg:block">
-            <Image
-              alt=""
-              aria-hidden="true"
-              className="object-cover object-left opacity-35"
-              fill
-              sizes="45vw"
-              src="/philmont-climbing.jpg"
-            />
-          </div>
-          <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(12,10,9,0.96),rgba(28,25,23,0.86)_45%,rgba(63,80,47,0.66)),radial-gradient(circle_at_78%_20%,rgba(252,211,77,0.2),transparent_28%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-36 bg-[linear-gradient(to_top,rgba(12,10,9,0.9),transparent)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(12,10,9,0.84),rgba(28,25,23,0.72)_45%,rgba(63,80,47,0.52)),radial-gradient(circle_at_78%_20%,rgba(252,211,77,0.2),transparent_28%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-36 bg-[linear-gradient(to_top,rgba(12,10,9,0.68),transparent)]" />
         </div>
 
         <div className="container relative py-16 sm:py-20 lg:py-24">
