@@ -23,8 +23,8 @@ export const PhotoCardGridBlock: React.FC<PhotoCardGridBlockProps> = ({
   }[resolvedColumns]
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(to_bottom,rgba(255,255,255,1),rgba(250,250,249,1))] py-16 sm:py-20">
-      <div className="absolute inset-x-0 top-0 h-72">
+    <section className="relative isolate overflow-hidden bg-[linear-gradient(to_bottom,rgba(255,255,255,1),rgba(250,250,249,1))] py-16 sm:py-20">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72">
         {backgroundMedia ? (
           <Media
             imgClassName="h-full w-full rounded-none border-0 object-cover object-center opacity-18"
@@ -42,7 +42,7 @@ export const PhotoCardGridBlock: React.FC<PhotoCardGridBlockProps> = ({
         )}
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.96),rgba(250,250,249,0.88),transparent)]" />
       </div>
-      <div className="container">
+      <div className="container relative z-10">
         <div className="relative max-w-3xl">
           {eyebrow ? (
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#4f5d3a]">
@@ -76,7 +76,7 @@ export const PhotoCardGridBlock: React.FC<PhotoCardGridBlockProps> = ({
                 ) : null}
                 {card.enableLink && card.link ? (
                   <div className="mt-5">
-                    <CMSLink {...card.link} />
+                    <CMSLink appearance="default" size="sm" {...card.link} />
                   </div>
                 ) : null}
               </div>
