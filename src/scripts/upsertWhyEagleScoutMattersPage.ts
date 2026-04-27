@@ -2,22 +2,10 @@ import 'dotenv/config'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import fs from 'fs/promises'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { whyEagleScoutMattersPage } from '@/endpoints/seed/why-eagle-scout-matters-page'
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
-const projectRoot = path.resolve(dirname, '../..')
-
-async function upsertMedia(payload: Awaited<ReturnType<typeof getPayload>>, args: {
-  alt: string
-  fileName: string
-}) {
-  const { alt, fileName } = args
-
+async function findMediaByFilename(payload: Awaited<ReturnType<typeof getPayload>>, fileName: string) {
   const existing = await payload.find({
     collection: 'media',
     depth: 0,
@@ -30,59 +18,27 @@ async function upsertMedia(payload: Awaited<ReturnType<typeof getPayload>>, args
     },
   })
 
-  if (existing.docs[0]) {
-    return existing.docs[0]
+  const media = existing.docs[0]
+
+  if (!media) {
+    throw new Error(
+      `Required media not found: ${fileName}. Upload it in Media first, then rerun page:upsert:eagle.`,
+    )
   }
 
-  const filePath = path.join(projectRoot, 'public', fileName)
-  const data = await fs.readFile(filePath)
-  const extension = path.extname(fileName).toLowerCase()
-  const mimetype =
-    extension === '.png' ? 'image/png' : extension === '.webp' ? 'image/webp' : 'image/jpeg'
-
-  return payload.create({
-    collection: 'media',
-    depth: 0,
-    data: {
-      alt,
-    },
-    file: {
-      data,
-      mimetype,
-      name: fileName,
-      size: data.byteLength,
-    },
-  })
+  return media
 }
 
 async function upsertWhyEagleScoutMatters() {
   const payload = await getPayload({ config: configPromise })
 
   const [challengeImage, collegeImage, leadershipImage, parentRoiImage, serviceImage, trailImage] = await Promise.all([
-    upsertMedia(payload, {
-      fileName: 'high-adventure.JPG',
-      alt: 'Scouts on a high-adventure outing',
-    }),
-    upsertMedia(payload, {
-      fileName: 'philmont-climbing.jpg',
-      alt: 'Scout climbing at Philmont high adventure',
-    }),
-    upsertMedia(payload, {
-      fileName: 'leadership.JPG',
-      alt: 'Scouts practicing leadership and teamwork',
-    }),
-    upsertMedia(payload, {
-      fileName: 'leadership2.jpg',
-      alt: 'Scouts learning leadership together outdoors',
-    }),
-    upsertMedia(payload, {
-      fileName: 'service.JPG',
-      alt: 'Scouts completing a service project',
-    }),
-    upsertMedia(payload, {
-      fileName: 'hiking.JPG',
-      alt: 'Scouts hiking together on a trail',
-    }),
+    findMediaByFilename(payload, 'high-adventure.JPG'),
+    findMediaByFilename(payload, 'philmont-climbing.jpg'),
+    findMediaByFilename(payload, 'leadership.JPG'),
+    findMediaByFilename(payload, 'leadership2.jpg'),
+    findMediaByFilename(payload, 'service.JPG'),
+    findMediaByFilename(payload, 'hiking.JPG'),
   ])
 
   const pageData = whyEagleScoutMattersPage({
