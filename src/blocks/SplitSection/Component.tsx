@@ -37,10 +37,19 @@ export const SplitSectionBlock: React.FC<SplitSectionBlockProps> = ({
           <div className={cn(mediaFirst ? 'lg:order-1' : 'lg:order-2')}>
             <div className="relative overflow-hidden rounded-[2rem] border border-stone-200/70 shadow-[0_24px_90px_-55px_rgba(41,37,36,0.4)]">
               <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.18),transparent_28%),linear-gradient(to_top,rgba(28,25,23,0.28),transparent_45%)]" />
-              <Media
-                imgClassName="h-full min-h-[22rem] w-full rounded-none border-0 object-cover"
-                resource={media}
-              />
+              {media ? (
+                <Media
+                  imgClassName="h-full min-h-[22rem] w-full rounded-none border-0 object-cover"
+                  resource={media}
+                />
+              ) : (
+                <div
+                  aria-label="Image placeholder"
+                  className="flex min-h-[22rem] w-full items-center justify-center bg-gradient-to-br from-stone-200 to-stone-300 text-center text-sm font-medium tracking-wide text-stone-700"
+                >
+                  Image coming soon
+                </div>
+              )}
             </div>
           </div>
 

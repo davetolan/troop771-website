@@ -16,6 +16,7 @@ import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { ensurePageSlug } from './hooks/ensurePageSlug'
+import { sanitizeSplitSectionMedia } from './hooks/sanitizeSplitSectionMedia'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { deletePageAccess } from './access/deletePageAccess'
@@ -151,7 +152,7 @@ export const Pages: CollectionConfig<'pages'> = {
     afterChange: [createScoutCollectionAfterChangeHook('pages'), revalidatePage],
     afterRead: [logPagesEditReadContext],
     beforeValidate: [ensurePageSlug],
-    beforeChange: [logPagesSaveAttemptContext, populatePublishedAt],
+    beforeChange: [logPagesSaveAttemptContext, sanitizeSplitSectionMedia, populatePublishedAt],
     beforeDelete: [logPagesDeleteAttemptContext, createScoutCollectionBeforeDeleteHook('pages')],
     afterDelete: [logPagesDeleteResultContext, revalidateDelete],
   },

@@ -905,7 +905,7 @@ export interface SplitSectionBlock {
     };
     [k: string]: unknown;
   } | null;
-  media: number | Media;
+  media?: (number | null) | Media;
   mediaPosition?: ('left' | 'right') | null;
   theme?: ('light' | 'stone' | 'dark') | null;
   links?:
