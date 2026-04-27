@@ -19,11 +19,12 @@ export async function JoinSection() {
               Meeting area
             </h3>
             <p className="mt-4 text-base leading-8 text-stone-700">
-              We meet in the Dunham Road area near the Cross Timbers Trailhead.
+              We meet on most Tuesday nights during the school year in the Dunham Road area near
+              the Cross Timbers Trailhead.
             </p>
             <p className="mt-4 text-sm leading-7 text-stone-600">
-              For public safety and privacy, exact addresses and detailed logistics are shared
-              directly with interested families.
+              Contact us before your visit so we can confirm that we are meeting that week and
+              share the latest date, time, and location details.
             </p>
             <Link
               className="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-stone-300 px-6 py-3 text-sm font-semibold text-stone-700 transition hover:border-stone-400 hover:bg-stone-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-500"

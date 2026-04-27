@@ -160,7 +160,7 @@ const ensureHeaderLink = async ({
 }
 
 export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
-  const [challengeImage, leadershipImage, serviceImage, trailImage] = await Promise.all([
+  const [challengeImage, collegeImage, leadershipImage, parentRoiImage, serviceImage, trailImage] = await Promise.all([
     getOrCreateMediaByFilename({
       fileName: 'high-adventure.JPG',
       alt: 'Scouts on a high-adventure outing',
@@ -168,8 +168,20 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
       req,
     }),
     getOrCreateMediaByFilename({
+      fileName: 'philmont-climbing.jpg',
+      alt: 'Scout climbing at Philmont high adventure',
+      payload,
+      req,
+    }),
+    getOrCreateMediaByFilename({
       fileName: 'leadership.JPG',
       alt: 'Scouts practicing leadership and teamwork',
+      payload,
+      req,
+    }),
+    getOrCreateMediaByFilename({
+      fileName: 'leadership2.jpg',
+      alt: 'Scouts learning leadership together outdoors',
       payload,
       req,
     }),
@@ -189,7 +201,9 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
 
   const pageData = whyEagleScoutMattersPage({
     challengeImage,
+    collegeImage,
     leadershipImage,
+    parentRoiImage,
     serviceImage,
     trailImage,
   })

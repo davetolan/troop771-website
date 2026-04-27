@@ -45,7 +45,9 @@ const richText = (...children: Array<ReturnType<typeof paragraph> | ReturnType<t
 
 type WhyEagleScoutMattersPageArgs = {
   challengeImage: number | Media
+  collegeImage: number | Media
   leadershipImage: number | Media
+  parentRoiImage: number | Media
   serviceImage: number | Media
   trailImage: number | Media
 }
@@ -54,7 +56,9 @@ const meetingLink = '/#join'
 
 export const whyEagleScoutMattersPage = ({
   challengeImage,
+  collegeImage,
   leadershipImage,
+  parentRoiImage,
   serviceImage,
   trailImage,
 }: WhyEagleScoutMattersPageArgs): RequiredDataFromCollectionSlug<'pages'> => ({
@@ -114,7 +118,7 @@ export const whyEagleScoutMattersPage = ({
           'If you are weighing whether Eagle Scout is worth it, the value is usually found in who a young man becomes along the way: steady under pressure, useful to others, and ready to lead when it matters.',
         ),
       ),
-      media: leadershipImage,
+      media: parentRoiImage,
       mediaPosition: 'right',
       theme: 'light',
     },
@@ -181,9 +185,56 @@ export const whyEagleScoutMattersPage = ({
           'Eagle Scout does not guarantee admission, scholarships, or specific outcomes — but it can help tell a strong story about a young man’s character and commitment.',
         ),
       ),
-      media: serviceImage,
+      media: collegeImage,
       mediaPosition: 'left',
       theme: 'stone',
+    },
+    {
+      blockType: 'photoCardGrid',
+      blockName: 'eagle-research-and-references',
+      eyebrow: 'Research and References',
+      title: 'Learn More From Scouting Sources',
+      description:
+        'If you want to dig deeper into outcomes, college context, and long-term impact, these resources are a strong place to start.',
+      columns: 'three',
+      cards: [
+        {
+          media: leadershipImage,
+          title: 'Eagle Scouts Research Overview',
+          description:
+            'National Scouting research and outcomes related to Eagle Scouts and long-term development.',
+          enableLink: true,
+          link: {
+            type: 'custom',
+            label: 'View Research',
+            url: 'https://www.scouting.org/about/research/eagle-scouts/',
+          },
+        },
+        {
+          media: collegeImage,
+          title: 'Scouting Data Summary (PDF)',
+          description:
+            'A downloadable Scouting research summary with broader findings and context.',
+          enableLink: true,
+          link: {
+            type: 'custom',
+            label: 'Open PDF',
+            url: 'https://filestore.scouting.org/filestore/pdf/210-045_WB.pdf?_ga=2.136334130.34282772.1777217231-1827647749.1732984822',
+          },
+        },
+        {
+          media: challengeImage,
+          title: 'College Admissions Perspective',
+          description:
+            'A practical article discussing how Eagle Scout can support a student’s application story.',
+          enableLink: true,
+          link: {
+            type: 'custom',
+            label: 'Read Article',
+            url: 'https://blog.scoutingmagazine.org/2020/10/14/can-being-an-eagle-scout-help-you-get-into-college/',
+          },
+        },
+      ],
     },
     {
       blockType: 'splitSection',
@@ -232,12 +283,12 @@ export const whyEagleScoutMattersPage = ({
       eyebrow: 'Troop 771 Argyle TX',
       title: 'A Troop With a Strong Eagle Tradition',
       description:
-        'Troop 771 has a long history of helping Scouts grow into capable, confident young men. Since 2004, more than 50 Scouts from Troop 771 have earned the rank of Eagle Scout.',
+        'Troop 771 has a long history of helping Scouts grow into capable, confident young men. Since 2004, over 50 Scouts from Troop 771 have made Eagle Scout.',
       theme: 'light',
       media: leadershipImage,
       features: [
         {
-          title: 'More Than 50 Eagle Scouts Since 2004',
+          title: 'Over 50 Eagle Scouts Since 2004',
           description:
             'Troop 771 has helped many Scouts complete the Eagle Scout journey through steady mentorship and real responsibility.',
         },
@@ -259,6 +310,43 @@ export const whyEagleScoutMattersPage = ({
       ],
     },
     {
+      blockType: 'featureGrid',
+      blockName: 'prominent-eagle-scouts',
+      eyebrow: 'Notable Eagle Scouts',
+      title: 'Prominent Eagle Scouts Across Different Fields',
+      description:
+        'Eagle Scouts have gone on to serve in government, business, science, media, and the military. Outcomes are never guaranteed, but these examples show the breadth of where leadership and service can lead.',
+      theme: 'light',
+      media: parentRoiImage,
+      features: [
+        {
+          title: 'Neil Armstrong',
+          description:
+            'Astronaut and the first person to walk on the moon.',
+        },
+        {
+          title: 'Steven Spielberg',
+          description:
+            'Academy Award-winning filmmaker and producer.',
+        },
+        {
+          title: 'Mike Rowe',
+          description:
+            'Host and producer known for Dirty Jobs and skilled-trades advocacy.',
+        },
+        {
+          title: 'Sam Walton',
+          description:
+            'Founder of Walmart and one of America’s most influential business leaders.',
+        },
+        {
+          title: 'Robert M. Gates',
+          description:
+            'Former U.S. Secretary of Defense and longtime public servant.',
+        },
+      ],
+    },
+    {
       blockType: 'photoCardGrid',
       blockName: 'eagle-project-examples',
       eyebrow: 'Eagle Project Examples',
@@ -266,7 +354,6 @@ export const whyEagleScoutMattersPage = ({
       description:
         'Eagle projects vary, but each one requires planning, communication, leadership, and follow-through from start to finish.',
       columns: 'four',
-      backgroundMedia: serviceImage,
       cards: [
         {
           media: serviceImage,

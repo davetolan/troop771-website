@@ -231,7 +231,9 @@ export const seed = async ({
       depth: 0,
       data: whyEagleScoutMattersPageData({
         challengeImage: imageHomeDoc,
+        collegeImage: image3Doc,
         leadershipImage: image1Doc,
+        parentRoiImage: image1Doc,
         serviceImage: image2Doc,
         trailImage: image3Doc,
       }),

@@ -58,14 +58,22 @@ async function upsertMedia(payload: Awaited<ReturnType<typeof getPayload>>, args
 async function upsertWhyEagleScoutMatters() {
   const payload = await getPayload({ config: configPromise })
 
-  const [challengeImage, leadershipImage, serviceImage, trailImage] = await Promise.all([
+  const [challengeImage, collegeImage, leadershipImage, parentRoiImage, serviceImage, trailImage] = await Promise.all([
     upsertMedia(payload, {
       fileName: 'high-adventure.JPG',
       alt: 'Scouts on a high-adventure outing',
     }),
     upsertMedia(payload, {
+      fileName: 'philmont-climbing.jpg',
+      alt: 'Scout climbing at Philmont high adventure',
+    }),
+    upsertMedia(payload, {
       fileName: 'leadership.JPG',
       alt: 'Scouts practicing leadership and teamwork',
+    }),
+    upsertMedia(payload, {
+      fileName: 'leadership2.jpg',
+      alt: 'Scouts learning leadership together outdoors',
     }),
     upsertMedia(payload, {
       fileName: 'service.JPG',
@@ -79,7 +87,9 @@ async function upsertWhyEagleScoutMatters() {
 
   const pageData = whyEagleScoutMattersPage({
     challengeImage,
+    collegeImage,
     leadershipImage,
+    parentRoiImage,
     serviceImage,
     trailImage,
   })

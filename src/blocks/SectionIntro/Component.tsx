@@ -31,17 +31,17 @@ export const SectionIntroBlock: React.FC<SectionIntroBlockProps> = ({
             : 'bg-white text-stone-950',
       )}
     >
-      <div className="absolute inset-x-0 top-0 h-56">
+      <div className="absolute inset-0">
         {media ? (
           <Media
-            imgClassName="h-full w-full rounded-none border-0 object-cover opacity-25"
+            imgClassName="h-full w-full rounded-none border-0 object-cover opacity-58"
             resource={media}
           />
         ) : (
           <Image
             alt=""
             aria-hidden="true"
-            className="object-cover object-center opacity-25"
+            className="object-cover object-center opacity-58"
             fill
             sizes="100vw"
             src={isDark ? '/OnTheWater.JPG' : isStone ? '/Trail.JPG' : '/outdoor.JPG'}
@@ -51,8 +51,8 @@ export const SectionIntroBlock: React.FC<SectionIntroBlockProps> = ({
           className={cn(
             'absolute inset-0',
             isDark
-              ? 'bg-[linear-gradient(to_bottom,rgba(28,25,23,0.92),rgba(28,25,23,0.7),transparent)]'
-              : 'bg-[linear-gradient(to_bottom,rgba(250,250,249,0.94),rgba(250,250,249,0.8),transparent)]',
+              ? 'bg-[linear-gradient(to_bottom,rgba(28,25,23,0.68),rgba(28,25,23,0.56),rgba(28,25,23,0.48))]'
+              : 'bg-[linear-gradient(to_bottom,rgba(250,250,249,0.64),rgba(250,250,249,0.54),rgba(250,250,249,0.46))]',
           )}
         />
       </div>
