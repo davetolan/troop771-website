@@ -15,6 +15,12 @@ const fileToMimeType = (fileName: string): string => {
   return 'image/jpeg'
 }
 
+const buildUniqueFilename = (fileName: string): string => {
+  const ext = path.extname(fileName)
+  const base = path.basename(fileName, ext)
+  return `${base}-${Date.now()}${ext}`
+}
+
 const getFirstMedia = async ({ payload, req }: { payload: MigrateUpArgs['payload']; req: MigrateUpArgs['req'] }) => {
   const existingMedia = await payload.find({
     collection: 'media',
@@ -53,11 +59,25 @@ const getOrCreateMediaByFilename = async (args: {
   }
 
   const filePath = path.join(process.cwd(), 'public', fileName)
+  let data: Buffer
 
   try {
-    const data = await fs.readFile(filePath)
+    data = await fs.readFile(filePath)
+  } catch {
+    // If local files are not available in the deploy environment, reuse any existing media.
+    const fallbackMedia = await getFirstMedia({ payload, req })
+    if (fallbackMedia) {
+      return fallbackMedia
+    }
 
-    return payload.create({
+    // If we had neither local file nor existing media, keep current behavior.
+    throw new Error(
+      `Unable to create or find media "${fileName}". Add this file to /public or seed at least one media document before running migrations.`,
+    )
+  }
+
+  try {
+    return await payload.create({
       collection: 'media',
       req,
       depth: 0,
@@ -75,15 +95,26 @@ const getOrCreateMediaByFilename = async (args: {
       },
     })
   } catch {
-    // If local files are not available in the deploy environment, reuse any existing media.
-    const fallbackMedia = await getFirstMedia({ payload, req })
-    if (fallbackMedia) {
-      return fallbackMedia
-    }
+    // Blob storage may already contain this key from a previous upload. Retry with a unique name.
+    const uniqueName = buildUniqueFilename(fileName)
 
-    throw new Error(
-      `Unable to create or find media "${fileName}". Add this file to /public or seed at least one media document before running migrations.`,
-    )
+    return await payload.create({
+      collection: 'media',
+      req,
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+      data: {
+        alt,
+      },
+      file: {
+        data,
+        mimetype: fileToMimeType(fileName),
+        name: uniqueName,
+        size: data.byteLength,
+      },
+    })
   }
 }
 
