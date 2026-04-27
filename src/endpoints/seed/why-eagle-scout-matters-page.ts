@@ -50,8 +50,7 @@ type WhyEagleScoutMattersPageArgs = {
   trailImage: number | Media
 }
 
-const meetingLink =
-  'https://my.scouting.org/online-registration/ff7b3db4-1e7a-4889-8bed-c1d376fef3d5/applicant-type'
+const meetingLink = '/#join'
 
 export const whyEagleScoutMattersPage = ({
   challengeImage,
@@ -88,7 +87,6 @@ export const whyEagleScoutMattersPage = ({
             label: 'Visit a Meeting',
             url: meetingLink,
             appearance: 'default',
-            newTab: true,
           },
         },
         {
@@ -216,7 +214,6 @@ export const whyEagleScoutMattersPage = ({
             label: 'Visit a Meeting',
             url: meetingLink,
             appearance: 'default',
-            newTab: true,
           },
         },
         {
@@ -354,7 +351,6 @@ export const whyEagleScoutMattersPage = ({
             label: 'Visit a Meeting',
             url: meetingLink,
             appearance: 'default',
-            newTab: true,
           },
         },
         {
