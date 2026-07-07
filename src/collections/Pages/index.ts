@@ -9,6 +9,7 @@ import { Content } from '../../blocks/Content/config'
 import { FeatureGrid } from '../../blocks/FeatureGrid/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { MeritBadgeCounselorsLayout } from '../../blocks/MeritBadgeCounselorsLayout/config'
 import { PhotoCardGrid } from '../../blocks/PhotoCardGrid/config'
 import { SectionIntro } from '../../blocks/SectionIntro/config'
 import { SplitSection } from '../../blocks/SplitSection/config'
@@ -95,6 +96,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 CallToAction,
                 Content,
                 MediaBlock,
+                MeritBadgeCounselorsLayout,
                 Archive,
                 FormBlock,
                 FeatureGrid,

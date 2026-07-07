@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     recipes: Recipe;
     activities: Activity;
+    'merit-badge-counselors': MeritBadgeCounselor;
     media: Media;
     categories: Category;
     'recipe-categories': RecipeCategory;
@@ -97,6 +98,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     recipes: RecipesSelect<false> | RecipesSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
+    'merit-badge-counselors': MeritBadgeCounselorsSelect<false> | MeritBadgeCounselorsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     'recipe-categories': RecipeCategoriesSelect<false> | RecipeCategoriesSelect<true>;
@@ -214,6 +216,7 @@ export interface Page {
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
+    | MeritBadgeCounselorsLayoutBlock
     | ArchiveBlock
     | FormBlock
     | FeatureGridBlock
@@ -587,6 +590,23 @@ export interface MediaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MeritBadgeCounselorsLayoutBlock".
+ */
+export interface MeritBadgeCounselorsLayoutBlock {
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  /**
+   * Include inactive counselors in this list.
+   */
+  showInactive?: boolean | null;
+  emptyMessage?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'meritBadgeCounselorsLayout';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1077,6 +1097,25 @@ export interface Activity {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merit-badge-counselors".
+ */
+export interface MeritBadgeCounselor {
+  id: number;
+  name: string;
+  meritBadges: {
+    badge: string;
+    id?: string | null;
+  }[];
+  /**
+   * Inactive counselors remain in Payload but are hidden from public lists.
+   */
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "scout-change-reports".
  */
 export interface ScoutChangeReport {
@@ -1310,6 +1349,10 @@ export interface PayloadLockedDocument {
         value: number | Activity;
       } | null)
     | ({
+        relationTo: 'merit-badge-counselors';
+        value: number | MeritBadgeCounselor;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1426,6 +1469,7 @@ export interface PagesSelect<T extends boolean = true> {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
+        meritBadgeCounselorsLayout?: T | MeritBadgeCounselorsLayoutBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         featureGrid?: T | FeatureGridBlockSelect<T>;
@@ -1517,6 +1561,19 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MeritBadgeCounselorsLayoutBlock_select".
+ */
+export interface MeritBadgeCounselorsLayoutBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  showInactive?: T;
+  emptyMessage?: T;
   id?: T;
   blockName?: T;
 }
@@ -1730,6 +1787,23 @@ export interface ActivitiesSelect<T extends boolean = true> {
   month?: T;
   year?: T;
   activity?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merit-badge-counselors_select".
+ */
+export interface MeritBadgeCounselorsSelect<T extends boolean = true> {
+  name?: T;
+  meritBadges?:
+    | T
+    | {
+        badge?: T;
+        id?: T;
+      };
   active?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2359,6 +2433,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'activities';
           value: number | Activity;
+        } | null)
+      | ({
+          relationTo: 'merit-badge-counselors';
+          value: number | MeritBadgeCounselor;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

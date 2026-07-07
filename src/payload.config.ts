@@ -9,6 +9,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Activities } from './collections/Activities'
+import { MeritBadgeCounselors } from './collections/MeritBadgeCounselors'
 import { ScoutChangeReports } from './collections/ScoutChangeReports'
 import { Users } from './collections/Users'
 import { RecipeCategories } from './collections/RecipeCategories'
@@ -17,7 +18,11 @@ import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
-import { getCorsOriginsFromEnv, getPayloadServerURL, validateURLConfiguration } from './utilities/getURL'
+import {
+  getCorsOriginsFromEnv,
+  getPayloadServerURL,
+  validateURLConfiguration,
+} from './utilities/getURL'
 import { logPayloadError } from './hooks/logPayloadError'
 
 const filename = fileURLToPath(import.meta.url)
@@ -78,6 +83,7 @@ export default buildConfig({
     Posts,
     Recipes,
     Activities,
+    MeritBadgeCounselors,
     Media,
     Categories,
     RecipeCategories,

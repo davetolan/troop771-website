@@ -9,6 +9,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { MeritBadgeCounselorsLayoutBlock } from '@/blocks/MeritBadgeCounselorsLayout/Component'
 import { PhotoCardGridBlock } from '@/blocks/PhotoCardGrid/Component'
 import { SectionIntroBlock } from '@/blocks/SectionIntro/Component'
 import { SplitSectionBlock } from '@/blocks/SplitSection/Component'
@@ -21,6 +22,7 @@ const blockComponents = {
   featureGrid: FeatureGridBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  meritBadgeCounselorsLayout: MeritBadgeCounselorsLayoutBlock,
   photoCardGrid: PhotoCardGridBlock,
   sectionIntro: SectionIntroBlock,
   splitSection: SplitSectionBlock,
