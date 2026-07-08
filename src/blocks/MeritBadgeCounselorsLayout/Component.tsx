@@ -8,7 +8,16 @@ import { SectionHeading } from '@/components/homepage/SectionHeading'
 type CounselorListItem = {
   id: number
   name: string
+  troop: string
   meritBadges: string[]
+}
+
+const getTroopName = (troop: number | { name?: string | null } | null | undefined) => {
+  if (troop && typeof troop === 'object' && troop.name) {
+    return troop.name
+  }
+
+  return null
 }
 
 export const MeritBadgeCounselorsLayoutBlock = async (
@@ -25,7 +34,7 @@ export const MeritBadgeCounselorsLayoutBlock = async (
   try {
     const { docs } = await payload.find({
       collection: 'merit-badge-counselors',
-      depth: 0,
+      depth: 1,
       limit: 300,
       overrideAccess: false,
       sort: 'name',
@@ -41,6 +50,7 @@ export const MeritBadgeCounselorsLayoutBlock = async (
     counselors = docs.map((doc) => ({
       id: doc.id,
       name: doc.name,
+      troop: getTroopName(doc.troop) || 'Both',
       meritBadges: doc.meritBadges.map(({ badge }) => badge),
     }))
   } catch (error) {
@@ -69,9 +79,14 @@ export const MeritBadgeCounselorsLayoutBlock = async (
                 className="rounded-[1.5rem] border border-stone-200 bg-white p-6 shadow-[0_18px_40px_-38px_rgba(41,37,36,0.35)]"
                 key={counselor.id}
               >
-                <h3 className="text-xl font-semibold tracking-tight text-stone-950">
-                  {counselor.name}
-                </h3>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <h3 className="text-xl font-semibold tracking-tight text-stone-950">
+                    {counselor.name}
+                  </h3>
+                  <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-stone-600">
+                    {counselor.troop}
+                  </span>
+                </div>
                 <ul className="mt-5 flex flex-wrap gap-2">
                   {counselor.meritBadges.map((badge) => (
                     <li

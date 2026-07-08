@@ -25,7 +25,7 @@ export const MeritBadgeCounselors: CollectionConfig<'merit-badge-counselors'> = 
     delete: adminOnly,
   },
   admin: {
-    defaultColumns: ['name', 'active', 'updatedAt'],
+    defaultColumns: ['name', 'troop', 'active', 'updatedAt'],
     useAsTitle: 'name',
   },
   defaultSort: 'name',
@@ -34,6 +34,15 @@ export const MeritBadgeCounselors: CollectionConfig<'merit-badge-counselors'> = 
       name: 'name',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'troop',
+      type: 'relationship',
+      relationTo: 'troops',
+      required: true,
+      admin: {
+        description: 'Choose 771B, 771G, or Both.',
+      },
     },
     {
       name: 'meritBadges',

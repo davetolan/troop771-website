@@ -15,6 +15,7 @@ import * as migration_20260423_120000_add_header_nav_sub_items from './20260423_
 import * as migration_20260426_140000_backfill_recipe_locked_rels from './20260426_140000_backfill_recipe_locked_rels'
 import * as migration_20260426_151500_upsert_why_eagle_scout_matters_page from './20260426_151500_upsert_why_eagle_scout_matters_page'
 import * as migration_20260707_171600_add_merit_badge_counselors from './20260707_171600_add_merit_badge_counselors'
+import * as migration_20260707_192300_add_troops_to_merit_badge_counselors from './20260707_192300_add_troops_to_merit_badge_counselors'
 
 export const migrations = [
   {
@@ -101,5 +102,10 @@ export const migrations = [
     up: migration_20260707_171600_add_merit_badge_counselors.up,
     down: migration_20260707_171600_add_merit_badge_counselors.down,
     name: '20260707_171600_add_merit_badge_counselors',
+  },
+  {
+    up: migration_20260707_192300_add_troops_to_merit_badge_counselors.up,
+    down: migration_20260707_192300_add_troops_to_merit_badge_counselors.down,
+    name: '20260707_192300_add_troops_to_merit_badge_counselors',
   },
 ]

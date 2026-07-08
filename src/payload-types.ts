@@ -72,6 +72,7 @@ export interface Config {
     recipes: Recipe;
     activities: Activity;
     'merit-badge-counselors': MeritBadgeCounselor;
+    troops: Troop;
     media: Media;
     categories: Category;
     'recipe-categories': RecipeCategory;
@@ -99,6 +100,7 @@ export interface Config {
     recipes: RecipesSelect<false> | RecipesSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
     'merit-badge-counselors': MeritBadgeCounselorsSelect<false> | MeritBadgeCounselorsSelect<true>;
+    troops: TroopsSelect<false> | TroopsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     'recipe-categories': RecipeCategoriesSelect<false> | RecipeCategoriesSelect<true>;
@@ -1102,6 +1104,10 @@ export interface Activity {
 export interface MeritBadgeCounselor {
   id: number;
   name: string;
+  /**
+   * Choose 771B, 771G, or Both.
+   */
+  troop: number | Troop;
   meritBadges: {
     badge: string;
     id?: string | null;
@@ -1113,6 +1119,16 @@ export interface MeritBadgeCounselor {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "troops".
+ */
+export interface Troop {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1351,6 +1367,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'merit-badge-counselors';
         value: number | MeritBadgeCounselor;
+      } | null)
+    | ({
+        relationTo: 'troops';
+        value: number | Troop;
       } | null)
     | ({
         relationTo: 'media';
@@ -1798,6 +1818,7 @@ export interface ActivitiesSelect<T extends boolean = true> {
  */
 export interface MeritBadgeCounselorsSelect<T extends boolean = true> {
   name?: T;
+  troop?: T;
   meritBadges?:
     | T
     | {
@@ -1808,6 +1829,15 @@ export interface MeritBadgeCounselorsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "troops_select".
+ */
+export interface TroopsSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

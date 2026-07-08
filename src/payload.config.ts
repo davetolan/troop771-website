@@ -10,6 +10,7 @@ import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Activities } from './collections/Activities'
 import { MeritBadgeCounselors } from './collections/MeritBadgeCounselors'
+import { Troops } from './collections/Troops'
 import { ScoutChangeReports } from './collections/ScoutChangeReports'
 import { Users } from './collections/Users'
 import { RecipeCategories } from './collections/RecipeCategories'
@@ -84,6 +85,7 @@ export default buildConfig({
     Recipes,
     Activities,
     MeritBadgeCounselors,
+    Troops,
     Media,
     Categories,
     RecipeCategories,
