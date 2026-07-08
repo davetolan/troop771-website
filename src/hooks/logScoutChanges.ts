@@ -248,33 +248,33 @@ const logScoutChange = async ({
   })
 }
 
-export const createScoutCollectionAfterChangeHook = (
-  slug: string,
-): CollectionAfterChangeHook => {
+export const createScoutCollectionAfterChangeHook = (slug: string): CollectionAfterChangeHook => {
   return async ({ doc, operation, previousDoc, req }) => {
     const currentDoc = (doc as Record<string, unknown> | undefined) ?? null
     const previousSnapshot = (previousDoc as Record<string, unknown> | undefined) ?? null
 
+    if (!currentDoc) {
+      return doc
+    }
+
     const requestUserRole = await getRequestUserRole(req)
 
-    if (requestUserRole === ADMIN_ROLE && doc._status === 'published') {
+    if (requestUserRole === ADMIN_ROLE && currentDoc._status === 'published') {
       await markScoutChangeReportsAsPublished({
         req,
-        targetID: String(doc.id),
+        targetID: String(currentDoc.id),
         targetSlug: slug,
       })
     }
 
     const changedFields =
-      operation === 'update'
-        ? getChangedFields(previousSnapshot, currentDoc)
-        : []
+      operation === 'update' ? getChangedFields(previousSnapshot, currentDoc) : []
 
     await logScoutChange({
       req,
       action: operation,
       changedFields,
-      targetID: String(doc.id),
+      targetID: String(currentDoc.id),
       targetLabel: getTargetLabel(currentDoc),
       targetSlug: slug,
       targetType: 'collection',
@@ -284,9 +284,7 @@ export const createScoutCollectionAfterChangeHook = (
   }
 }
 
-export const createScoutCollectionBeforeDeleteHook = (
-  slug: string,
-): CollectionBeforeDeleteHook => {
+export const createScoutCollectionBeforeDeleteHook = (slug: string): CollectionBeforeDeleteHook => {
   return async ({ id, req }) => {
     await logScoutChange({
       req,

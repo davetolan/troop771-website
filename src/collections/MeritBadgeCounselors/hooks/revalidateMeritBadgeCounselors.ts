@@ -14,6 +14,10 @@ export const revalidateMeritBadgeCounselors: CollectionAfterChangeHook<MeritBadg
   previousDoc,
   req: { payload, context },
 }) => {
+  if (!doc) {
+    return doc
+  }
+
   const isPublished = doc._status === 'published'
   const wasPublished = previousDoc?._status === 'published'
 
