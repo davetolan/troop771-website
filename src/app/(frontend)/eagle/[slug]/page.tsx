@@ -613,10 +613,35 @@ function formatCurrency(value: number) {
 function formatVenmoDonationUrl(donationUrl?: string) {
   if (!donationUrl) return undefined
 
-  return donationUrl.replace(/([?&]note=)([^&#]*)/, (_match, prefix: string, note: string) => {
-    const decodedNote = decodeURIComponent(note.replace(/\+/g, '%20'))
-    const encodedNote = encodeURIComponent(decodedNote).replace(/\+/g, '%20')
+  try {
+    const url = new URL(donationUrl)
 
-    return `${prefix}${encodedNote}`
+    if (url.hostname === 'venmo.com' || url.hostname.endsWith('.venmo.com')) {
+      const pathRecipient = url.pathname.split('/').filter(Boolean)[0]
+
+      if (pathRecipient && !url.searchParams.has('recipients')) {
+        url.searchParams.set('recipients', decodeURIComponent(pathRecipient))
+      }
+
+      url.pathname = '/'
+    }
+
+    const encodedQuery = Array.from(url.searchParams.entries())
+      .map(([key, value]) => `${encodeUrlComponent(key)}=${encodeUrlComponent(value)}`)
+      .join('&')
+
+    return `${url.origin}${url.pathname}${encodedQuery ? `?${encodedQuery}` : ''}${url.hash}`
+  } catch {
+    return donationUrl.replace(/([?&]note=)([^&#]*)/, (_match, prefix: string, note: string) => {
+      const decodedNote = decodeURIComponent(note.replace(/\+/g, '%20'))
+
+      return `${prefix}${encodeUrlComponent(decodedNote)}`
+    })
+  }
+}
+
+function encodeUrlComponent(value: string) {
+  return encodeURIComponent(value).replace(/[!'()*]/g, (character) => {
+    return `%${character.charCodeAt(0).toString(16).toUpperCase()}`
   })
 }

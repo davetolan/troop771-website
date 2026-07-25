@@ -25,6 +25,10 @@ test.describe('Frontend', () => {
     await expect(page.getByRole('progressbar', { name: 'Fundraising progress' })).toBeVisible()
     await expect(page.getByText('$3,500').first()).toBeVisible()
     await expect(page.getByRole('button', { name: 'Where will donations go?' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Donate to the Project' }).first()).toHaveAttribute(
+      'href',
+      'https://venmo.com/?txn=pay&recipients=Troop-771&note=Kason%27s%20Eagle%20Project',
+    )
 
     await page.getByRole('button', { name: 'Are donations tax-deductible?' }).click()
     await expect(page.getByText('Tax-deductible status has not been confirmed.')).toBeVisible()

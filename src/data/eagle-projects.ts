@@ -100,7 +100,7 @@ const kasonProject: EagleProject = {
     goal: 3500,
     raised: 0,
     lastUpdated: 'TBD',
-    donationUrl: 'https://venmo.com/Troop-771?txn=pay&note=Kason%27s%20Eagle%20Project',
+    donationUrl: 'https://venmo.com/?txn=pay&recipients=Troop-771&note=Kason%27s%20Eagle%20Project',
     costs: [
       { item: 'Benches', displayValue: 'TBD' },
       { item: 'Landscape edging', displayValue: 'TBD' },
