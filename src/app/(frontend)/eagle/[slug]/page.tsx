@@ -28,6 +28,7 @@ import {
 } from '@/data/eagle-projects'
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { cn } from '@/utilities/ui'
 
 type Args = {
   params: Promise<{
@@ -131,6 +132,10 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
   const donationUrl = formatVenmoDonationUrl(project.fundraising.donationUrl)
   const donationHref = donationUrl || '#fundraising'
   const fundraisingDonationHref = donationUrl || '/contact'
+  const fundraisingStatus =
+    project.fundraising.lastUpdated && project.fundraising.lastUpdated !== 'TBD'
+      ? `Last updated: ${project.fundraising.lastUpdated}`
+      : 'Fundraising just started'
   const remaining = Math.max(project.fundraising.goal - project.fundraising.raised, 0)
   const progress =
     project.fundraising.goal > 0
@@ -177,13 +182,6 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
                 >
                   <Link href={donationHref}>Donate to the Project</Link>
                 </Button>
-                <Button
-                  asChild
-                  className="rounded-full border-white/20 bg-white/10 px-6 py-3 text-white hover:bg-white/15 focus-visible:outline-white"
-                  variant="outline"
-                >
-                  <Link href="#volunteer">Volunteer</Link>
-                </Button>
                 <EagleShareButton
                   text={project.subtitle}
                   title={project.title}
@@ -221,6 +219,22 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">
                 A lasting outdoor space for {project.beneficiary}
               </h2>
+              {project.scoutImage && (
+                <figure className="mt-8 max-w-72 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
+                  <div className="relative aspect-[3/4]">
+                    <Image
+                      alt={
+                        project.scoutImageAlt ||
+                        `${project.scoutFirstName}, the Scout leading this project`
+                      }
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 1024px) 18rem, 16rem"
+                      src={project.scoutImage}
+                    />
+                  </div>
+                </figure>
+              )}
             </div>
             <div className="grid gap-5 text-base leading-8 text-stone-700 sm:text-lg">
               {project.summary.map((paragraph) => (
@@ -309,9 +323,7 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
                   <StatCard label="Raised" value={formatCurrency(project.fundraising.raised)} />
                   <StatCard label="Remaining" value={formatCurrency(remaining)} />
                 </dl>
-                <p className="mt-5 text-sm text-stone-600">
-                  Last updated: {project.fundraising.lastUpdated || 'TBD'}
-                </p>
+                <p className="mt-5 text-sm text-stone-600">{fundraisingStatus}</p>
                 <Button
                   asChild
                   className="mt-6 rounded-full bg-stone-950 px-6 py-3 text-white hover:bg-stone-800"
@@ -345,6 +357,11 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
                   </tbody>
                 </table>
               </div>
+              {project.fundraising.note && (
+                <p className="border-t border-stone-200 px-5 py-4 text-sm leading-6 text-stone-600">
+                  {project.fundraising.note}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -354,18 +371,10 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
         <div className="container">
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div>
-              <SectionHeading eyebrow="Volunteer" title="Workday details will be announced" />
+              <SectionHeading eyebrow="Volunteer" title="Project workdays" />
               <p className="mt-5 text-base leading-8 text-stone-700">
                 {project.volunteer.statusMessage}
               </p>
-              <Button
-                asChild
-                className="mt-7 rounded-full bg-[#4f5d3a] px-6 py-3 text-white hover:bg-[#3f4b2f]"
-              >
-                <Link href={project.volunteer.signupUrl || project.contactUrl || '/contact'}>
-                  Volunteer Signup
-                </Link>
-              </Button>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <InfoCard icon={CalendarDays} label="Date" value={project.volunteer.date || 'TBD'} />
@@ -438,12 +447,17 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
           <div className="mt-10 grid gap-4">
             {project.updates.map((update) => (
               <article
-                className="grid gap-4 rounded-2xl border border-stone-200 bg-white p-5 sm:grid-cols-[10rem_1fr] sm:items-start"
+                className={cn(
+                  'grid gap-4 rounded-2xl border border-stone-200 bg-white p-5',
+                  update.date && 'sm:grid-cols-[10rem_1fr] sm:items-start',
+                )}
                 key={update.title}
               >
-                <div className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f5d3a]">
-                  {update.date || 'TBD'}
-                </div>
+                {update.date && (
+                  <div className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f5d3a]">
+                    {update.date}
+                  </div>
+                )}
                 <div>
                   <h3 className="text-xl font-semibold text-stone-950">{update.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-stone-700">{update.description}</p>
@@ -491,15 +505,19 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
                 Project QR Code
               </div>
               <h2 className="mt-5 text-2xl font-semibold tracking-tight text-stone-950 sm:text-3xl">
-                Scan or share this code to support {project.scoutFirstName}&apos;s Eagle Scout project.
+                Share this project page
               </h2>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-stone-700">
+                Send this link or QR code to family, friends, churches, civic organizations, and
+                local businesses.
+              </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Button asChild className="rounded-full bg-stone-950 text-white hover:bg-stone-800">
-                  <Link href={donationHref}>Donate</Link>
-                </Button>
-                <Button asChild className="rounded-full" variant="outline">
-                  <Link href="#volunteer">Volunteer</Link>
-                </Button>
+                <EagleShareButton
+                  text={project.subtitle}
+                  title={project.title}
+                  url={pageUrl}
+                  variant="light"
+                />
                 <Button asChild className="rounded-full" variant="outline">
                   <a download href={project.qrCodeImage || '/eagle/kason/qr-code.svg'}>
                     Download QR Code
@@ -530,9 +548,6 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="rounded-full bg-amber-300 text-stone-950 hover:bg-amber-200">
               <Link href={donationHref}>Donate</Link>
-            </Button>
-            <Button asChild className="rounded-full border-white/20 bg-white/10 text-white hover:bg-white/15" variant="outline">
-              <Link href="#volunteer">Volunteer</Link>
             </Button>
             <EagleShareButton
               className="flex flex-col items-center"
@@ -597,8 +612,8 @@ function InfoCard({
             <Icon className="h-5 w-5" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-sm text-stone-600">{label}</p>
-            <CardTitle className="mt-1 text-lg">{value}</CardTitle>
+            <p className="text-sm text-stone-700">{label}</p>
+            <CardTitle className="mt-1 text-lg text-stone-700">{value}</CardTitle>
           </div>
         </div>
       </CardHeader>

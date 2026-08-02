@@ -8,6 +8,8 @@ export type EagleProject = {
   summary: string[]
   heroImage: string
   heroImageAlt: string
+  scoutImage?: string
+  scoutImageAlt?: string
   beforeImage?: string
   beforeImageAlt?: string
   proposedImage?: string
@@ -26,6 +28,7 @@ export type EagleProject = {
     raised: number
     lastUpdated?: string
     donationUrl?: string
+    note?: string
     costs: {
       item: string
       estimatedCost?: number
@@ -63,15 +66,18 @@ const kasonProject: EagleProject = {
   beneficiary: 'Liberty Christian School',
   status: 'Planning and Fundraising',
   summary: [
-    'For my Eagle Scout service project, I am creating an outdoor seating area at Liberty Christian School. The project will transform an unused grassy area near an existing tree into a shaded gathering space with a 24-foot mulch ring, landscape edging, benches, lighting, and other improvements.',
-    'When complete, the space will benefit students, teachers, parents, staff, and school visitors by giving them a comfortable outdoor place to sit, gather, reflect, or wait during school activities.',
+    'My name is Kason Weisbeck. I am a Life Scout in Troop 771 and a freshman at Liberty Christian School. For my Eagle Scout service project, I will be creating a new outdoor space for Liberty Christian.',
+    'I am installing a large tree and landscaping, including benches, that mirror the existing tree and landscaping at the front of the school. This project will replace a deteriorating wooden structure that is a potential safety hazard and is visually unappealing.',
+    'The completed project will beautify the area and provide seating areas where students can socialize and wait for parents to pick them up.',
   ],
-  heroImage: '/eagle/kason/project-proposed.webp',
+  heroImage: '/eagle/kason/proposed.jpeg',
   heroImageAlt:
     'Concept rendering of a shaded outdoor seating area with benches around a large tree.',
-  beforeImage: '/eagle/kason/project-before-current.webp',
+  scoutImage: '/eagle/kason/kason.jpeg',
+  scoutImageAlt: 'Kason, the Life Scout leading this Eagle Scout service project.',
+  beforeImage: '/eagle/kason/before.jpeg',
   beforeImageAlt: 'Current grassy project area near an existing tree at Liberty Christian School.',
-  proposedImage: '/eagle/kason/project-proposed.webp',
+  proposedImage: '/eagle/kason/proposed.jpeg',
   proposedImageAlt:
     'Proposed concept rendering showing benches, landscape edging, and mulch around a shade tree.',
   socialImage: '/eagle/kason/project-og.jpg',
@@ -85,40 +91,44 @@ const kasonProject: EagleProject = {
     },
   ],
   projectFeatures: [
-    '24-foot-diameter landscaped mulch ring',
+    'Large shade tree',
     'Durable outdoor benches',
     'Landscape edging blocks',
-    'Outdoor LED lighting',
+    'Electrical and irrigation work',
     'Ground preparation',
     'Mulch and landscaping',
-    'Site cleanup',
+    'Demo and site cleanup',
     'Shaded seating and gathering space',
   ],
   impactStatement:
-    'The finished area will provide Liberty Christian School with an attractive, shaded place where students, teachers, parents, and visitors can sit, gather, reflect, or wait during school activities. The project will also improve an underused area of the campus and create a lasting resource for the school community.',
+    'The finished area will provide Liberty Christian School with an attractive, shaded place where students can socialize and wait for parents to pick them up. The project will also replace a deteriorating wooden structure with landscaping that matches the front of the school.',
   fundraising: {
-    goal: 3500,
+    goal: 4000,
     raised: 0,
     lastUpdated: 'TBD',
     donationUrl: 'https://venmo.com/?txn=pay&recipients=Troop-771&note=Kason%27s%20Eagle%20Project',
+    note:
+      'The listed line items do not include every project cost. Any excess money raised will be given to Liberty Christian School.',
     costs: [
-      { item: 'Benches', displayValue: 'TBD' },
-      { item: 'Landscape edging', displayValue: 'TBD' },
-      { item: 'Mulch and soil preparation', displayValue: 'TBD' },
-      { item: 'Lighting and electrical materials', displayValue: 'TBD' },
-      { item: 'Hardware and construction supplies', displayValue: 'TBD' },
-      { item: 'Contingency', displayValue: 'TBD' },
+      { item: 'Benches', estimatedCost: 760 },
+      { item: 'Edging', estimatedCost: 500 },
+      { item: 'Electricity and irrigation', estimatedCost: 170 },
+      { item: 'Mulch and soil', estimatedCost: 430 },
+      { item: 'Tools and supplies', estimatedCost: 340 },
     ],
   },
   volunteer: {
     statusMessage:
-      'Volunteer workday dates will be announced after project approval and scheduling are complete.',
+      'Project work is planned in two phases: demo work in August and installation in November.',
+    date: 'Demo: August 7, 2026; install: November 21 or 22, 2026',
+    startTime: 'Demo: 8:00 AM',
+    endTime: '12:00 PM',
     location: 'Liberty Christian School',
     signupUrl: '/contact',
     details: [
-      'Workday date: TBD',
-      'Start and end time: TBD',
-      'Rain date: TBD',
+      'Demo: August 7, 2026 from 8:00 AM to 12:00 PM.',
+      'Install: either November 21 or November 22, 2026.',
+      'Install time and final schedule details will be announced closer to the workday.',
       'Volunteers should bring work gloves and a refillable water bottle if available.',
       'Closed-toe shoes and weather-appropriate work clothes are recommended.',
       'Food and water details will be announced before the workday.',
@@ -126,19 +136,14 @@ const kasonProject: EagleProject = {
   },
   updates: [
     {
-      title: 'Project planning underway',
+      title: 'Project workdays scheduled',
       description:
-        'Kason is preparing the project plan, gathering cost information, and coordinating next steps.',
+        'Demo is scheduled for August 7, 2026 from 8:00 AM to 12:00 PM. Installation is planned for either November 21 or November 22, 2026.',
     },
     {
-      title: 'Fundraising information coming soon',
+      title: 'Fundraising goal updated',
       description:
-        'Donation details will be shared after the fundraising process is finalized through troop-managed channels.',
-    },
-    {
-      title: 'Volunteer workday date coming soon',
-      description:
-        'Workday dates will be announced after project approval and scheduling are complete.',
+        'The current fundraising goal is $4,000. Any excess money raised will be given to Liberty Christian School.',
     },
   ],
   faqs: [
@@ -170,7 +175,7 @@ const kasonProject: EagleProject = {
     {
       question: 'What happens if more money is raised than required?',
       answer:
-        'Any excess funds will be handled according to the approved project plan and troop guidance. Details will be shared once the fundraising process is finalized.',
+        'Any excess money raised for the project will be given to Liberty Christian School.',
     },
     {
       question: 'Who should I contact with questions?',
