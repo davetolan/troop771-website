@@ -188,7 +188,8 @@ const kasonProject: EagleProject = {
         'The completion date has not been set. Updates will be added after project approval, fundraising, and workday scheduling are complete.',
     },
   ],
-  contactUrl: '/contact',
+  contactUrl:
+    'mailto:joe.weisbeck@gmail.com?subject=Kason%27s%20Eagle%20Scout%20Service%20Project',
 }
 
 export const eagleProjects = [kasonProject] as const satisfies EagleProject[]

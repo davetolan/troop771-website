@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Clock,
   HandHeart,
+  Mail,
   MapPin,
   Megaphone,
   QrCode,
@@ -132,6 +133,7 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
   const donationUrl = formatVenmoDonationUrl(project.fundraising.donationUrl)
   const donationHref = donationUrl || '#fundraising'
   const fundraisingDonationHref = donationUrl || '/contact'
+  const contactHref = project.contactUrl || '/contact'
   const fundraisingStatus =
     project.fundraising.lastUpdated && project.fundraising.lastUpdated !== 'TBD'
       ? `Last updated: ${project.fundraising.lastUpdated}`
@@ -375,6 +377,15 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
               <p className="mt-5 text-base leading-8 text-stone-700">
                 {project.volunteer.statusMessage}
               </p>
+              <Button
+                asChild
+                className="mt-6 rounded-full bg-stone-950 px-6 py-3 text-white hover:bg-stone-800"
+              >
+                <a href={contactHref}>
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                  Contact
+                </a>
+              </Button>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <InfoCard icon={CalendarDays} label="Date" value={project.volunteer.date || 'TBD'} />
@@ -548,6 +559,16 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="rounded-full bg-amber-300 text-stone-950 hover:bg-amber-200">
               <Link href={donationHref}>Donate</Link>
+            </Button>
+            <Button
+              asChild
+              className="rounded-full border-white/20 bg-white/10 text-white hover:bg-white/15"
+              variant="outline"
+            >
+              <a href={contactHref}>
+                <Mail className="h-4 w-4" aria-hidden="true" />
+                Contact
+              </a>
             </Button>
             <EagleShareButton
               className="flex flex-col items-center"
