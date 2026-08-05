@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import { NextTroopMeetingBannerView } from '@/components/NextTroopMeetingBanner'
 import {
@@ -9,6 +9,10 @@ import {
 } from '@/utilities/nextTroopMeeting'
 
 const now = new Date('2026-08-05T12:00:00.000Z')
+
+afterEach(() => {
+  cleanup()
+})
 
 describe('next troop meeting utility', () => {
   it('selects the next Tuesday troop meeting', () => {
@@ -30,7 +34,7 @@ describe('next troop meeting utility', () => {
       now,
     })
 
-    expect(formatTroopMeetingStart(meeting!.start, now)).toBe('Tuesday, August 18 at 7:00 PM')
+    expect(formatTroopMeetingStart(meeting!.start!, now)).toBe('Tuesday, August 18 at 7:00 PM')
   })
 
   it('ignores past exception dates', () => {
@@ -39,7 +43,7 @@ describe('next troop meeting utility', () => {
       now,
     })
 
-    expect(formatTroopMeetingStart(meeting!.start, now)).toBe('Tuesday, August 11 at 7:00 PM')
+    expect(formatTroopMeetingStart(meeting!.start!, now)).toBe('Tuesday, August 11 at 7:00 PM')
   })
 
   it('moves to the following Tuesday after the current meeting end time', () => {
@@ -47,7 +51,7 @@ describe('next troop meeting utility', () => {
       now: new Date('2026-08-12T02:31:00.000Z'),
     })
 
-    expect(formatTroopMeetingStart(meeting!.start, now)).toBe('Tuesday, August 18 at 7:00 PM')
+    expect(formatTroopMeetingStart(meeting!.start!, now)).toBe('Tuesday, August 18 at 7:00 PM')
   })
 
   it('keeps the current Tuesday meeting visible until the meeting end time', () => {
@@ -55,7 +59,7 @@ describe('next troop meeting utility', () => {
       now: new Date('2026-08-12T01:00:00.000Z'),
     })
 
-    expect(formatTroopMeetingStart(meeting!.start, now)).toBe('Tuesday, August 11 at 7:00 PM')
+    expect(formatTroopMeetingStart(meeting!.start!, now)).toBe('Tuesday, August 11 at 7:00 PM')
   })
 
   it('converts meeting times to America/Chicago', () => {
@@ -70,7 +74,24 @@ describe('next troop meeting utility', () => {
     )
   })
 
-  it('hides the banner when the summer break flag is enabled', () => {
+  it('shows a customizable message when the summer break flag is enabled', () => {
+    const meeting = getNextRegularTroopMeeting({
+      now,
+      settings: {
+        summerBreakActive: true,
+        summerBreakMessage: 'Troop meetings resume in August. Check Slack for summer events.',
+      },
+    })
+
+    render(<NextTroopMeetingBannerView meeting={meeting} />)
+
+    expect(
+      screen.getByText('Troop meetings resume in August. Check Slack for summer events.'),
+    ).toBeTruthy()
+    expect(screen.queryByText(/Tuesday,/)).toBeNull()
+  })
+
+  it('uses a default summer break message when no custom message is configured', () => {
     const meeting = getNextRegularTroopMeeting({
       now,
       settings: {
@@ -78,9 +99,7 @@ describe('next troop meeting utility', () => {
       },
     })
 
-    const { container } = render(<NextTroopMeetingBannerView meeting={meeting} />)
-
-    expect(container.firstChild).toBeNull()
+    expect(meeting?.title).toBe('Troop meetings are paused for the summer. Check back soon.')
   })
 
   it('uses the alternate location message when the flag is enabled', () => {

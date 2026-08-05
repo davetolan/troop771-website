@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 
 export type NextTroopMeeting = {
   title: string
-  start: string
+  start?: string
   end?: string
   location?: string
   description?: string
@@ -20,6 +20,7 @@ type TroopMeetingSettings = {
   calendarUrl?: string | null
   defaultLocation?: string | null
   summerBreakActive?: boolean | null
+  summerBreakMessage?: string | null
 }
 
 type GetNextRegularTroopMeetingOptions = {
@@ -31,6 +32,7 @@ type GetNextRegularTroopMeetingOptions = {
 
 const DEFAULT_MEETING_LOCATION = 'Scout Barn'
 const DEFAULT_MEETING_TITLE = 'Next Troop Meeting'
+const DEFAULT_SUMMER_BREAK_MESSAGE = 'Troop meetings are paused for the summer. Check back soon.'
 const MEETING_END = { hour: 20, minute: 30 }
 const MEETING_START = { hour: 19, minute: 0 }
 const TUESDAY = 2
@@ -153,7 +155,10 @@ export function getNextRegularTroopMeeting(
   const settings = options.settings
 
   if (settings?.summerBreakActive) {
-    return null
+    return {
+      calendarUrl: settings.calendarUrl ?? undefined,
+      title: settings.summerBreakMessage || DEFAULT_SUMMER_BREAK_MESSAGE,
+    }
   }
 
   const exceptionDates = new Set(
@@ -269,6 +274,10 @@ export async function getCachedNextTroopMeeting(now = new Date()) {
 
   if (!meeting) {
     return null
+  }
+
+  if (!meeting.start) {
+    return meeting
   }
 
   const staleAfter = new Date(meeting.end ?? meeting.start)

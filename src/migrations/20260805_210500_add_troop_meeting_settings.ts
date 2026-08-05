@@ -13,6 +13,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     CREATE TABLE "troop_meeting_settings" (
       "id" serial PRIMARY KEY NOT NULL,
       "summer_break_active" boolean DEFAULT false,
+      "summer_break_message" varchar DEFAULT 'Troop meetings are paused for the summer. Check back soon.',
       "default_location" varchar DEFAULT 'Scout Barn',
       "alternate_location_active" boolean DEFAULT false,
       "calendar_url" varchar,

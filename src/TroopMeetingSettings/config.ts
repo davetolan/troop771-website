@@ -15,10 +15,20 @@ export const TroopMeetingSettings: GlobalConfig = {
       type: 'checkbox',
       admin: {
         description:
-          'When checked, the public next meeting banner is hidden until this is turned off.',
+          'When checked, the public next meeting banner shows the summer break message instead of a meeting date.',
       },
       defaultValue: false,
       label: 'Done for the summer',
+    },
+    {
+      name: 'summerBreakMessage',
+      type: 'textarea',
+      admin: {
+        condition: (_data, siblingData) => Boolean(siblingData.summerBreakActive),
+        description: 'Shown in the banner while "Done for the summer" is checked.',
+      },
+      defaultValue: 'Troop meetings are paused for the summer. Check back soon.',
+      label: 'Summer break message',
     },
     {
       name: 'defaultLocation',

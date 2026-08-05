@@ -2410,9 +2410,13 @@ export interface Footer {
 export interface TroopMeetingSetting {
   id: number;
   /**
-   * When checked, the public next meeting banner is hidden until this is turned off.
+   * When checked, the public next meeting banner shows the summer break message instead of a meeting date.
    */
   summerBreakActive?: boolean | null;
+  /**
+   * Shown in the banner while "Done for the summer" is checked.
+   */
+  summerBreakMessage?: string | null;
   /**
    * Shown in the banner for regular Tuesday meetings.
    */
@@ -2494,6 +2498,7 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface TroopMeetingSettingsSelect<T extends boolean = true> {
   summerBreakActive?: T;
+  summerBreakMessage?: T;
   defaultLocation?: T;
   alternateLocationActive?: T;
   calendarUrl?: T;

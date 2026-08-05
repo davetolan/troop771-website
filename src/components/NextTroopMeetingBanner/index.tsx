@@ -29,8 +29,14 @@ export function NextTroopMeetingBannerView({ meeting, now }: NextTroopMeetingBan
               aria-hidden="true"
             />
             <p className="min-w-0 font-medium">
-              <span className="font-semibold">{meeting.title}:</span>{' '}
-              <span>{formatTroopMeetingStart(meeting.start, now)}</span>
+              {meeting.start ? (
+                <>
+                  <span className="font-semibold">{meeting.title}:</span>{' '}
+                  <span>{formatTroopMeetingStart(meeting.start, now)}</span>
+                </>
+              ) : (
+                <span className="font-semibold">{meeting.title}</span>
+              )}
             </p>
           </div>
 
