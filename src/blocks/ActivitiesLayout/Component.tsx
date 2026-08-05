@@ -1,6 +1,7 @@
 import type { ActivitiesLayoutBlock as ActivitiesLayoutBlockProps } from '@/payload-types'
 
 import configPromise from '@payload-config'
+import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 
 import { monthLabels, monthOrder } from '@/collections/Activities'
@@ -27,6 +28,52 @@ const getYearMonthFromDateString = (value: string) => {
 
   return { year, month }
 }
+
+const getActivitiesForRange = (startMonthIndex: number, endMonthIndex: number) =>
+  unstable_cache(
+    async (): Promise<ActivityListItem[]> => {
+      const payload = await getPayload({ config: configPromise })
+
+      const { docs } = await payload.find({
+        collection: 'activities',
+        depth: 0,
+        limit: 200,
+        overrideAccess: false,
+        sort: 'year',
+        where: {
+          active: {
+            equals: true,
+          },
+        },
+      })
+
+      return docs
+        .filter((doc) => {
+          const activityMonthIndex = getYearMonthIndex(doc.year, monthOrder[doc.month])
+          return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
+        })
+        .sort((left, right) => {
+          if (left.year !== right.year) {
+            return left.year - right.year
+          }
+
+          return monthOrder[left.month] - monthOrder[right.month]
+        })
+        .map(
+          (doc): ActivityListItem => ({
+            id: doc.id,
+            activity: doc.activity,
+            month: monthLabels[doc.month],
+            monthNumber: monthOrder[doc.month],
+            year: doc.year,
+          }),
+        )
+    },
+    ['activities-layout', String(startMonthIndex), String(endMonthIndex)],
+    {
+      tags: ['collection_activities'],
+    },
+  )()
 
 export const ActivitiesLayoutBlock = async (
   props: ActivitiesLayoutBlockProps & {
@@ -74,35 +121,7 @@ export const ActivitiesLayoutBlock = async (
   let activities: ActivityListItem[] = []
 
   try {
-    const { docs } = await payload.find({
-      collection: 'activities',
-      depth: 0,
-      limit: 200,
-      overrideAccess: false,
-      sort: 'year',
-    })
-
-    activities = docs
-      .filter((doc) => {
-        const activityMonthIndex = getYearMonthIndex(doc.year, monthOrder[doc.month])
-        return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
-      })
-      .sort((left, right) => {
-        if (left.year !== right.year) {
-          return left.year - right.year
-        }
-
-        return monthOrder[left.month] - monthOrder[right.month]
-      })
-      .map(
-        (doc): ActivityListItem => ({
-          id: doc.id,
-          activity: doc.activity,
-          month: monthLabels[doc.month],
-          monthNumber: monthOrder[doc.month],
-          year: doc.year,
-        }),
-      )
+    activities = await getActivitiesForRange(startMonthIndex, endMonthIndex)
   } catch (error) {
     payload.logger.error({
       err: error,
