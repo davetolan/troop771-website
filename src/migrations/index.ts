@@ -17,6 +17,7 @@ import * as migration_20260426_151500_upsert_why_eagle_scout_matters_page from '
 import * as migration_20260707_171600_add_merit_badge_counselors from './20260707_171600_add_merit_badge_counselors'
 import * as migration_20260707_192300_add_troops_to_merit_badge_counselors from './20260707_192300_add_troops_to_merit_badge_counselors'
 import * as migration_20260805_210500_add_troop_meeting_settings from './20260805_210500_add_troop_meeting_settings'
+import * as migration_20260805_220000_add_troop_meeting_summer_message from './20260805_220000_add_troop_meeting_summer_message'
 
 export const migrations = [
   {
@@ -113,5 +114,10 @@ export const migrations = [
     up: migration_20260805_210500_add_troop_meeting_settings.up,
     down: migration_20260805_210500_add_troop_meeting_settings.down,
     name: '20260805_210500_add_troop_meeting_settings',
+  },
+  {
+    up: migration_20260805_220000_add_troop_meeting_summer_message.up,
+    down: migration_20260805_220000_add_troop_meeting_summer_message.down,
+    name: '20260805_220000_add_troop_meeting_summer_message',
   },
 ]
