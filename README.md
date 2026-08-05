@@ -154,10 +154,10 @@ Key principle: youth can contribute while adults maintain oversight.
 
 Suggested permissions:
 
-| Role | Permissions |
-| --- | --- |
-| `admin` | Full access |
-| `editor` | Create, edit, publish |
+| Role        | Permissions                                  |
+| ----------- | -------------------------------------------- |
+| `admin`     | Full access                                  |
+| `editor`    | Create, edit, publish                        |
 | `webmaster` | Create and edit, with limited publish access |
 
 Optional policy:
@@ -204,6 +204,21 @@ Required production URL env vars on Vercel:
 Set both to the same canonical origin (including protocol, no trailing slash).
 
 If these values are missing or do not match in production, admin saves can fail due to cookie and CORS mismatches.
+
+### Next Troop Meeting Banner
+
+The public layout shows the next regular Tuesday troop meeting from Payload-managed settings.
+Meetings are assumed to be Tuesdays from 7:00 PM to 8:30 PM America/Chicago at the Scout Barn.
+
+Admins can manage:
+
+- `Troop Meeting Settings`: pause the banner when the troop is done for the summer, set the
+  default location, mark the next meetings as using an alternate location, and optionally add a
+  public calendar link
+- `Troop Meeting Exceptions`: dates when the regular Tuesday meeting should be skipped
+
+The result is cached for 1 hour, revalidated when meeting settings or exceptions change, and hidden
+after the meeting end time.
 
 ## Future Considerations
 

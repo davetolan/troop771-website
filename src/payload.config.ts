@@ -11,12 +11,14 @@ import { Posts } from './collections/Posts'
 import { Activities } from './collections/Activities'
 import { MeritBadgeCounselors } from './collections/MeritBadgeCounselors'
 import { Troops } from './collections/Troops'
+import { TroopMeetingExceptions } from './collections/TroopMeetingExceptions'
 import { ScoutChangeReports } from './collections/ScoutChangeReports'
 import { Users } from './collections/Users'
 import { RecipeCategories } from './collections/RecipeCategories'
 import { Recipes } from './collections/Recipes'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { TroopMeetingSettings } from './TroopMeetingSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import {
@@ -84,6 +86,7 @@ export default buildConfig({
     Posts,
     Recipes,
     Activities,
+    TroopMeetingExceptions,
     MeritBadgeCounselors,
     Troops,
     Media,
@@ -96,7 +99,7 @@ export default buildConfig({
     afterError: [logPayloadError],
   },
   cors: corsOrigins,
-  globals: [Header, Footer],
+  globals: [Header, Footer, TroopMeetingSettings],
   plugins,
   serverURL,
   secret: process.env.PAYLOAD_SECRET,

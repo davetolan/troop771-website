@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     recipes: Recipe;
     activities: Activity;
+    'troop-meeting-exceptions': TroopMeetingException;
     'merit-badge-counselors': MeritBadgeCounselor;
     troops: Troop;
     media: Media;
@@ -99,6 +100,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     recipes: RecipesSelect<false> | RecipesSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
+    'troop-meeting-exceptions': TroopMeetingExceptionsSelect<false> | TroopMeetingExceptionsSelect<true>;
     'merit-badge-counselors': MeritBadgeCounselorsSelect<false> | MeritBadgeCounselorsSelect<true>;
     troops: TroopsSelect<false> | TroopsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -124,10 +126,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    troopMeetingSettings: TroopMeetingSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    troopMeetingSettings: TroopMeetingSettingsSelect<false> | TroopMeetingSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1098,6 +1102,22 @@ export interface Activity {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Add a date here when the troop should not show a regular Tuesday meeting announcement.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "troop-meeting-exceptions".
+ */
+export interface TroopMeetingException {
+  id: number;
+  date: string;
+  /**
+   * Optional internal note, for example "Spring break" or "Court of Honor".
+   */
+  reason?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "merit-badge-counselors".
  */
@@ -1363,6 +1383,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'activities';
         value: number | Activity;
+      } | null)
+    | ({
+        relationTo: 'troop-meeting-exceptions';
+        value: number | TroopMeetingException;
       } | null)
     | ({
         relationTo: 'merit-badge-counselors';
@@ -1811,6 +1835,16 @@ export interface ActivitiesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "troop-meeting-exceptions_select".
+ */
+export interface TroopMeetingExceptionsSelect<T extends boolean = true> {
+  date?: T;
+  reason?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2371,6 +2405,31 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "troopMeetingSettings".
+ */
+export interface TroopMeetingSetting {
+  id: number;
+  /**
+   * When checked, the public next meeting banner is hidden until this is turned off.
+   */
+  summerBreakActive?: boolean | null;
+  /**
+   * Shown in the banner for regular Tuesday meetings.
+   */
+  defaultLocation?: string | null;
+  /**
+   * When checked, the banner tells families to check Slack instead of publishing an alternate location.
+   */
+  alternateLocationActive?: boolean | null;
+  /**
+   * Optional link shown as "View Calendar" in the banner.
+   */
+  calendarUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2425,6 +2484,19 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "troopMeetingSettings_select".
+ */
+export interface TroopMeetingSettingsSelect<T extends boolean = true> {
+  summerBreakActive?: T;
+  defaultLocation?: T;
+  alternateLocationActive?: T;
+  calendarUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
