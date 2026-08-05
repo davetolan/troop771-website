@@ -230,7 +230,7 @@ async function getNextTroopMeetingFromPayload() {
     const payload = await getPayload({ config: configPromise })
     const [settings, exceptions] = await Promise.all([
       payload.findGlobal({
-        slug: 'troopMeetingSettings',
+        slug: 'troop-meeting-settings',
         depth: 0,
         overrideAccess: false,
       }),

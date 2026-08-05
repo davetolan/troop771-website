@@ -126,12 +126,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    troopMeetingSettings: TroopMeetingSetting;
+    'troop-meeting-settings': TroopMeetingSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    troopMeetingSettings: TroopMeetingSettingsSelect<false> | TroopMeetingSettingsSelect<true>;
+    'troop-meeting-settings': TroopMeetingSettingsSelect<false> | TroopMeetingSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2405,7 +2405,7 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "troopMeetingSettings".
+ * via the `definition` "troop-meeting-settings".
  */
 export interface TroopMeetingSetting {
   id: number;
@@ -2494,7 +2494,7 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "troopMeetingSettings_select".
+ * via the `definition` "troop-meeting-settings_select".
  */
 export interface TroopMeetingSettingsSelect<T extends boolean = true> {
   summerBreakActive?: T;

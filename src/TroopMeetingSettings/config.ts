@@ -4,7 +4,7 @@ import { createScoutGlobalAfterChangeHook } from '@/hooks/logScoutChanges'
 import { revalidateNextTroopMeetingGlobal } from '@/hooks/revalidateNextTroopMeeting'
 
 export const TroopMeetingSettings: GlobalConfig = {
-  slug: 'troopMeetingSettings',
+  slug: 'troop-meeting-settings',
   label: 'Troop Meeting Settings',
   access: {
     read: () => true,
@@ -60,7 +60,7 @@ export const TroopMeetingSettings: GlobalConfig = {
   ],
   hooks: {
     afterChange: [
-      createScoutGlobalAfterChangeHook('troopMeetingSettings'),
+      createScoutGlobalAfterChangeHook('troop-meeting-settings'),
       revalidateNextTroopMeetingGlobal,
     ],
   },
