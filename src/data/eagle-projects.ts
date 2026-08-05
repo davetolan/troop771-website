@@ -104,7 +104,7 @@ const kasonProject: EagleProject = {
     'The finished area will provide Liberty Christian School with an attractive, shaded place where students can socialize and wait for parents to pick them up. The project will also replace a deteriorating wooden structure with landscaping that matches the front of the school.',
   fundraising: {
     goal: 4000,
-    raised: 0,
+    raised: 356,
     lastUpdated: 'TBD',
     donationUrl: 'https://venmo.com/?txn=pay&recipients=Troop-771&note=Kason%27s%20Eagle%20Project',
     note:
