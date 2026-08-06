@@ -27,6 +27,7 @@ import {
   getAllEagleProjects,
   getEagleProjectBySlug,
 } from '@/data/eagle-projects'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { cn } from '@/utilities/ui'
@@ -124,7 +125,42 @@ export default async function EagleProjectPage({ params: paramsPromise }: Args) 
 
   if (!project) notFound()
 
-  return <EagleProjectTemplate project={project} />
+  const fundraising = await getEagleProjectFundraising(slug)
+  const projectWithFundraising = fundraising
+    ? {
+        ...project,
+        fundraising: {
+          ...project.fundraising,
+          ...fundraising,
+        },
+      }
+    : project
+
+  return <EagleProjectTemplate project={projectWithFundraising} />
+}
+
+async function getEagleProjectFundraising(
+  slug: string,
+): Promise<Pick<EagleProject['fundraising'], 'raised' | 'lastUpdated'> | undefined> {
+  if (slug !== 'kason') {
+    return undefined
+  }
+
+  try {
+    const fundraising = await getCachedGlobal('eagle-project-fundraising', 0)()
+
+    if (typeof fundraising.kason?.raised !== 'number') {
+      return undefined
+    }
+
+    return {
+      raised: fundraising.kason.raised,
+      lastUpdated: fundraising.kason.lastUpdated || undefined,
+    }
+  } catch (error) {
+    console.error('Unable to load Eagle project fundraising settings', error)
+    return undefined
+  }
 }
 
 function EagleProjectTemplate({ project }: { project: EagleProject }) {
@@ -184,11 +220,7 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
                 >
                   <Link href={donationHref}>Donate to the Project</Link>
                 </Button>
-                <EagleShareButton
-                  text={project.subtitle}
-                  title={project.title}
-                  url={pageUrl}
-                />
+                <EagleShareButton text={project.subtitle} title={project.title} url={pageUrl} />
               </div>
             </div>
 
@@ -433,7 +465,10 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
 
       <section className="bg-white py-16 sm:py-20">
         <div className="container">
-          <SectionHeading eyebrow="Ways to Help" title="Every contribution helps move the project forward" />
+          <SectionHeading
+            eyebrow="Ways to Help"
+            title="Every contribution helps move the project forward"
+          />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {waysToHelp.map(({ title, description, icon: Icon }) => (
               <Card className="border-stone-200 bg-stone-50" key={title}>
@@ -489,8 +524,8 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
               />
             </div>
             <p className="text-base leading-8 text-stone-700 sm:text-lg">
-              Kason is a Life Scout with Troop 771. He is completing this service project as part
-              of his journey toward the rank of Eagle Scout. Eagle Scout service projects require
+              Kason is a Life Scout with Troop 771. He is completing this service project as part of
+              his journey toward the rank of Eagle Scout. Eagle Scout service projects require
               Scouts to plan, develop, and lead others in completing a project that benefits a
               school, religious organization, or community.
             </p>
@@ -586,9 +621,7 @@ function EagleProjectTemplate({ project }: { project: EagleProject }) {
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#4f5d3a]">
-        {eyebrow}
-      </p>
+      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#4f5d3a]">{eyebrow}</p>
       <h2 className="mt-4 text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">
         {title}
       </h2>
@@ -600,7 +633,13 @@ function ImageCard({ alt, caption, src }: { alt: string; caption: string; src: s
   return (
     <figure className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-[0_22px_70px_-52px_rgba(41,37,36,0.55)]">
       <div className="relative aspect-[5/4]">
-        <Image alt={alt} className="object-cover" fill sizes="(max-width: 1024px) 100vw, 50vw" src={src} />
+        <Image
+          alt={alt}
+          className="object-cover"
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          src={src}
+        />
       </div>
       <figcaption className="px-5 py-4 text-sm font-medium text-stone-700">{caption}</figcaption>
     </figure>

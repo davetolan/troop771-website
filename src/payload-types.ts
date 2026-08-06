@@ -127,11 +127,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'troop-meeting-settings': TroopMeetingSetting;
+    'eagle-project-fundraising': EagleProjectFundraising;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'troop-meeting-settings': TroopMeetingSettingsSelect<false> | TroopMeetingSettingsSelect<true>;
+    'eagle-project-fundraising': EagleProjectFundraisingSelect<false> | EagleProjectFundraisingSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2423,6 +2425,25 @@ export interface TroopMeetingSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eagle-project-fundraising".
+ */
+export interface EagleProjectFundraising {
+  id: number;
+  kason: {
+    /**
+     * Dollar amount shown as raised on the public Eagle project page.
+     */
+    raised: number;
+    /**
+     * Optional public update text, for example "August 6, 2026".
+     */
+    lastUpdated?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2491,6 +2512,21 @@ export interface TroopMeetingSettingsSelect<T extends boolean = true> {
   defaultLocation?: T;
   alternateLocationActive?: T;
   calendarUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eagle-project-fundraising_select".
+ */
+export interface EagleProjectFundraisingSelect<T extends boolean = true> {
+  kason?:
+    | T
+    | {
+        raised?: T;
+        lastUpdated?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

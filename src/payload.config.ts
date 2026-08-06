@@ -19,6 +19,7 @@ import { Recipes } from './collections/Recipes'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { TroopMeetingSettings } from './TroopMeetingSettings/config'
+import { EagleProjectFundraising } from './EagleProjectFundraising/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import {
@@ -99,7 +100,7 @@ export default buildConfig({
     afterError: [logPayloadError],
   },
   cors: corsOrigins,
-  globals: [Header, Footer, TroopMeetingSettings],
+  globals: [Header, Footer, TroopMeetingSettings, EagleProjectFundraising],
   plugins,
   serverURL,
   secret: process.env.PAYLOAD_SECRET,
