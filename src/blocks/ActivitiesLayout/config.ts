@@ -18,19 +18,6 @@ export const ActivitiesLayout: Block = {
       },
     },
     {
-      name: 'eyebrow',
-      type: 'text',
-    },
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
       name: 'emptyMessage',
       type: 'text',
       defaultValue: 'No activities are scheduled yet.',

@@ -5,7 +5,6 @@ import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 
 import { monthLabels, monthOrder } from '@/collections/Activities'
-import { SectionHeading } from '@/components/homepage/SectionHeading'
 
 type ActivityListItem = {
   id: number
@@ -68,8 +67,7 @@ export const ActivitiesLayoutBlock = async (
     id?: string
   },
 ) => {
-  const { id, eyebrow, title, description, showInactive, emptyMessage } = props
-  const resolvedTitle = title || 'Activities'
+  const { id, showInactive, emptyMessage } = props
 
   const payload = await getPayload({ config: configPromise })
 
@@ -95,14 +93,8 @@ export const ActivitiesLayoutBlock = async (
   return (
     <section className="bg-[linear-gradient(to_bottom,rgba(250,250,249,1),rgba(245,245,244,1))] py-20 sm:py-24" id={id ? `block-${id}` : undefined}>
       <div className="container">
-        <SectionHeading
-          eyebrow={eyebrow || 'Activities'}
-          title={resolvedTitle}
-          description={description || undefined}
-        />
-
         {activities.length > 0 ? (
-          <div className="mt-12 space-y-10">
+          <div className="space-y-10">
             {Array.from(groupedActivities.entries()).map(([year, yearActivities]) => (
               <section key={year}>
                 <div className="flex items-center gap-4">

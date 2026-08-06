@@ -4,11 +4,17 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     ALTER TABLE "pages_blocks_activities_layout"
       ADD COLUMN "show_inactive" boolean DEFAULT false,
+      DROP COLUMN "eyebrow",
+      DROP COLUMN "title",
+      DROP COLUMN "description",
       DROP COLUMN "start_date",
       DROP COLUMN "end_date";
 
     ALTER TABLE "_pages_v_blocks_activities_layout"
       ADD COLUMN "show_inactive" boolean DEFAULT false,
+      DROP COLUMN "eyebrow",
+      DROP COLUMN "title",
+      DROP COLUMN "description",
       DROP COLUMN "start_date",
       DROP COLUMN "end_date";
   `)
@@ -17,11 +23,17 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
 export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
     ALTER TABLE "pages_blocks_activities_layout"
+      ADD COLUMN "eyebrow" varchar,
+      ADD COLUMN "title" varchar,
+      ADD COLUMN "description" varchar,
       ADD COLUMN "start_date" timestamp(3) with time zone,
       ADD COLUMN "end_date" timestamp(3) with time zone,
       DROP COLUMN "show_inactive";
 
     ALTER TABLE "_pages_v_blocks_activities_layout"
+      ADD COLUMN "eyebrow" varchar,
+      ADD COLUMN "title" varchar,
+      ADD COLUMN "description" varchar,
       ADD COLUMN "start_date" timestamp(3) with time zone,
       ADD COLUMN "end_date" timestamp(3) with time zone,
       DROP COLUMN "show_inactive";

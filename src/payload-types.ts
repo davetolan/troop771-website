@@ -477,9 +477,6 @@ export interface ActivitiesLayoutBlock {
    * Include activities marked inactive in the public list.
    */
   showInactive?: boolean | null;
-  eyebrow?: string | null;
-  title: string;
-  description?: string | null;
   emptyMessage?: string | null;
   id?: string | null;
   blockName?: string | null;
@@ -1537,9 +1534,6 @@ export interface PagesSelect<T extends boolean = true> {
  */
 export interface ActivitiesLayoutBlockSelect<T extends boolean = true> {
   showInactive?: T;
-  eyebrow?: T;
-  title?: T;
-  description?: T;
   emptyMessage?: T;
   id?: T;
   blockName?: T;
