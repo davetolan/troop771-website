@@ -18,6 +18,7 @@ import * as migration_20260707_171600_add_merit_badge_counselors from './2026070
 import * as migration_20260707_192300_add_troops_to_merit_badge_counselors from './20260707_192300_add_troops_to_merit_badge_counselors'
 import * as migration_20260805_210500_add_troop_meeting_settings from './20260805_210500_add_troop_meeting_settings'
 import * as migration_20260805_220000_add_troop_meeting_summer_message from './20260805_220000_add_troop_meeting_summer_message'
+import * as migration_20260806_010000_update_activities_layout_show_inactive from './20260806_010000_update_activities_layout_show_inactive'
 
 export const migrations = [
   {
@@ -119,5 +120,10 @@ export const migrations = [
     up: migration_20260805_220000_add_troop_meeting_summer_message.up,
     down: migration_20260805_220000_add_troop_meeting_summer_message.down,
     name: '20260805_220000_add_troop_meeting_summer_message',
+  },
+  {
+    up: migration_20260806_010000_update_activities_layout_show_inactive.up,
+    down: migration_20260806_010000_update_activities_layout_show_inactive.down,
+    name: '20260806_010000_update_activities_layout_show_inactive',
   },
 ]

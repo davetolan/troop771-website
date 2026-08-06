@@ -10,6 +10,14 @@ export const ActivitiesLayout: Block = {
   },
   fields: [
     {
+      name: 'showInactive',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Include activities marked inactive in the public list.',
+      },
+    },
+    {
       name: 'eyebrow',
       type: 'text',
     },
@@ -23,31 +31,9 @@ export const ActivitiesLayout: Block = {
       type: 'textarea',
     },
     {
-      name: 'startDate',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayOnly',
-        },
-        description: 'Inclusive start date for which planned activities should appear.',
-      },
-      required: true,
-    },
-    {
-      name: 'endDate',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayOnly',
-        },
-        description: 'Inclusive end date for which planned activities should appear.',
-      },
-      required: true,
-    },
-    {
       name: 'emptyMessage',
       type: 'text',
-      defaultValue: 'No activities are scheduled in this date range yet.',
+      defaultValue: 'No activities are scheduled yet.',
     },
   ],
   labels: {

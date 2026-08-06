@@ -17,19 +17,7 @@ type ActivityListItem = {
 
 const getYearMonthIndex = (year: number, month: number) => year * 12 + (month - 1)
 
-const getYearMonthFromDateString = (value: string) => {
-  const [yearPart, monthPart] = value.split('T')[0]?.split('-') ?? []
-  const year = Number(yearPart)
-  const month = Number(monthPart)
-
-  if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
-    return null
-  }
-
-  return { year, month }
-}
-
-const getActivitiesForRange = (startMonthIndex: number, endMonthIndex: number) =>
+const getActivities = (showInactive: boolean) =>
   unstable_cache(
     async (): Promise<ActivityListItem[]> => {
       const payload = await getPayload({ config: configPromise })
@@ -40,18 +28,18 @@ const getActivitiesForRange = (startMonthIndex: number, endMonthIndex: number) =
         limit: 200,
         overrideAccess: false,
         sort: 'year',
-        where: {
-          active: {
-            equals: true,
-          },
-        },
+        ...(showInactive
+          ? {}
+          : {
+              where: {
+                active: {
+                  equals: true,
+                },
+              },
+            }),
       })
 
       return docs
-        .filter((doc) => {
-          const activityMonthIndex = getYearMonthIndex(doc.year, monthOrder[doc.month])
-          return activityMonthIndex >= startMonthIndex && activityMonthIndex <= endMonthIndex
-        })
         .sort((left, right) => {
           if (left.year !== right.year) {
             return left.year - right.year
@@ -69,7 +57,7 @@ const getActivitiesForRange = (startMonthIndex: number, endMonthIndex: number) =
           }),
         )
     },
-    ['activities-layout', String(startMonthIndex), String(endMonthIndex)],
+    ['activities-layout', showInactive ? 'show-inactive' : 'active-only'],
     {
       tags: ['collection_activities'],
     },
@@ -80,54 +68,20 @@ export const ActivitiesLayoutBlock = async (
     id?: string
   },
 ) => {
-  const { id, eyebrow, title, description, startDate, endDate, emptyMessage } = props
+  const { id, eyebrow, title, description, showInactive, emptyMessage } = props
   const resolvedTitle = title || 'Activities'
-  const hasDateRange = Boolean(startDate && endDate)
-
-  if (!hasDateRange) {
-    return (
-      <section
-        className="bg-[linear-gradient(to_bottom,rgba(250,250,249,1),rgba(245,245,244,1))] py-20 sm:py-24"
-        id={id ? `block-${id}` : undefined}
-      >
-        <div className="container">
-          <SectionHeading
-            eyebrow={eyebrow || 'Activities'}
-            title={resolvedTitle}
-            description={description || undefined}
-          />
-
-          <div className="mt-12 rounded-[1.75rem] border border-dashed border-stone-300 bg-white p-8 text-sm leading-7 text-stone-600 shadow-[0_18px_40px_-38px_rgba(41,37,36,0.35)]">
-            Add a start date and end date to preview activities in this layout.
-          </div>
-        </div>
-      </section>
-    )
-  }
 
   const payload = await getPayload({ config: configPromise })
-  const parsedStart = getYearMonthFromDateString(startDate)
-  const parsedEnd = getYearMonthFromDateString(endDate)
-  const fallbackStartDate = new Date(startDate)
-  const fallbackEndDate = new Date(endDate)
-
-  const startMonthIndex = parsedStart
-    ? getYearMonthIndex(parsedStart.year, parsedStart.month)
-    : getYearMonthIndex(fallbackStartDate.getUTCFullYear(), fallbackStartDate.getUTCMonth() + 1)
-  const endMonthIndex = parsedEnd
-    ? getYearMonthIndex(parsedEnd.year, parsedEnd.month)
-    : getYearMonthIndex(fallbackEndDate.getUTCFullYear(), fallbackEndDate.getUTCMonth() + 1)
 
   let activities: ActivityListItem[] = []
 
   try {
-    activities = await getActivitiesForRange(startMonthIndex, endMonthIndex)
+    activities = await getActivities(Boolean(showInactive))
   } catch (error) {
     payload.logger.error({
       err: error,
       msg: 'Failed to load activities for ActivitiesLayoutBlock',
-      startDate,
-      endDate,
+      showInactive: Boolean(showInactive),
     })
   }
 
@@ -176,7 +130,7 @@ export const ActivitiesLayoutBlock = async (
           </div>
         ) : (
           <div className="mt-12 rounded-[1.75rem] border border-stone-200 bg-white p-8 text-sm leading-7 text-stone-700 shadow-[0_18px_40px_-38px_rgba(41,37,36,0.35)]">
-            {emptyMessage || 'No activities are scheduled in this date range yet.'}
+            {emptyMessage || 'No activities are scheduled yet.'}
           </div>
         )}
       </div>

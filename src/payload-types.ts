@@ -473,17 +473,13 @@ export interface User {
  * via the `definition` "ActivitiesLayoutBlock".
  */
 export interface ActivitiesLayoutBlock {
+  /**
+   * Include activities marked inactive in the public list.
+   */
+  showInactive?: boolean | null;
   eyebrow?: string | null;
   title: string;
   description?: string | null;
-  /**
-   * Inclusive start date for which planned activities should appear.
-   */
-  startDate: string;
-  /**
-   * Inclusive end date for which planned activities should appear.
-   */
-  endDate: string;
   emptyMessage?: string | null;
   id?: string | null;
   blockName?: string | null;
@@ -1540,11 +1536,10 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "ActivitiesLayoutBlock_select".
  */
 export interface ActivitiesLayoutBlockSelect<T extends boolean = true> {
+  showInactive?: T;
   eyebrow?: T;
   title?: T;
   description?: T;
-  startDate?: T;
-  endDate?: T;
   emptyMessage?: T;
   id?: T;
   blockName?: T;
