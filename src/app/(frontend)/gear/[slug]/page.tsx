@@ -5,7 +5,19 @@ import { Media } from '@/components/Media'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 import configPromise from '@payload-config'
-import { ArrowLeft, ExternalLink, ShoppingBag } from 'lucide-react'
+import {
+  ArrowLeft,
+  Backpack,
+  CookingPot,
+  Cross,
+  ExternalLink,
+  Footprints,
+  GlassWater,
+  Map,
+  Shirt,
+  ShoppingBag,
+  Tent,
+} from 'lucide-react'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
@@ -39,6 +51,49 @@ const statusLabels = {
   optional: 'Optional',
   recommended: 'Recommended',
   required: 'Required',
+} as const
+
+const fallbackGearIcons = {
+  clothing: {
+    Icon: Shirt,
+    label: 'Clothing',
+  },
+  'cooking-food': {
+    Icon: CookingPot,
+    label: 'Cooking and food',
+  },
+  footwear: {
+    Icon: Footprints,
+    label: 'Footwear',
+  },
+  general: {
+    Icon: ShoppingBag,
+    label: 'General gear',
+  },
+  'health-first-aid': {
+    Icon: Cross,
+    label: 'Health and first aid',
+  },
+  'navigation-safety': {
+    Icon: Map,
+    label: 'Navigation and safety',
+  },
+  optional: {
+    Icon: ShoppingBag,
+    label: 'Optional gear',
+  },
+  'packs-bags': {
+    Icon: Backpack,
+    label: 'Packs and bags',
+  },
+  'sleeping-gear': {
+    Icon: Tent,
+    label: 'Sleeping gear',
+  },
+  water: {
+    Icon: GlassWater,
+    label: 'Water gear',
+  },
 } as const
 
 export default async function GearPage({ params: paramsPromise }: Args) {
@@ -166,6 +221,8 @@ function GearListItem({
   status?: 'optional' | 'recommended' | 'required' | null
 }) {
   const hasVendorLinks = !hideVendorLinks && (item.amazonUrl || item.reiUrl)
+  const fallbackIcon = fallbackGearIcons[item.category ?? 'general']
+  const FallbackIcon = fallbackIcon.Icon
 
   return (
     <article className="grid gap-5 p-5 sm:grid-cols-[8rem_minmax(0,1fr)] sm:p-6">
@@ -173,8 +230,12 @@ function GearListItem({
         {item.image && typeof item.image === 'object' ? (
           <Media fill imgClassName="object-cover" resource={item.image} size="8rem" />
         ) : (
-          <div className="flex h-full items-center justify-center text-[#4f5d3a]">
-            <ShoppingBag className="h-9 w-9" aria-hidden="true" />
+          <div
+            aria-label={fallbackIcon.label}
+            className="flex h-full items-center justify-center bg-[#f3efe7] text-[#4f5d3a]"
+            role="img"
+          >
+            <FallbackIcon className="h-12 w-12" aria-hidden="true" strokeWidth={1.75} />
           </div>
         )}
       </div>
