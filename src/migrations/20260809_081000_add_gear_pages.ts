@@ -74,7 +74,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
 
     CREATE TABLE IF NOT EXISTS "gear_pages" (
       "id" serial PRIMARY KEY NOT NULL,
-      "title" varchar NOT NULL,
+      "title" varchar,
       "intro" varchar,
       "hero_image_id" integer,
       "disclosure_show_disclosure" boolean DEFAULT false,
@@ -85,7 +85,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       "meta_description" varchar,
       "published_at" timestamp(3) with time zone,
       "generate_slug" boolean DEFAULT true,
-      "slug" varchar NOT NULL,
+      "slug" varchar,
       "updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
       "created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
       "_status" "enum_gear_pages_status" DEFAULT 'draft'
