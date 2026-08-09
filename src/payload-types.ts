@@ -490,29 +490,29 @@ export interface GearPage {
    */
   intro?: string | null;
   heroImage?: (number | null) | Media;
-  sections: {
-    title: string;
-    description?: string | null;
-    items: {
-      item: number | GearItem;
-      quantity?: string | null;
-      status: 'required' | 'recommended' | 'optional';
-      /**
-       * Hide purchase buttons for this item on this page.
-       */
-      hideVendorLinks?: boolean | null;
-      /**
-       * Page-specific note shown before the reusable item summary.
-       */
-      note?: string | null;
-      id?: string | null;
-    }[];
-    id?: string | null;
-  }[];
-  disclosure?: {
-    showDisclosure?: boolean | null;
-    disclosureText?: string | null;
-  };
+  sections?:
+    | {
+        title: string;
+        description?: string | null;
+        items?:
+          | {
+              item: number | GearItem;
+              quantity?: string | null;
+              status: 'required' | 'recommended' | 'optional';
+              /**
+               * Hide purchase buttons for this item on this page.
+               */
+              hideVendorLinks?: boolean | null;
+              /**
+               * Page-specific note shown before the reusable item summary.
+               */
+              note?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Optional content shown below the gear list.
    */
@@ -531,6 +531,10 @@ export interface GearPage {
     };
     [k: string]: unknown;
   } | null;
+  disclosure?: {
+    showDisclosure?: boolean | null;
+    disclosureText?: string | null;
+  };
   meta?: {
     title?: string | null;
     /**
@@ -1993,13 +1997,13 @@ export interface GearPagesSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  content?: T;
   disclosure?:
     | T
     | {
         showDisclosure?: T;
         disclosureText?: T;
       };
-  content?: T;
   meta?:
     | T
     | {

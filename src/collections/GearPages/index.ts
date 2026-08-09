@@ -68,144 +68,142 @@ export const GearPages: CollectionConfig<'gear-pages'> = {
       required: true,
     },
     {
-      name: 'intro',
-      type: 'textarea',
-      maxLength: 420,
-      admin: {
-        description: 'Short introduction shown at the top of the gear page and on index cards.',
-      },
-    },
-    {
-      name: 'heroImage',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'sections',
-      type: 'array',
-      minRows: 1,
-      required: true,
-      labels: {
-        singular: 'Section',
-        plural: 'Sections',
-      },
-      admin: {
-        initCollapsed: true,
-      },
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          name: 'title',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'description',
-          type: 'textarea',
-          maxLength: 260,
-        },
-        {
-          name: 'items',
-          type: 'array',
-          minRows: 1,
-          required: true,
-          labels: {
-            singular: 'Gear Item',
-            plural: 'Gear Items',
-          },
-          admin: {
-            initCollapsed: true,
-          },
+          label: 'Content',
           fields: [
             {
-              name: 'item',
-              type: 'relationship',
-              relationTo: 'gear-items',
-              required: true,
+              name: 'intro',
+              type: 'textarea',
+              maxLength: 420,
+              admin: {
+                description: 'Short introduction shown at the top of the gear page and on index cards.',
+              },
             },
             {
-              type: 'row',
+              name: 'heroImage',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'sections',
+              type: 'array',
+              labels: {
+                singular: 'Section',
+                plural: 'Sections',
+              },
+              admin: {
+                initCollapsed: true,
+              },
               fields: [
                 {
-                  name: 'quantity',
+                  name: 'title',
                   type: 'text',
-                  admin: {
-                    width: '33%',
-                  },
-                },
-                {
-                  name: 'status',
-                  type: 'select',
-                  defaultValue: 'required',
-                  options: [
-                    { label: 'Required', value: 'required' },
-                    { label: 'Recommended', value: 'recommended' },
-                    { label: 'Optional', value: 'optional' },
-                  ],
                   required: true,
-                  admin: {
-                    width: '33%',
-                  },
                 },
                 {
-                  name: 'hideVendorLinks',
-                  type: 'checkbox',
-                  defaultValue: false,
-                  admin: {
-                    description: 'Hide purchase buttons for this item on this page.',
-                    width: '33%',
+                  name: 'description',
+                  type: 'textarea',
+                  maxLength: 260,
+                },
+                {
+                  name: 'items',
+                  type: 'array',
+                  labels: {
+                    singular: 'Gear Item',
+                    plural: 'Gear Items',
                   },
+                  admin: {
+                    initCollapsed: true,
+                  },
+                  fields: [
+                    {
+                      name: 'item',
+                      type: 'relationship',
+                      relationTo: 'gear-items',
+                      required: true,
+                    },
+                    {
+                      type: 'row',
+                      fields: [
+                        {
+                          name: 'quantity',
+                          type: 'text',
+                          admin: {
+                            width: '33%',
+                          },
+                        },
+                        {
+                          name: 'status',
+                          type: 'select',
+                          defaultValue: 'required',
+                          options: [
+                            { label: 'Required', value: 'required' },
+                            { label: 'Recommended', value: 'recommended' },
+                            { label: 'Optional', value: 'optional' },
+                          ],
+                          required: true,
+                          admin: {
+                            width: '33%',
+                          },
+                        },
+                        {
+                          name: 'hideVendorLinks',
+                          type: 'checkbox',
+                          defaultValue: false,
+                          admin: {
+                            description: 'Hide purchase buttons for this item on this page.',
+                            width: '33%',
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      name: 'note',
+                      type: 'textarea',
+                      maxLength: 320,
+                      admin: {
+                        description: 'Page-specific note shown before the reusable item summary.',
+                      },
+                    },
+                  ],
                 },
               ],
             },
             {
-              name: 'note',
-              type: 'textarea',
-              maxLength: 320,
+              name: 'content',
+              type: 'richText',
+              editor: defaultLexical,
               admin: {
-                description: 'Page-specific note shown before the reusable item summary.',
+                description: 'Optional content shown below the gear list.',
               },
             },
           ],
         },
-      ],
-    },
-    {
-      name: 'disclosure',
-      type: 'group',
-      admin: {
-        position: 'sidebar',
-      },
-      fields: [
         {
-          name: 'showDisclosure',
-          type: 'checkbox',
-          defaultValue: false,
-          label: 'Show disclosure',
+          name: 'disclosure',
+          label: 'Disclosure',
+          fields: [
+            {
+              name: 'showDisclosure',
+              type: 'checkbox',
+              defaultValue: false,
+              label: 'Show disclosure',
+            },
+            {
+              name: 'disclosureText',
+              type: 'textarea',
+              defaultValue:
+                'Some links may help support Troop 771 at no additional cost to you. Choose the option that works best for your Scout.',
+              admin: {
+                condition: (_, siblingData) => siblingData?.showDisclosure,
+              },
+              label: 'Disclosure text',
+              maxLength: 260,
+            },
+          ],
         },
-        {
-          name: 'disclosureText',
-          type: 'textarea',
-          defaultValue:
-            'Some links may help support Troop 771 at no additional cost to you. Choose the option that works best for your Scout.',
-          admin: {
-            condition: (_, siblingData) => siblingData?.showDisclosure,
-          },
-          label: 'Disclosure text',
-          maxLength: 260,
-        },
-      ],
-    },
-    {
-      name: 'content',
-      type: 'richText',
-      editor: defaultLexical,
-      admin: {
-        description: 'Optional content shown below the gear list.',
-      },
-    },
-    {
-      type: 'tabs',
-      tabs: [
         {
           name: 'meta',
           label: 'SEO',
