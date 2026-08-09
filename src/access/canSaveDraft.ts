@@ -30,22 +30,6 @@ export const canSaveDraft: Access = async ({ req, data, id }) => {
   const isCreateAccessProbe = !id && typeof data === 'undefined'
 
   if (isReadOnlyMethod || isAdminAccessProbe || isCreateAccessProbe) {
-    req.payload.logger.info({
-      event: 'access.canSaveDraft',
-      collection: 'unknown',
-      allowed: true,
-      reason: isReadOnlyMethod
-        ? 'read-only-method'
-        : isAdminAccessProbe
-          ? 'admin-access-probe'
-          : 'create-access-probe',
-      nextStatus: nextStatus ?? null,
-      userID: req.user?.id,
-      userEmail: req.user?.email,
-      method: requestMethod || null,
-      url: requestURL || null,
-    })
-
     return true
   }
 
