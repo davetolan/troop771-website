@@ -70,6 +70,8 @@ export interface Config {
     pages: Page;
     posts: Post;
     recipes: Recipe;
+    'gear-pages': GearPage;
+    'gear-items': GearItem;
     activities: Activity;
     'troop-meeting-exceptions': TroopMeetingException;
     'merit-badge-counselors': MeritBadgeCounselor;
@@ -99,6 +101,8 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     recipes: RecipesSelect<false> | RecipesSelect<true>;
+    'gear-pages': GearPagesSelect<false> | GearPagesSelect<true>;
+    'gear-items': GearItemsSelect<false> | GearItemsSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
     'troop-meeting-exceptions': TroopMeetingExceptionsSelect<false> | TroopMeetingExceptionsSelect<true>;
     'merit-badge-counselors': MeritBadgeCounselorsSelect<false> | MeritBadgeCounselorsSelect<true>;
@@ -206,6 +210,10 @@ export interface Page {
               | ({
                   relationTo: 'posts';
                   value: number | Post;
+                } | null)
+              | ({
+                  relationTo: 'gear-pages';
+                  value: number | GearPage;
                 } | null);
             url?: string | null;
             label: string;
@@ -472,6 +480,124 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gear-pages".
+ */
+export interface GearPage {
+  id: number;
+  title: string;
+  /**
+   * Short introduction shown at the top of the gear page and on index cards.
+   */
+  intro?: string | null;
+  heroImage?: (number | null) | Media;
+  sections: {
+    title: string;
+    description?: string | null;
+    items: {
+      item: number | GearItem;
+      quantity?: string | null;
+      status: 'required' | 'recommended' | 'optional';
+      /**
+       * Hide purchase buttons for this item on this page.
+       */
+      hideVendorLinks?: boolean | null;
+      /**
+       * Page-specific note shown before the reusable item summary.
+       */
+      note?: string | null;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  disclosure?: {
+    showDisclosure?: boolean | null;
+    disclosureText?: string | null;
+  };
+  /**
+   * Optional content shown below the gear list.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gear-items".
+ */
+export interface GearItem {
+  id: number;
+  title: string;
+  category:
+    | 'general'
+    | 'clothing'
+    | 'footwear'
+    | 'sleeping-gear'
+    | 'packs-bags'
+    | 'cooking-food'
+    | 'water'
+    | 'health-first-aid'
+    | 'navigation-safety'
+    | 'optional';
+  /**
+   * Short item guidance shown on gear pages.
+   */
+  summary?: string | null;
+  image?: (number | null) | Media;
+  amazonUrl?: string | null;
+  reiUrl?: string | null;
+  /**
+   * Optional detailed guidance for this item.
+   */
+  guidance?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ActivitiesLayoutBlock".
  */
 export interface ActivitiesLayoutBlock {
@@ -517,6 +643,10 @@ export interface CallToActionBlock {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -567,6 +697,10 @@ export interface ContentBlock {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -888,6 +1022,10 @@ export interface SectionIntroBlock {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -942,6 +1080,10 @@ export interface SplitSectionBlock {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -984,6 +1126,10 @@ export interface PhotoCardGridBlock {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -1374,6 +1520,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'recipes';
         value: number | Recipe;
+      } | null)
+    | ({
+        relationTo: 'gear-pages';
+        value: number | GearPage;
+      } | null)
+    | ({
+        relationTo: 'gear-items';
+        value: number | GearItem;
       } | null)
     | ({
         relationTo: 'activities';
@@ -1810,6 +1964,68 @@ export interface RecipesSelect<T extends boolean = true> {
   notes?: T;
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gear-pages_select".
+ */
+export interface GearPagesSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  heroImage?: T;
+  sections?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              quantity?: T;
+              status?: T;
+              hideVendorLinks?: T;
+              note?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  disclosure?:
+    | T
+    | {
+        showDisclosure?: T;
+        disclosureText?: T;
+      };
+  content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gear-items_select".
+ */
+export interface GearItemsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  summary?: T;
+  image?: T;
+  amazonUrl?: T;
+  reiUrl?: T;
+  guidance?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2335,6 +2551,10 @@ export interface Header {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -2352,6 +2572,10 @@ export interface Header {
                   | ({
                       relationTo: 'posts';
                       value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'gear-pages';
+                      value: number | GearPage;
                     } | null);
                 url?: string | null;
                 label: string;
@@ -2384,6 +2608,10 @@ export interface Footer {
             | ({
                 relationTo: 'posts';
                 value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
               } | null);
           url?: string | null;
           label: string;
@@ -2561,6 +2789,14 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'recipes';
           value: number | Recipe;
+        } | null)
+      | ({
+          relationTo: 'gear-pages';
+          value: number | GearPage;
+        } | null)
+      | ({
+          relationTo: 'gear-items';
+          value: number | GearItem;
         } | null)
       | ({
           relationTo: 'activities';

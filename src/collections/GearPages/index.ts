@@ -1,0 +1,258 @@
+import type { CollectionConfig } from 'payload'
+
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields'
+import { slugField } from 'payload'
+
+import { adminOnly } from '@/access/adminOnly'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { canSaveDraft } from '@/access/canSaveDraft'
+import { defaultLexical } from '@/fields/defaultLexical'
+import {
+  createScoutCollectionAfterChangeHook,
+  createScoutCollectionBeforeDeleteHook,
+} from '@/hooks/logScoutChanges'
+import { populatePublishedAt } from '@/hooks/populatePublishedAt'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
+import { revalidateGearPage, revalidateGearPageDelete } from './hooks/revalidateGearPage'
+
+export const GearPages: CollectionConfig<'gear-pages'> = {
+  slug: 'gear-pages',
+  labels: {
+    singular: 'Gear Page',
+    plural: 'Gear Pages',
+  },
+  access: {
+    create: canSaveDraft,
+    delete: adminOnly,
+    read: authenticatedOrPublished,
+    update: canSaveDraft,
+  },
+  admin: {
+    defaultColumns: ['title', 'slug', 'updatedAt'],
+    livePreview: {
+      url: ({ data, req }) =>
+        generatePreviewPath({
+          slug: data?.slug,
+          collection: 'gear-pages',
+          req,
+        }),
+    },
+    preview: (data, { req }) =>
+      generatePreviewPath({
+        slug: data?.slug as string,
+        collection: 'gear-pages',
+        req,
+      }),
+    useAsTitle: 'title',
+  },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+    intro: true,
+    heroImage: true,
+    disclosure: {
+      showDisclosure: true,
+      disclosureText: true,
+    },
+  },
+  fields: [
+    {
+      name: 'title',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'intro',
+      type: 'textarea',
+      maxLength: 420,
+      admin: {
+        description: 'Short introduction shown at the top of the gear page and on index cards.',
+      },
+    },
+    {
+      name: 'heroImage',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'sections',
+      type: 'array',
+      minRows: 1,
+      required: true,
+      labels: {
+        singular: 'Section',
+        plural: 'Sections',
+      },
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          maxLength: 260,
+        },
+        {
+          name: 'items',
+          type: 'array',
+          minRows: 1,
+          required: true,
+          labels: {
+            singular: 'Gear Item',
+            plural: 'Gear Items',
+          },
+          admin: {
+            initCollapsed: true,
+          },
+          fields: [
+            {
+              name: 'item',
+              type: 'relationship',
+              relationTo: 'gear-items',
+              required: true,
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'quantity',
+                  type: 'text',
+                  admin: {
+                    width: '33%',
+                  },
+                },
+                {
+                  name: 'status',
+                  type: 'select',
+                  defaultValue: 'required',
+                  options: [
+                    { label: 'Required', value: 'required' },
+                    { label: 'Recommended', value: 'recommended' },
+                    { label: 'Optional', value: 'optional' },
+                  ],
+                  required: true,
+                  admin: {
+                    width: '33%',
+                  },
+                },
+                {
+                  name: 'hideVendorLinks',
+                  type: 'checkbox',
+                  defaultValue: false,
+                  admin: {
+                    description: 'Hide purchase buttons for this item on this page.',
+                    width: '33%',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'note',
+              type: 'textarea',
+              maxLength: 320,
+              admin: {
+                description: 'Page-specific note shown before the reusable item summary.',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'disclosure',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'showDisclosure',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Show disclosure',
+        },
+        {
+          name: 'disclosureText',
+          type: 'textarea',
+          defaultValue:
+            'Some links may help support Troop 771 at no additional cost to you. Choose the option that works best for your Scout.',
+          admin: {
+            condition: (_, siblingData) => siblingData?.showDisclosure,
+          },
+          label: 'Disclosure text',
+          maxLength: 260,
+        },
+      ],
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      editor: defaultLexical,
+      admin: {
+        description: 'Optional content shown below the gear list.',
+      },
+    },
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [
+            OverviewField({
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+              imagePath: 'meta.image',
+            }),
+            MetaTitleField({
+              hasGenerateFn: true,
+            }),
+            MetaImageField({
+              relationTo: 'media',
+            }),
+            MetaDescriptionField({}),
+            PreviewField({
+              hasGenerateFn: true,
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+            }),
+          ],
+        },
+      ],
+    },
+    {
+      name: 'publishedAt',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    slugField(),
+  ],
+  hooks: {
+    afterChange: [createScoutCollectionAfterChangeHook('gear-pages'), revalidateGearPage],
+    beforeChange: [populatePublishedAt],
+    beforeDelete: [createScoutCollectionBeforeDeleteHook('gear-pages')],
+    afterDelete: [revalidateGearPageDelete],
+  },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
+}

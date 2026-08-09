@@ -9,6 +9,8 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Activities } from './collections/Activities'
+import { GearItems } from './collections/GearItems'
+import { GearPages } from './collections/GearPages'
 import { MeritBadgeCounselors } from './collections/MeritBadgeCounselors'
 import { Troops } from './collections/Troops'
 import { TroopMeetingExceptions } from './collections/TroopMeetingExceptions'
@@ -86,6 +88,8 @@ export default buildConfig({
     Pages,
     Posts,
     Recipes,
+    GearPages,
+    GearItems,
     Activities,
     TroopMeetingExceptions,
     MeritBadgeCounselors,

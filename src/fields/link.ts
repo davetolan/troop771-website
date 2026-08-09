@@ -95,7 +95,7 @@ export const link: LinkType = ({
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
       label: 'Document to link to',
-      relationTo: ['pages', 'posts'],
+      relationTo: ['pages', 'posts', 'gear-pages'],
       validate: (
         value: unknown,
         { data, siblingData }: { data?: unknown; siblingData?: { type?: string } },

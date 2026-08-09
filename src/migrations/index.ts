@@ -20,6 +20,7 @@ import * as migration_20260805_210500_add_troop_meeting_settings from './2026080
 import * as migration_20260805_220000_add_troop_meeting_summer_message from './20260805_220000_add_troop_meeting_summer_message'
 import * as migration_20260806_010000_update_activities_layout_show_inactive from './20260806_010000_update_activities_layout_show_inactive'
 import * as migration_20260806_020000_add_eagle_project_fundraising from './20260806_020000_add_eagle_project_fundraising'
+import * as migration_20260809_081000_add_gear_pages from './20260809_081000_add_gear_pages'
 
 export const migrations = [
   {
@@ -131,5 +132,10 @@ export const migrations = [
     up: migration_20260806_020000_add_eagle_project_fundraising.up,
     down: migration_20260806_020000_add_eagle_project_fundraising.down,
     name: '20260806_020000_add_eagle_project_fundraising',
+  },
+  {
+    up: migration_20260809_081000_add_gear_pages.up,
+    down: migration_20260809_081000_add_gear_pages.down,
+    name: '20260809_081000_add_gear_pages',
   },
 ]
