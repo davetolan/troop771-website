@@ -513,35 +513,9 @@ export interface GearPage {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Optional content shown below the gear list.
-   */
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   disclosure?: {
     showDisclosure?: boolean | null;
     disclosureText?: string | null;
-  };
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
   };
   publishedAt?: string | null;
   /**
@@ -1997,19 +1971,11 @@ export interface GearPagesSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  content?: T;
   disclosure?:
     | T
     | {
         showDisclosure?: T;
         disclosureText?: T;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
       };
   publishedAt?: T;
   generateSlug?: T;

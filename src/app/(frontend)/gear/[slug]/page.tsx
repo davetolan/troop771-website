@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 import configPromise from '@payload-config'
@@ -145,14 +144,6 @@ export default async function GearPage({ params: paramsPromise }: Args) {
               </section>
             ))}
           </div>
-
-          {gearPage.content ? (
-            <RichText
-              className="prose-stone mt-12 max-w-[48rem]"
-              data={gearPage.content}
-              enableGutter={false}
-            />
-          ) : null}
         </div>
       </section>
     </main>

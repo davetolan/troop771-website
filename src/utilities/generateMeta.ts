@@ -19,20 +19,33 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   return url
 }
 
+type DocumentWithOptionalMeta = Partial<Page> | Partial<Post> | Partial<GearPage>
+
 export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post> | Partial<GearPage> | null
+  doc: DocumentWithOptionalMeta | null
 }): Promise<Metadata> => {
   const { doc } = args
+  const meta =
+    doc && 'meta' in doc
+      ? (doc.meta as
+          | {
+              description?: string | null
+              image?: Media | Config['db']['defaultIDType'] | null
+              title?: string | null
+            }
+          | null
+          | undefined)
+      : undefined
 
-  const ogImage = getImageURL(doc?.meta?.image)
-  const baseTitle = doc?.meta?.title || doc?.title
+  const ogImage = getImageURL(meta?.image)
+  const baseTitle = meta?.title || doc?.title
 
   const title = baseTitle ? `Troop 771 - ${baseTitle}` : 'Troop 771'
 
   return {
-    description: doc?.meta?.description,
+    description: meta?.description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: meta?.description || '',
       images: ogImage
         ? [
             {

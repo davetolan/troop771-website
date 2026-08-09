@@ -1,24 +1,15 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
 
 import { adminOnly } from '@/access/adminOnly'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { canSaveDraft } from '@/access/canSaveDraft'
-import { defaultLexical } from '@/fields/defaultLexical'
 import {
   createScoutCollectionAfterChangeHook,
   createScoutCollectionBeforeDeleteHook,
 } from '@/hooks/logScoutChanges'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
-import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateGearPage, revalidateGearPageDelete } from './hooks/revalidateGearPage'
 
 export const GearPages: CollectionConfig<'gear-pages'> = {
@@ -35,20 +26,6 @@ export const GearPages: CollectionConfig<'gear-pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({
-          slug: data?.slug,
-          collection: 'gear-pages',
-          req,
-        }),
-    },
-    preview: (data, { req }) =>
-      generatePreviewPath({
-        slug: data?.slug as string,
-        collection: 'gear-pages',
-        req,
-      }),
     useAsTitle: 'title',
   },
   defaultPopulate: {
@@ -171,14 +148,6 @@ export const GearPages: CollectionConfig<'gear-pages'> = {
                 },
               ],
             },
-            {
-              name: 'content',
-              type: 'richText',
-              editor: defaultLexical,
-              admin: {
-                description: 'Optional content shown below the gear list.',
-              },
-            },
           ],
         },
         {
@@ -202,29 +171,6 @@ export const GearPages: CollectionConfig<'gear-pages'> = {
               label: 'Disclosure text',
               maxLength: 260,
             },
-          ],
-        },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-            MetaDescriptionField({}),
-            PreviewField({
-              hasGenerateFn: true,
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
           ],
         },
       ],
