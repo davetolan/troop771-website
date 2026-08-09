@@ -23,6 +23,7 @@ import * as migration_20260806_020000_add_eagle_project_fundraising from './2026
 import * as migration_20260809_081000_add_gear_pages from './20260809_081000_add_gear_pages'
 import * as migration_20260809_135500_relax_gear_pages_draft_required_columns from './20260809_135500_relax_gear_pages_draft_required_columns'
 import * as migration_20260809_140700_relax_gear_items_draft_title from './20260809_140700_relax_gear_items_draft_title'
+import * as migration_20260809_141500_relax_gear_page_draft_array_rows from './20260809_141500_relax_gear_page_draft_array_rows'
 
 export const migrations = [
   {
@@ -149,5 +150,10 @@ export const migrations = [
     up: migration_20260809_140700_relax_gear_items_draft_title.up,
     down: migration_20260809_140700_relax_gear_items_draft_title.down,
     name: '20260809_140700_relax_gear_items_draft_title',
+  },
+  {
+    up: migration_20260809_141500_relax_gear_page_draft_array_rows.up,
+    down: migration_20260809_141500_relax_gear_page_draft_array_rows.down,
+    name: '20260809_141500_relax_gear_page_draft_array_rows',
   },
 ]
