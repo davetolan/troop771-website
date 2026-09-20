@@ -484,6 +484,7 @@ export interface User {
  */
 export interface GearPage {
   id: number;
+  _order?: string | null;
   title: string;
   /**
    * Short introduction shown at the top of the gear page and on index cards.
@@ -1951,6 +1952,7 @@ export interface RecipesSelect<T extends boolean = true> {
  * via the `definition` "gear-pages_select".
  */
 export interface GearPagesSelect<T extends boolean = true> {
+  _order?: T;
   title?: T;
   intro?: T;
   heroImage?: T;

@@ -21,7 +21,7 @@ export default async function GearIndexPage() {
     limit: 100,
     overrideAccess: false,
     pagination: false,
-    sort: 'title',
+    sort: '_order',
     where: {
       _status: {
         equals: 'published',

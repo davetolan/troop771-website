@@ -28,6 +28,7 @@ export const GearPages: CollectionConfig<'gear-pages'> = {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     useAsTitle: 'title',
   },
+  orderable: true,
   defaultPopulate: {
     title: true,
     slug: true,
