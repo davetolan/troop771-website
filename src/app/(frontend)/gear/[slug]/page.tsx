@@ -115,7 +115,7 @@ export default async function GearPage({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
-      <section className="relative isolate overflow-hidden bg-stone-950 text-white">
+      <section className="relative isolate flex min-h-[400px] items-center overflow-hidden bg-stone-950 text-white sm:min-h-[480px] lg:min-h-[560px]">
         <div className="absolute inset-0">
           {gearPage.heroImage && typeof gearPage.heroImage === 'object' ? (
             <Media
