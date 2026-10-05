@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -37,6 +38,15 @@ const maxUploadFileSize = 4 * 1024 * 1024
 validateURLConfiguration()
 const serverURL = getPayloadServerURL()
 const corsOrigins = getCorsOriginsFromEnv()
+
+const resendApiKey = process.env.RESEND_API_KEY
+const isVercelDeployment = process.env.VERCEL === '1'
+
+if (isVercelDeployment && !resendApiKey) {
+  throw new Error(
+    'RESEND_API_KEY is required on Vercel so Payload can send form confirmation emails.',
+  )
+}
 
 console.info(`[payload] serverURL=${serverURL}; corsOrigins=${corsOrigins.join(', ') || '(none)'}`)
 
@@ -83,6 +93,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+  }),
+  email: resendAdapter({
+    apiKey: resendApiKey || '',
+    defaultFromAddress: process.env.RESEND_FROM_ADDRESS || 'onboarding@resend.dev',
+    defaultFromName: 'Troop 771',
   }),
   collections: [
     Pages,

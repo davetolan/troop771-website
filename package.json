@@ -18,6 +18,7 @@
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "page:upsert:aol": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertAolCampoutPage.ts",
     "page:upsert:eagle": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertWhyEagleScoutMattersPage.ts",
     "page:upsert:why-join": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertWhyJoinPage.ts",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
@@ -29,6 +30,7 @@
   "dependencies": {
     "@payloadcms/admin-bar": "3.81.0",
     "@payloadcms/db-postgres": "3.81.0",
+    "@payloadcms/email-resend": "3.81.0",
     "@payloadcms/live-preview-react": "3.81.0",
     "@payloadcms/next": "3.81.0",
     "@payloadcms/plugin-form-builder": "3.81.0",
