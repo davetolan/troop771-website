@@ -11,6 +11,7 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { notifySlackOnContactFormSubmission } from '@/hooks/notifySlackOnContactFormSubmission'
+import { exportFormSubmissionsCSV } from '@/endpoints/exportFormSubmissionsCSV'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -96,6 +97,13 @@ export const plugins: Plugin[] = [
           return field
         })
       },
+      endpoints: [
+        {
+          path: '/:id/submissions.csv',
+          method: 'get',
+          handler: exportFormSubmissionsCSV,
+        },
+      ],
     },
     formSubmissionOverrides: {
       hooks: {
