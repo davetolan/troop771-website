@@ -1,30 +1,31 @@
-import * as migration_20260410_011720_initial_schema from './20260410_011720_initial_schema'
-import * as migration_20260410_013514_add_marketing_blocks from './20260410_013514_add_marketing_blocks'
-import * as migration_20260410_021400_add_upcoming_activities from './20260410_021400_add_upcoming_activities'
-import * as migration_20260410_022300_rename_upcoming_activities_to_activities from './20260410_022300_rename_upcoming_activities_to_activities'
-import * as migration_20260410_223800_add_activities_layout_block from './20260410_223800_add_activities_layout_block'
-import * as migration_20260410_123500_add_user_role from './20260410_123500_add_user_role'
-import * as migration_20260410_180500_relax_activities_layout_dates from './20260410_180500_relax_activities_layout_dates'
-import * as migration_20260411_180624_add_feature_grid_media from './20260411_180624_add_feature_grid_media'
-import * as migration_20260411_184500_add_marketing_block_media_fields from './20260411_184500_add_marketing_block_media_fields'
-import * as migration_20260413_010000_add_scout_change_reports from './20260413_010000_add_scout_change_reports'
-import * as migration_20260413_020000_backfill_scout_change_reports_locked_rels from './20260413_020000_backfill_scout_change_reports_locked_rels'
-import * as migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots from './20260415_211859_add_activity_drafts_and_scout_report_snapshots'
-import * as migration_20260423_022500_fix_scout_change_reports_target_id_column from './20260423_022500_fix_scout_change_reports_target_id_column'
-import * as migration_20260423_120000_add_header_nav_sub_items from './20260423_120000_add_header_nav_sub_items'
-import * as migration_20260426_140000_backfill_recipe_locked_rels from './20260426_140000_backfill_recipe_locked_rels'
-import * as migration_20260426_151500_upsert_why_eagle_scout_matters_page from './20260426_151500_upsert_why_eagle_scout_matters_page'
-import * as migration_20260707_171600_add_merit_badge_counselors from './20260707_171600_add_merit_badge_counselors'
-import * as migration_20260707_192300_add_troops_to_merit_badge_counselors from './20260707_192300_add_troops_to_merit_badge_counselors'
-import * as migration_20260805_210500_add_troop_meeting_settings from './20260805_210500_add_troop_meeting_settings'
-import * as migration_20260805_220000_add_troop_meeting_summer_message from './20260805_220000_add_troop_meeting_summer_message'
-import * as migration_20260806_010000_update_activities_layout_show_inactive from './20260806_010000_update_activities_layout_show_inactive'
-import * as migration_20260806_020000_add_eagle_project_fundraising from './20260806_020000_add_eagle_project_fundraising'
-import * as migration_20260809_081000_add_gear_pages from './20260809_081000_add_gear_pages'
-import * as migration_20260809_135500_relax_gear_pages_draft_required_columns from './20260809_135500_relax_gear_pages_draft_required_columns'
-import * as migration_20260809_140700_relax_gear_items_draft_title from './20260809_140700_relax_gear_items_draft_title'
-import * as migration_20260809_141500_relax_gear_page_draft_array_rows from './20260809_141500_relax_gear_page_draft_array_rows'
-import * as migration_20260920_150000_add_gear_pages_orderable from './20260920_150000_add_gear_pages_orderable'
+import * as migration_20260410_011720_initial_schema from './20260410_011720_initial_schema';
+import * as migration_20260410_013514_add_marketing_blocks from './20260410_013514_add_marketing_blocks';
+import * as migration_20260410_021400_add_upcoming_activities from './20260410_021400_add_upcoming_activities';
+import * as migration_20260410_022300_rename_upcoming_activities_to_activities from './20260410_022300_rename_upcoming_activities_to_activities';
+import * as migration_20260410_123500_add_user_role from './20260410_123500_add_user_role';
+import * as migration_20260410_180500_relax_activities_layout_dates from './20260410_180500_relax_activities_layout_dates';
+import * as migration_20260410_223800_add_activities_layout_block from './20260410_223800_add_activities_layout_block';
+import * as migration_20260411_180624_add_feature_grid_media from './20260411_180624_add_feature_grid_media';
+import * as migration_20260411_184500_add_marketing_block_media_fields from './20260411_184500_add_marketing_block_media_fields';
+import * as migration_20260413_010000_add_scout_change_reports from './20260413_010000_add_scout_change_reports';
+import * as migration_20260413_020000_backfill_scout_change_reports_locked_rels from './20260413_020000_backfill_scout_change_reports_locked_rels';
+import * as migration_20260415_211859_add_activity_drafts_and_scout_report_snapshots from './20260415_211859_add_activity_drafts_and_scout_report_snapshots';
+import * as migration_20260423_022500_fix_scout_change_reports_target_id_column from './20260423_022500_fix_scout_change_reports_target_id_column';
+import * as migration_20260423_120000_add_header_nav_sub_items from './20260423_120000_add_header_nav_sub_items';
+import * as migration_20260426_140000_backfill_recipe_locked_rels from './20260426_140000_backfill_recipe_locked_rels';
+import * as migration_20260426_151500_upsert_why_eagle_scout_matters_page from './20260426_151500_upsert_why_eagle_scout_matters_page';
+import * as migration_20260707_171600_add_merit_badge_counselors from './20260707_171600_add_merit_badge_counselors';
+import * as migration_20260707_192300_add_troops_to_merit_badge_counselors from './20260707_192300_add_troops_to_merit_badge_counselors';
+import * as migration_20260805_210500_add_troop_meeting_settings from './20260805_210500_add_troop_meeting_settings';
+import * as migration_20260805_220000_add_troop_meeting_summer_message from './20260805_220000_add_troop_meeting_summer_message';
+import * as migration_20260806_010000_update_activities_layout_show_inactive from './20260806_010000_update_activities_layout_show_inactive';
+import * as migration_20260806_020000_add_eagle_project_fundraising from './20260806_020000_add_eagle_project_fundraising';
+import * as migration_20260809_081000_add_gear_pages from './20260809_081000_add_gear_pages';
+import * as migration_20260809_135500_relax_gear_pages_draft_required_columns from './20260809_135500_relax_gear_pages_draft_required_columns';
+import * as migration_20260809_140700_relax_gear_items_draft_title from './20260809_140700_relax_gear_items_draft_title';
+import * as migration_20260809_141500_relax_gear_page_draft_array_rows from './20260809_141500_relax_gear_page_draft_array_rows';
+import * as migration_20260920_150000_add_gear_pages_orderable from './20260920_150000_add_gear_pages_orderable';
+import * as migration_20261006_001201_add_recipes_tables from './20261006_001201_add_recipes_tables';
 
 export const migrations = [
   {
@@ -48,11 +49,6 @@ export const migrations = [
     name: '20260410_022300_rename_upcoming_activities_to_activities',
   },
   {
-    up: migration_20260410_223800_add_activities_layout_block.up,
-    down: migration_20260410_223800_add_activities_layout_block.down,
-    name: '20260410_223800_add_activities_layout_block',
-  },
-  {
     up: migration_20260410_123500_add_user_role.up,
     down: migration_20260410_123500_add_user_role.down,
     name: '20260410_123500_add_user_role',
@@ -61,6 +57,11 @@ export const migrations = [
     up: migration_20260410_180500_relax_activities_layout_dates.up,
     down: migration_20260410_180500_relax_activities_layout_dates.down,
     name: '20260410_180500_relax_activities_layout_dates',
+  },
+  {
+    up: migration_20260410_223800_add_activities_layout_block.up,
+    down: migration_20260410_223800_add_activities_layout_block.down,
+    name: '20260410_223800_add_activities_layout_block',
   },
   {
     up: migration_20260411_180624_add_feature_grid_media.up,
@@ -162,4 +163,9 @@ export const migrations = [
     down: migration_20260920_150000_add_gear_pages_orderable.down,
     name: '20260920_150000_add_gear_pages_orderable',
   },
-]
+  {
+    up: migration_20261006_001201_add_recipes_tables.up,
+    down: migration_20261006_001201_add_recipes_tables.down,
+    name: '20261006_001201_add_recipes_tables'
+  },
+];
