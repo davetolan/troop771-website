@@ -77,11 +77,13 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
-  // NOTE: this is used by the browser to determine which image to download at different screen sizes
+  // NOTE: this is used by the browser to determine which image to download at different screen sizes.
+  // Request the breakpoint width itself (not 2x it) so the optimizer isn't pushed into the largest,
+  // most expensive deviceSizes buckets for every image.
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
+        .map(([, value]) => `(max-width: ${value}px) ${value}w`)
         .join(', ')
 
   return (

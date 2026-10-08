@@ -22,6 +22,18 @@ const nextConfig: NextConfig = {
       },
     ],
     qualities: [100],
+    // Payload already generates sized/re-encoded variants on upload (see
+    // src/collections/Media.ts), so Vercel's on-demand optimizer only needs
+    // to cover our actual CSS breakpoints — not the much wider Next defaults
+    // (8 device widths x 8 image widths x 2 formats). A narrower matrix and
+    // a single output format means far fewer unique cache-write variants.
+    deviceSizes: [640, 768, 1024, 1280, 1536, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/webp'],
+    // Media URLs already include an updatedAt-based cache-busting query
+    // param (see getMediaUrl), so it's safe to cache optimized variants for
+    // a long time without risking stale images after an edit.
+    minimumCacheTTL: 2678400, // 31 days
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)
