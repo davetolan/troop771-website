@@ -8,6 +8,7 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FeatureGrid } from '../../blocks/FeatureGrid/config'
 import { FormBlock } from '../../blocks/Form/config'
+import { LocationCards } from '../../blocks/LocationCards/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MeritBadgeCounselorsLayout } from '../../blocks/MeritBadgeCounselorsLayout/config'
 import { PhotoCardGrid } from '../../blocks/PhotoCardGrid/config'
@@ -95,6 +96,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ActivitiesLayout,
                 CallToAction,
                 Content,
+                LocationCards,
                 MediaBlock,
                 MeritBadgeCounselorsLayout,
                 Archive,

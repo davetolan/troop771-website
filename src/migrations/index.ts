@@ -26,6 +26,7 @@ import * as migration_20260809_140700_relax_gear_items_draft_title from './20260
 import * as migration_20260809_141500_relax_gear_page_draft_array_rows from './20260809_141500_relax_gear_page_draft_array_rows';
 import * as migration_20260920_150000_add_gear_pages_orderable from './20260920_150000_add_gear_pages_orderable';
 import * as migration_20261006_001201_add_recipes_tables from './20261006_001201_add_recipes_tables';
+import * as migration_20261008_190000_add_location_cards_tables from './20261008_190000_add_location_cards_tables';
 
 export const migrations = [
   {
@@ -167,5 +168,10 @@ export const migrations = [
     up: migration_20261006_001201_add_recipes_tables.up,
     down: migration_20261006_001201_add_recipes_tables.down,
     name: '20261006_001201_add_recipes_tables'
+  },
+  {
+    up: migration_20261008_190000_add_location_cards_tables.up,
+    down: migration_20261008_190000_add_location_cards_tables.down,
+    name: '20261008_190000_add_location_cards_tables',
   },
 ];

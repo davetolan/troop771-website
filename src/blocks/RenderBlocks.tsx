@@ -8,6 +8,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FeatureGridBlock } from '@/blocks/FeatureGrid/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { LocationCardsBlock } from '@/blocks/LocationCards/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MeritBadgeCounselorsLayoutBlock } from '@/blocks/MeritBadgeCounselorsLayout/Component'
 import { PhotoCardGridBlock } from '@/blocks/PhotoCardGrid/Component'
@@ -21,6 +22,7 @@ const blockComponents = {
   cta: CallToActionBlock,
   featureGrid: FeatureGridBlock,
   formBlock: FormBlock,
+  locationCards: LocationCardsBlock,
   mediaBlock: MediaBlock,
   meritBadgeCounselorsLayout: MeritBadgeCounselorsLayoutBlock,
   photoCardGrid: PhotoCardGridBlock,

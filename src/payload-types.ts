@@ -231,6 +231,7 @@ export interface Page {
     | ActivitiesLayoutBlock
     | CallToActionBlock
     | ContentBlock
+    | LocationCardsBlock
     | MediaBlock
     | MeritBadgeCounselorsLayoutBlock
     | ArchiveBlock
@@ -694,6 +695,99 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationCardsBlock".
+ */
+export interface LocationCardsBlock {
+  /**
+   * Optional heading above the grid, e.g. "Regular Weekend (1.5 to 3 hours)".
+   */
+  heading?: string | null;
+  /**
+   * Optional. Keep it to one short sentence under the heading.
+   */
+  intro?: string | null;
+  /**
+   * Number of columns on desktop. Always 1 on mobile and 2 on tablet.
+   */
+  columns?: ('two' | 'three') | null;
+  /**
+   * Each card is one camping location.
+   */
+  cards?:
+    | {
+        /**
+         * e.g. "Camp Constantin"
+         */
+        name: string;
+        /**
+         * Optional. 16:10 works best. Falls back to a type icon if left blank.
+         */
+        image?: (number | null) | Media;
+        /**
+         * e.g. "Possum Kingdom Lake" or "Oklahoma City, OK"
+         */
+        location?: string | null;
+        /**
+         * e.g. "~1 hr 45 min"
+         */
+        driveTime?: string | null;
+        type?:
+          | (
+              | 'troopProperty'
+              | 'scoutCamp'
+              | 'statePark'
+              | 'cityPark'
+              | 'historicSite'
+              | 'wildlifeRefuge'
+              | 'whitewaterPark'
+              | 'other'
+            )
+          | null;
+        /**
+         * Short tags like "canoeing", "sailing", "kayaking".
+         */
+        bestFor?:
+          | {
+              tag: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Keep it to 1-2 sentences.
+         */
+        description?: string | null;
+        /**
+         * Optional. A short practical tip for this spot.
+         */
+        tip?: string | null;
+        /**
+         * Optional. A nearby attraction, e.g. "Fossil Rim Wildlife Center"
+         */
+        nearby?: string | null;
+        /**
+         * Up to 2 links, e.g. "Visit website". Opens in a new tab.
+         */
+        links?:
+          | {
+              label: string;
+              url: string;
+              id?: string | null;
+            }[]
+          | null;
+        status?: ('open' | 'closed') | null;
+        /**
+         * Shown when status is Closed, e.g. "Closed after the August Ross Fire"
+         */
+        statusNote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'locationCards';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1640,6 +1734,7 @@ export interface PagesSelect<T extends boolean = true> {
         activitiesLayout?: T | ActivitiesLayoutBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        locationCards?: T | LocationCardsBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         meritBadgeCounselorsLayout?: T | MeritBadgeCounselorsLayoutBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
@@ -1718,6 +1813,45 @@ export interface ContentBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationCardsBlock_select".
+ */
+export interface LocationCardsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  columns?: T;
+  cards?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        location?: T;
+        driveTime?: T;
+        type?: T;
+        bestFor?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+        description?: T;
+        tip?: T;
+        nearby?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              id?: T;
+            };
+        status?: T;
+        statusNote?: T;
         id?: T;
       };
   id?: T;
