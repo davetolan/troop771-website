@@ -24,9 +24,11 @@ const Card: React.FC<{ card: CardProps; isCarousel: boolean }> = ({ card, isCaro
       )}
       data-carousel-card={isCarousel ? true : undefined}
     >
-      <div className="relative border-b border-stone-200">
+      <div className="relative h-56 overflow-hidden border-b border-stone-200">
         <Media
-          imgClassName="h-full min-h-[14rem] w-full rounded-none border-0 object-cover"
+          fill
+          imgClassName="rounded-none border-0 object-cover"
+          pictureClassName="absolute inset-0"
           resource={card.media}
         />
         {Icon ? (

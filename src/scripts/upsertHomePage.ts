@@ -22,9 +22,14 @@ async function upsertMedia(
   const { alt, fileName } = args
   const { name: baseName } = path.parse(fileName)
 
-  // Vercel Blob storage may suffix the stored filename to keep it unique
-  // (e.g. "service.JPG" -> "service-1777255983408.JPG"), so match loosely
-  // on the base name rather than requiring an exact filename match.
+  // Vercel Blob storage may suffix the stored filename with a numeric
+  // disambiguator to keep it unique (e.g. "service.JPG" ->
+  // "service-1777255983408.JPG"), or our own retry below appends
+  // "-home-<timestamp>". Match only those specific suffix shapes — matching
+  // on any "<baseName>-..." prefix is too loose and can grab an unrelated
+  // pre-existing upload (e.g. "hiking.JPG" matching "hiking-orienteering.png").
+  const suffixPattern = new RegExp(`^${baseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(-\\d+|-home-\\d+)?$`)
+
   const existing = await payload.find({
     collection: 'media',
     depth: 0,
@@ -40,7 +45,7 @@ async function upsertMedia(
   const existingMatch = existing.docs.find((doc) => {
     if (!doc.filename) return false
     const docBaseName = path.parse(doc.filename).name
-    return docBaseName === baseName || docBaseName.startsWith(`${baseName}-`)
+    return suffixPattern.test(docBaseName)
   })
 
   if (existingMatch) {
