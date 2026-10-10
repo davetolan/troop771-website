@@ -12,8 +12,10 @@ import { LocationCards } from '../../blocks/LocationCards/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MeritBadgeCounselorsLayout } from '../../blocks/MeritBadgeCounselorsLayout/config'
 import { PhotoCardGrid } from '../../blocks/PhotoCardGrid/config'
+import { Promo } from '../../blocks/Promo/config'
 import { SectionIntro } from '../../blocks/SectionIntro/config'
 import { SplitSection } from '../../blocks/SplitSection/config'
+import { UpcomingEvents } from '../../blocks/UpcomingEvents/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -105,6 +107,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 SectionIntro,
                 SplitSection,
                 PhotoCardGrid,
+                Promo,
+                UpcomingEvents,
               ],
               required: true,
               admin: {

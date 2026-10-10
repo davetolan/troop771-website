@@ -20,6 +20,7 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "page:upsert:aol": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertAolCampoutPage.ts",
     "page:upsert:eagle": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertWhyEagleScoutMattersPage.ts",
+    "page:upsert:home": "cross-env DOTENV_CONFIG_PATH=.env.local NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertHomePage.ts",
     "page:upsert:why-join": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx src/scripts/upsertWhyJoinPage.ts",
     "reinstall": "cross-env NODE_OPTIONS=--no-deprecation rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",

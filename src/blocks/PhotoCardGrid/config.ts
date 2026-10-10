@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { link } from '@/fields/link'
 
+import { cardIconOptions } from '@/fields/scoutIcons'
+
 export const PhotoCardGrid: Block = {
   slug: 'photoCardGrid',
   interfaceName: 'PhotoCardGridBlock',
@@ -38,6 +40,21 @@ export const PhotoCardGrid: Block = {
         { label: 'Three', value: 'three' },
         { label: 'Four', value: 'four' },
       ],
+      admin: {
+        condition: (_data, siblingData) => siblingData?.layout !== 'carousel',
+      },
+    },
+    {
+      name: 'layout',
+      type: 'select',
+      defaultValue: 'grid',
+      admin: {
+        description: 'Carousel shows cards in a horizontally scrollable row with arrow buttons.',
+      },
+      options: [
+        { label: 'Grid', value: 'grid' },
+        { label: 'Carousel', value: 'carousel' },
+      ],
     },
     {
       name: 'cards',
@@ -59,6 +76,15 @@ export const PhotoCardGrid: Block = {
         {
           name: 'description',
           type: 'textarea',
+        },
+        {
+          name: 'icon',
+          type: 'select',
+          defaultValue: 'none',
+          admin: {
+            description: 'Optional icon badge shown on the card.',
+          },
+          options: [...cardIconOptions],
         },
         {
           name: 'enableLink',

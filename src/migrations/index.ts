@@ -27,6 +27,7 @@ import * as migration_20260809_141500_relax_gear_page_draft_array_rows from './2
 import * as migration_20260920_150000_add_gear_pages_orderable from './20260920_150000_add_gear_pages_orderable';
 import * as migration_20261006_001201_add_recipes_tables from './20261006_001201_add_recipes_tables';
 import * as migration_20261008_190000_add_location_cards_tables from './20261008_190000_add_location_cards_tables';
+import * as migration_20261009_160000_add_home_page_content from './20261009_160000_add_home_page_content';
 
 export const migrations = [
   {
@@ -173,5 +174,10 @@ export const migrations = [
     up: migration_20261008_190000_add_location_cards_tables.up,
     down: migration_20261008_190000_add_location_cards_tables.down,
     name: '20261008_190000_add_location_cards_tables',
+  },
+  {
+    up: migration_20261009_160000_add_home_page_content.up,
+    down: migration_20261009_160000_add_home_page_content.down,
+    name: '20261009_160000_add_home_page_content',
   },
 ];

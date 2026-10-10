@@ -73,6 +73,7 @@ export interface Config {
     'gear-pages': GearPage;
     'gear-items': GearItem;
     activities: Activity;
+    events: Event;
     'troop-meeting-exceptions': TroopMeetingException;
     'merit-badge-counselors': MeritBadgeCounselor;
     troops: Troop;
@@ -104,6 +105,7 @@ export interface Config {
     'gear-pages': GearPagesSelect<false> | GearPagesSelect<true>;
     'gear-items': GearItemsSelect<false> | GearItemsSelect<true>;
     activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     'troop-meeting-exceptions': TroopMeetingExceptionsSelect<false> | TroopMeetingExceptionsSelect<true>;
     'merit-badge-counselors': MeritBadgeCounselorsSelect<false> | MeritBadgeCounselorsSelect<true>;
     troops: TroopsSelect<false> | TroopsSelect<true>;
@@ -181,7 +183,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'home';
     richText?: {
       root: {
         type: string;
@@ -225,7 +227,64 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Full-bleed background image.
+     */
     media?: (number | null) | Media;
+    /**
+     * Optional. A faint texture image shown behind the headline card.
+     */
+    secondaryMedia?: (number | null) | Media;
+    /**
+     * Short highlight pills shown under the intro text, e.g. "Boy-led program."
+     */
+    highlights?:
+      | {
+          icon?:
+            | (
+                | 'none'
+                | 'mountain'
+                | 'tentTree'
+                | 'compass'
+                | 'heartHandshake'
+                | 'fish'
+                | 'trees'
+                | 'waves'
+                | 'wavesLadder'
+                | 'shipWheel'
+                | 'anchor'
+                | 'shieldCheck'
+              )
+            | null;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * The "Life in the troop" photo panel shown beside the headline.
+     */
+    photoPanel?: {
+      kicker?: string | null;
+      tagline?: string | null;
+      /**
+       * Up to 3 photos. The first is shown large across the top; the next two sit side by side below it.
+       */
+      items?:
+        | {
+            image: number | Media;
+            /**
+             * Short bold caption, e.g. "Trail tested."
+             */
+            caption: string;
+            description?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Optional highlighted note shown below the photos.
+       */
+      note?: string | null;
+    };
   };
   layout: (
     | ActivitiesLayoutBlock
@@ -240,6 +299,8 @@ export interface Page {
     | SectionIntroBlock
     | SplitSectionBlock
     | PhotoCardGridBlock
+    | PromoBlock
+    | UpcomingEventsBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1182,11 +1243,34 @@ export interface PhotoCardGridBlock {
   description?: string | null;
   backgroundMedia?: (number | null) | Media;
   columns?: ('two' | 'three' | 'four') | null;
+  /**
+   * Carousel shows cards in a horizontally scrollable row with arrow buttons.
+   */
+  layout?: ('grid' | 'carousel') | null;
   cards?:
     | {
         media: number | Media;
         title: string;
         description?: string | null;
+        /**
+         * Optional icon badge shown on the card.
+         */
+        icon?:
+          | (
+              | 'none'
+              | 'mountain'
+              | 'tentTree'
+              | 'compass'
+              | 'heartHandshake'
+              | 'fish'
+              | 'trees'
+              | 'waves'
+              | 'wavesLadder'
+              | 'shipWheel'
+              | 'anchor'
+              | 'shieldCheck'
+            )
+          | null;
         enableLink?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
@@ -1213,6 +1297,114 @@ export interface PhotoCardGridBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'photoCardGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PromoBlock".
+ */
+export interface PromoBlock {
+  /**
+   * Optional small label above the heading, e.g. "November Campout." Use show-from / show-until below to have this promo appear and disappear automatically.
+   */
+  eyebrow?: string | null;
+  heading: string;
+  /**
+   * A sentence or two describing the promotion.
+   */
+  text?: string | null;
+  image?: (number | null) | Media;
+  layout?: ('imageLeft' | 'imageRight' | 'fullWidthBanner') | null;
+  /**
+   * Up to 2 buttons, e.g. a primary "Sign Up" and secondary "Learn More."
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional. Hide this promo before this date.
+   */
+  showFrom?: string | null;
+  /**
+   * Optional. Hide this promo after this date.
+   */
+  showUntil?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'promo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UpcomingEventsBlock".
+ */
+export interface UpcomingEventsBlock {
+  /**
+   * Optional heading above the list. Pulls from the Events collection — the list always stays current, past events drop off automatically.
+   */
+  heading?: string | null;
+  /**
+   * Optional. One short sentence under the heading.
+   */
+  intro?: string | null;
+  /**
+   * How many upcoming events to show.
+   */
+  count?: number | null;
+  /**
+   * When checked, only events with "Show on homepage" checked in the Events collection appear here.
+   */
+  onlyHomepageEvents?: boolean | null;
+  emptyMessage?: string | null;
+  enableLink?: boolean | null;
+  /**
+   * e.g. label "See full calendar" linking to your calendar page.
+   */
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'gear-pages';
+          value: number | GearPage;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'upcomingEvents';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1311,6 +1503,71 @@ export interface Activity {
   year: number;
   activity: string;
   active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Troop events shown in the "Upcoming Events" block. Check "Show on homepage" to feature an event on the home page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  /**
+   * e.g. "October Hiking Trip" or "Troop Meeting"
+   */
+  title: string;
+  /**
+   * When the event starts.
+   */
+  start: string;
+  /**
+   * Optional. When the event ends.
+   */
+  end?: string | null;
+  /**
+   * e.g. "Scout Barn" or "Camp Constantin"
+   */
+  location?: string | null;
+  type: 'meeting' | 'campout' | 'activity' | 'service' | 'other';
+  /**
+   * A short sentence or two describing the event.
+   */
+  summary?: string | null;
+  /**
+   * Optional. Shown on event cards when provided.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Link to an internal page or an external URL, e.g. a sign-up form.
+   */
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'gear-pages';
+          value: number | GearPage;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  /**
+   * Feature this event in the homepage "Upcoming Events" section.
+   */
+  showOnHomepage?: boolean | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1607,6 +1864,10 @@ export interface PayloadLockedDocument {
         value: number | Activity;
       } | null)
     | ({
+        relationTo: 'events';
+        value: number | Event;
+      } | null)
+    | ({
         relationTo: 'troop-meeting-exceptions';
         value: number | TroopMeetingException;
       } | null)
@@ -1727,6 +1988,29 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        secondaryMedia?: T;
+        highlights?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              id?: T;
+            };
+        photoPanel?:
+          | T
+          | {
+              kicker?: T;
+              tagline?: T;
+              items?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              note?: T;
+            };
       };
   layout?:
     | T
@@ -1743,6 +2027,8 @@ export interface PagesSelect<T extends boolean = true> {
         sectionIntro?: T | SectionIntroBlockSelect<T>;
         splitSection?: T | SplitSectionBlockSelect<T>;
         photoCardGrid?: T | PhotoCardGridBlockSelect<T>;
+        promo?: T | PromoBlockSelect<T>;
+        upcomingEvents?: T | UpcomingEventsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1993,12 +2279,14 @@ export interface PhotoCardGridBlockSelect<T extends boolean = true> {
   description?: T;
   backgroundMedia?: T;
   columns?: T;
+  layout?: T;
   cards?:
     | T
     | {
         media?: T;
         title?: T;
         description?: T;
+        icon?: T;
         enableLink?: T;
         link?:
           | T
@@ -2010,6 +2298,59 @@ export interface PhotoCardGridBlockSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PromoBlock_select".
+ */
+export interface PromoBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  text?: T;
+  image?: T;
+  layout?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  showFrom?: T;
+  showUntil?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UpcomingEventsBlock_select".
+ */
+export interface UpcomingEventsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  count?: T;
+  onlyHomepageEvents?: T;
+  emptyMessage?: T;
+  enableLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
       };
   id?: T;
   blockName?: T;
@@ -2145,6 +2486,34 @@ export interface ActivitiesSelect<T extends boolean = true> {
   year?: T;
   activity?: T;
   active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  start?: T;
+  end?: T;
+  location?: T;
+  type?: T;
+  summary?: T;
+  image?: T;
+  enableLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  showOnHomepage?: T;
+  publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2907,6 +3276,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'activities';
           value: number | Activity;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
         } | null)
       | ({
           relationTo: 'merit-badge-counselors';

@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Activities } from './collections/Activities'
+import { Events } from './collections/Events'
 import { GearItems } from './collections/GearItems'
 import { GearPages } from './collections/GearPages'
 import { MeritBadgeCounselors } from './collections/MeritBadgeCounselors'
@@ -93,6 +94,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    // Schema changes must go through hand-written migrations in src/migrations
+    // (see migration naming conventions there). Without this, Payload's dev-mode
+    // schema push can prompt to drop columns — including unrelated drifted
+    // columns with real data — on any non-production getPayload() call.
+    push: false,
   }),
   email: resendAdapter({
     apiKey: resendApiKey || '',
@@ -106,6 +112,7 @@ export default buildConfig({
     GearPages,
     GearItems,
     Activities,
+    Events,
     TroopMeetingExceptions,
     MeritBadgeCounselors,
     Troops,

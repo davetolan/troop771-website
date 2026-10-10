@@ -12,8 +12,10 @@ import { LocationCardsBlock } from '@/blocks/LocationCards/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MeritBadgeCounselorsLayoutBlock } from '@/blocks/MeritBadgeCounselorsLayout/Component'
 import { PhotoCardGridBlock } from '@/blocks/PhotoCardGrid/Component'
+import { PromoBlock } from '@/blocks/Promo/Component'
 import { SectionIntroBlock } from '@/blocks/SectionIntro/Component'
 import { SplitSectionBlock } from '@/blocks/SplitSection/Component'
+import { UpcomingEventsBlock } from '@/blocks/UpcomingEvents/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -26,8 +28,10 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   meritBadgeCounselorsLayout: MeritBadgeCounselorsLayoutBlock,
   photoCardGrid: PhotoCardGridBlock,
+  promo: PromoBlock,
   sectionIntro: SectionIntroBlock,
   splitSection: SplitSectionBlock,
+  upcomingEvents: UpcomingEventsBlock,
 }
 
 export const RenderBlocks: React.FC<{
