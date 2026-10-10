@@ -33,6 +33,7 @@ export const HomeHero: React.FC<Page['hero']> = ({
           <Media
             fill
             imgClassName="object-cover object-center opacity-30"
+            pictureClassName="absolute inset-0"
             priority
             resource={media}
           />
@@ -52,6 +53,7 @@ export const HomeHero: React.FC<Page['hero']> = ({
                   <Media
                     fill
                     imgClassName="object-cover object-[72%_center] opacity-42"
+                    pictureClassName="absolute inset-0"
                     resource={secondaryMedia}
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(17,24,39,0.9),rgba(17,24,39,0.58)_42%,rgba(17,24,39,0.78)),radial-gradient(circle_at_78%_26%,rgba(255,255,255,0.1),transparent_22%)]" />
@@ -115,7 +117,12 @@ export const HomeHero: React.FC<Page['hero']> = ({
                   {primaryPhoto ? (
                     <div className="relative min-h-[15rem] overflow-hidden rounded-2xl border border-white/10 sm:col-span-2">
                       {primaryPhoto.image && typeof primaryPhoto.image === 'object' ? (
-                        <Media fill imgClassName="object-cover" resource={primaryPhoto.image} />
+                        <Media
+                          fill
+                          imgClassName="object-cover"
+                          pictureClassName="absolute inset-0"
+                          resource={primaryPhoto.image}
+                        />
                       ) : null}
                       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,25,23,0.78),rgba(28,25,23,0.18),transparent)]" />
                       <div className="absolute inset-x-0 bottom-0 p-5">
@@ -137,7 +144,12 @@ export const HomeHero: React.FC<Page['hero']> = ({
                       key={photo.id || i}
                     >
                       {photo.image && typeof photo.image === 'object' ? (
-                        <Media fill imgClassName="object-cover" resource={photo.image} />
+                        <Media
+                          fill
+                          imgClassName="object-cover"
+                          pictureClassName="absolute inset-0"
+                          resource={photo.image}
+                        />
                       ) : null}
                       <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,25,23,0.82),rgba(28,25,23,0.18),transparent)]" />
                       <div className="absolute inset-x-0 bottom-0 p-5">

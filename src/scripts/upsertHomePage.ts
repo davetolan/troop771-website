@@ -203,4 +203,10 @@ async function upsertHomePage() {
   payload.logger.info(`Created page: ${created.slug}`)
 }
 
-void upsertHomePage()
+void upsertHomePage().then(
+  () => process.exit(0),
+  (error) => {
+    console.error(error)
+    process.exit(1)
+  },
+)
