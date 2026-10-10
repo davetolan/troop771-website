@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { NextTroopMeetingBannerView } from '@/components/NextTroopMeetingBanner'
 import {
   formatTroopMeetingStart,
+  getBannerPromo,
   getNextRegularTroopMeeting,
   type NextTroopMeeting,
 } from '@/utilities/nextTroopMeeting'
@@ -138,5 +139,50 @@ describe('next troop meeting utility', () => {
     expect(screen.getByRole('link', { name: /view calendar/i }).getAttribute('href')).toBe(
       'https://example.com/calendar',
     )
+  })
+
+  it('hides the promo when it is disabled or has no message', () => {
+    expect(getBannerPromo({ promo: { enabled: false, message: 'Camp with us' } }, now)).toBeNull()
+    expect(getBannerPromo({ promo: { enabled: true, message: '  ' } }, now)).toBeNull()
+    expect(getBannerPromo(null, now)).toBeNull()
+  })
+
+  it('hides the promo after its expiration date', () => {
+    const promo = { enabled: true, message: 'Camp with us' }
+
+    expect(
+      getBannerPromo({ promo: { ...promo, expiresAt: '2026-08-04T12:00:00.000Z' } }, now),
+    ).toBeNull()
+    expect(
+      getBannerPromo({ promo: { ...promo, expiresAt: '2026-08-06T12:00:00.000Z' } }, now)?.message,
+    ).toBe('Camp with us')
+  })
+
+  it('renders the promo above the meeting announcement without replacing it', () => {
+    const meeting = getNextRegularTroopMeeting({ now })
+    const promo = getBannerPromo(
+      {
+        promo: {
+          enabled: true,
+          linkLabel: 'Sign up',
+          linkUrl: '/aol-campout',
+          message: 'Arrow of Light families: camp with us on November 7',
+        },
+      },
+      now,
+    )
+
+    render(<NextTroopMeetingBannerView meeting={meeting} now={now} promo={promo} />)
+
+    expect(screen.getByText('Arrow of Light families: camp with us on November 7')).toBeTruthy()
+    expect(screen.getByRole('link', { name: /sign up/i }).getAttribute('href')).toBe('/aol-campout')
+    expect(screen.getByLabelText('Next troop meeting announcement')).toBeTruthy()
+  })
+
+  it('renders only the meeting announcement when there is no promo', () => {
+    render(<NextTroopMeetingBannerView meeting={getNextRegularTroopMeeting({ now })} now={now} />)
+
+    expect(screen.queryByLabelText('Announcement')).toBeNull()
+    expect(screen.getByLabelText('Next troop meeting announcement')).toBeTruthy()
   })
 })

@@ -28,6 +28,7 @@ import * as migration_20260920_150000_add_gear_pages_orderable from './20260920_
 import * as migration_20261006_001201_add_recipes_tables from './20261006_001201_add_recipes_tables';
 import * as migration_20261008_190000_add_location_cards_tables from './20261008_190000_add_location_cards_tables';
 import * as migration_20261009_160000_add_home_page_content from './20261009_160000_add_home_page_content';
+import * as migration_20261009_170000_add_troop_meeting_promo from './20261009_170000_add_troop_meeting_promo';
 
 export const migrations = [
   {
@@ -179,5 +180,10 @@ export const migrations = [
     up: migration_20261009_160000_add_home_page_content.up,
     down: migration_20261009_160000_add_home_page_content.down,
     name: '20261009_160000_add_home_page_content',
+  },
+  {
+    up: migration_20261009_170000_add_troop_meeting_promo.up,
+    down: migration_20261009_170000_add_troop_meeting_promo.down,
+    name: '20261009_170000_add_troop_meeting_promo',
   },
 ];

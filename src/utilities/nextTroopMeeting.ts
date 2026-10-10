@@ -15,10 +15,26 @@ type TroopMeetingException = {
   date: string
 }
 
+export type BannerPromo = {
+  expiresAt?: string
+  linkLabel?: string
+  linkUrl?: string
+  message: string
+}
+
+type BannerPromoSettings = {
+  enabled?: boolean | null
+  expiresAt?: string | null
+  linkLabel?: string | null
+  linkUrl?: string | null
+  message?: string | null
+}
+
 type TroopMeetingSettings = {
   alternateLocationActive?: boolean | null
   calendarUrl?: string | null
   defaultLocation?: string | null
+  promo?: BannerPromoSettings | null
   summerBreakActive?: boolean | null
   summerBreakMessage?: string | null
 }
@@ -268,6 +284,60 @@ const getCachedNextTroopMeetingResult = unstable_cache(
     tags: ['next_troop_meeting'],
   },
 )
+
+const isBannerPromoExpired = (promo: Pick<BannerPromo, 'expiresAt'>, now: Date) =>
+  Boolean(promo.expiresAt) && new Date(promo.expiresAt as string).getTime() <= now.getTime()
+
+export function getBannerPromo(
+  settings?: Pick<TroopMeetingSettings, 'promo'> | null,
+  now = new Date(),
+): BannerPromo | null {
+  const promo = settings?.promo
+  const message = promo?.message?.trim()
+
+  if (!promo?.enabled || !message) {
+    return null
+  }
+
+  const bannerPromo: BannerPromo = {
+    expiresAt: promo.expiresAt ?? undefined,
+    linkLabel: promo.linkLabel?.trim() || undefined,
+    linkUrl: promo.linkUrl?.trim() || undefined,
+    message,
+  }
+
+  return isBannerPromoExpired(bannerPromo, now) ? null : bannerPromo
+}
+
+async function getBannerPromoFromPayload() {
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const settings = await payload.findGlobal({
+      slug: 'troop-meeting-settings',
+      depth: 0,
+      overrideAccess: false,
+    })
+
+    return getBannerPromo(settings)
+  } catch {
+    return null
+  }
+}
+
+const getCachedBannerPromoResult = unstable_cache(getBannerPromoFromPayload, ['banner_promo'], {
+  revalidate: 60 * 60,
+  tags: ['next_troop_meeting'],
+})
+
+export async function getCachedBannerPromo(now = new Date()) {
+  const promo = await getCachedBannerPromoResult()
+
+  if (!promo) {
+    return null
+  }
+
+  return isBannerPromoExpired(promo, now) ? null : promo
+}
 
 export async function getCachedNextTroopMeeting(now = new Date()) {
   const meeting = await getCachedNextTroopMeetingResult()

@@ -3123,6 +3123,25 @@ export interface TroopMeetingSetting {
    * Optional link shown as "View Calendar" in the banner.
    */
   calendarUrl?: string | null;
+  /**
+   * Optional announcement shown in its own strip above the next meeting banner (for example, a recruiting event).
+   */
+  promo?: {
+    enabled?: boolean | null;
+    /**
+     * Example: "Arrow of Light families: camp with us on November 7"
+     */
+    message?: string | null;
+    linkLabel?: string | null;
+    /**
+     * A page on this site (for example "/join") or a full https:// URL.
+     */
+    linkUrl?: string | null;
+    /**
+     * Optional. The promo hides automatically after this date and time.
+     */
+    expiresAt?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3215,6 +3234,15 @@ export interface TroopMeetingSettingsSelect<T extends boolean = true> {
   defaultLocation?: T;
   alternateLocationActive?: T;
   calendarUrl?: T;
+  promo?:
+    | T
+    | {
+        enabled?: T;
+        message?: T;
+        linkLabel?: T;
+        linkUrl?: T;
+        expiresAt?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

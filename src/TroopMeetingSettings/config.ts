@@ -57,6 +57,62 @@ export const TroopMeetingSettings: GlobalConfig = {
       },
       label: 'Public calendar URL',
     },
+    {
+      name: 'promo',
+      type: 'group',
+      admin: {
+        description:
+          'Optional announcement shown in its own strip above the next meeting banner (for example, a recruiting event).',
+      },
+      label: 'Promo announcement',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Show promo announcement',
+        },
+        {
+          name: 'message',
+          type: 'text',
+          admin: {
+            condition: (_data, siblingData) => Boolean(siblingData.enabled),
+            description: 'Example: "Arrow of Light families: camp with us on November 7"',
+          },
+          label: 'Message',
+        },
+        {
+          name: 'linkLabel',
+          type: 'text',
+          admin: {
+            condition: (_data, siblingData) => Boolean(siblingData.enabled),
+          },
+          defaultValue: 'Sign up',
+          label: 'Link label',
+        },
+        {
+          name: 'linkUrl',
+          type: 'text',
+          admin: {
+            condition: (_data, siblingData) => Boolean(siblingData.enabled),
+            description: 'A page on this site (for example "/join") or a full https:// URL.',
+          },
+          label: 'Link URL',
+        },
+        {
+          name: 'expiresAt',
+          type: 'date',
+          admin: {
+            condition: (_data, siblingData) => Boolean(siblingData.enabled),
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+            description: 'Optional. The promo hides automatically after this date and time.',
+          },
+          label: 'Hide after',
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [

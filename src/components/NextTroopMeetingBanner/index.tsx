@@ -1,7 +1,10 @@
-import { CalendarDays, ExternalLink, MapPin } from 'lucide-react'
+import { ArrowRight, CalendarDays, ExternalLink, MapPin, Megaphone } from 'lucide-react'
+import Link from 'next/link'
 
 import {
+  type BannerPromo,
   formatTroopMeetingStart,
+  getCachedBannerPromo,
   getCachedNextTroopMeeting,
   type NextTroopMeeting,
 } from '@/utilities/nextTroopMeeting'
@@ -9,13 +12,61 @@ import {
 type NextTroopMeetingBannerViewProps = {
   meeting: NextTroopMeeting | null
   now?: Date
+  promo?: BannerPromo | null
 }
 
-export function NextTroopMeetingBannerView({ meeting, now }: NextTroopMeetingBannerViewProps) {
-  if (!meeting) {
-    return null
-  }
+const promoLinkClassName =
+  'inline-flex w-fit items-center gap-1.5 pl-6 font-semibold text-white underline underline-offset-4 transition hover:text-amber-200 sm:pl-0'
 
+function BannerPromoView({ promo }: { promo: BannerPromo }) {
+  const linkContent = (
+    <>
+      {promo.linkLabel || 'Learn more'}
+      <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+    </>
+  )
+
+  return (
+    <section aria-label="Announcement" className="bg-[#344225] text-[#f8f3e6]">
+      <div className="container flex flex-col gap-2 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-start gap-2 sm:items-center">
+          <Megaphone
+            className="mt-0.5 h-4 w-4 shrink-0 text-amber-200 sm:mt-0"
+            aria-hidden="true"
+          />
+          <p className="min-w-0 font-semibold">{promo.message}</p>
+        </div>
+
+        {promo.linkUrl ? (
+          promo.linkUrl.startsWith('/') ? (
+            <Link className={promoLinkClassName} href={promo.linkUrl}>
+              {linkContent}
+            </Link>
+          ) : (
+            <a className={promoLinkClassName} href={promo.linkUrl} rel="noreferrer" target="_blank">
+              {linkContent}
+            </a>
+          )
+        ) : null}
+      </div>
+    </section>
+  )
+}
+
+export function NextTroopMeetingBannerView({
+  meeting,
+  now,
+  promo,
+}: NextTroopMeetingBannerViewProps) {
+  return (
+    <>
+      {promo ? <BannerPromoView promo={promo} /> : null}
+      {meeting ? <NextTroopMeetingView meeting={meeting} now={now} /> : null}
+    </>
+  )
+}
+
+function NextTroopMeetingView({ meeting, now }: { meeting: NextTroopMeeting; now?: Date }) {
   return (
     <section
       aria-label="Next troop meeting announcement"
@@ -65,7 +116,7 @@ export function NextTroopMeetingBannerView({ meeting, now }: NextTroopMeetingBan
 }
 
 export async function NextTroopMeetingBanner() {
-  const meeting = await getCachedNextTroopMeeting()
+  const [meeting, promo] = await Promise.all([getCachedNextTroopMeeting(), getCachedBannerPromo()])
 
-  return <NextTroopMeetingBannerView meeting={meeting} />
+  return <NextTroopMeetingBannerView meeting={meeting} promo={promo} />
 }
