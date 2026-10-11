@@ -299,6 +299,7 @@ export interface Page {
     | SectionIntroBlock
     | SplitSectionBlock
     | PhotoCardGridBlock
+    | PackingListBlock
     | PromoBlock
     | UpcomingEventsBlock
   )[];
@@ -1300,6 +1301,38 @@ export interface PhotoCardGridBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PackingListBlock".
+ */
+export interface PackingListBlock {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  /**
+   * Each section is one table, e.g. "Clothing" or "Sleeping Gear".
+   */
+  sections?:
+    | {
+        title: string;
+        items?:
+          | {
+              item: string;
+              /**
+               * e.g. "1" or "3-6"
+               */
+              qty?: string | null;
+              notes?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'packingList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "PromoBlock".
  */
 export interface PromoBlock {
@@ -2027,6 +2060,7 @@ export interface PagesSelect<T extends boolean = true> {
         sectionIntro?: T | SectionIntroBlockSelect<T>;
         splitSection?: T | SplitSectionBlockSelect<T>;
         photoCardGrid?: T | PhotoCardGridBlockSelect<T>;
+        packingList?: T | PackingListBlockSelect<T>;
         promo?: T | PromoBlockSelect<T>;
         upcomingEvents?: T | UpcomingEventsBlockSelect<T>;
       };
@@ -2296,6 +2330,31 @@ export interface PhotoCardGridBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PackingListBlock_select".
+ */
+export interface PackingListBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  sections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              qty?: T;
+              notes?: T;
+              id?: T;
             };
         id?: T;
       };

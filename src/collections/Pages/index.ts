@@ -11,6 +11,7 @@ import { FormBlock } from '../../blocks/Form/config'
 import { LocationCards } from '../../blocks/LocationCards/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { MeritBadgeCounselorsLayout } from '../../blocks/MeritBadgeCounselorsLayout/config'
+import { PackingList } from '../../blocks/PackingList/config'
 import { PhotoCardGrid } from '../../blocks/PhotoCardGrid/config'
 import { Promo } from '../../blocks/Promo/config'
 import { SectionIntro } from '../../blocks/SectionIntro/config'
@@ -107,6 +108,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 SectionIntro,
                 SplitSection,
                 PhotoCardGrid,
+                PackingList,
                 Promo,
                 UpcomingEvents,
               ],

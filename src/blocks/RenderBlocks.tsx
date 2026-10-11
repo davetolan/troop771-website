@@ -11,6 +11,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { LocationCardsBlock } from '@/blocks/LocationCards/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MeritBadgeCounselorsLayoutBlock } from '@/blocks/MeritBadgeCounselorsLayout/Component'
+import { PackingListBlock } from '@/blocks/PackingList/Component'
 import { PhotoCardGridBlock } from '@/blocks/PhotoCardGrid/Component'
 import { PromoBlock } from '@/blocks/Promo/Component'
 import { SectionIntroBlock } from '@/blocks/SectionIntro/Component'
@@ -27,6 +28,7 @@ const blockComponents = {
   locationCards: LocationCardsBlock,
   mediaBlock: MediaBlock,
   meritBadgeCounselorsLayout: MeritBadgeCounselorsLayoutBlock,
+  packingList: PackingListBlock,
   photoCardGrid: PhotoCardGridBlock,
   promo: PromoBlock,
   sectionIntro: SectionIntroBlock,

@@ -9,6 +9,7 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { philmontPage as philmontPageData } from './philmont-page'
 import { whyEagleScoutMattersPage as whyEagleScoutMattersPageData } from './why-eagle-scout-matters-page'
 import { whyJoinPage as whyJoinPageData } from './why-join-page'
 
@@ -237,6 +238,11 @@ export const seed = async ({
         serviceImage: image2Doc,
         trailImage: image3Doc,
       }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: philmontPageData({ heroImage: imageHomeDoc, sectionImage: image3Doc }),
     }),
   ])
 

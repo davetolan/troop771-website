@@ -59,14 +59,6 @@ export const FeatureGridBlock: React.FC<FeatureGridBlockProps> = ({
                   : 'bg-[linear-gradient(to_top,rgba(41,37,36,0.55),rgba(41,37,36,0.05),transparent)]',
               )}
             />
-            <div className="absolute inset-x-0 bottom-0 p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">
-                Featured
-              </p>
-              <p className="mt-2 max-w-xs text-sm leading-6 text-stone-100">
-                Use this layout for the kind of value-prop sections that need more visual weight.
-              </p>
-            </div>
           </div>
         </div>
 

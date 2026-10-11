@@ -240,27 +240,26 @@ html[data-theme='light'] {
     display: none !important;
   }
 
-  .philmont-page {
-    background: white !important;
+  /* Printing a page that contains a packing list outputs only the list. */
+  article:has(.packing-list-block) {
+    padding: 0 !important;
   }
 
-  .philmont-page > section {
+  article:has(.packing-list-block) > :not(:has(.packing-list-block)) {
+    display: none !important;
+  }
+
+  article:has(.packing-list-block) > :has(.packing-list-block) {
+    margin: 0 !important;
+  }
+
+  .packing-list-block {
     background: white !important;
     color: black !important;
     padding-block: 0.25in !important;
   }
 
-  .philmont-page img,
-  .philmont-page .absolute,
-  .philmont-page aside,
-  .philmont-page figure,
-  .philmont-page section:first-child,
-  .philmont-page section:nth-child(2),
-  .philmont-page section:last-child {
-    display: none !important;
-  }
-
-  .philmont-page .container {
+  .packing-list-block .container {
     max-width: none !important;
     padding-inline: 0 !important;
   }

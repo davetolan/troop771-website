@@ -29,6 +29,8 @@ import * as migration_20261006_001201_add_recipes_tables from './20261006_001201
 import * as migration_20261008_190000_add_location_cards_tables from './20261008_190000_add_location_cards_tables';
 import * as migration_20261009_160000_add_home_page_content from './20261009_160000_add_home_page_content';
 import * as migration_20261009_170000_add_troop_meeting_promo from './20261009_170000_add_troop_meeting_promo';
+import * as migration_20261011_120000_add_packing_list_block from './20261011_120000_add_packing_list_block';
+import * as migration_20261011_121000_upsert_philmont_page from './20261011_121000_upsert_philmont_page';
 
 export const migrations = [
   {
@@ -185,5 +187,15 @@ export const migrations = [
     up: migration_20261009_170000_add_troop_meeting_promo.up,
     down: migration_20261009_170000_add_troop_meeting_promo.down,
     name: '20261009_170000_add_troop_meeting_promo',
+  },
+  {
+    up: migration_20261011_120000_add_packing_list_block.up,
+    down: migration_20261011_120000_add_packing_list_block.down,
+    name: '20261011_120000_add_packing_list_block',
+  },
+  {
+    up: migration_20261011_121000_upsert_philmont_page.up,
+    down: migration_20261011_121000_upsert_philmont_page.down,
+    name: '20261011_121000_upsert_philmont_page',
   },
 ];
