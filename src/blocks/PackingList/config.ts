@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { linkGroup } from '@/fields/linkGroup'
+
 export const PackingList: Block = {
   slug: 'packingList',
   interfaceName: 'PackingListBlock',
@@ -21,6 +23,17 @@ export const PackingList: Block = {
       name: 'description',
       type: 'textarea',
     },
+    linkGroup({
+      appearances: ['default', 'outline'],
+      overrides: {
+        maxRows: 2,
+        admin: {
+          description:
+            'Optional buttons shown beside Save as PDF, e.g. a link to the matching gear guide.',
+          initCollapsed: true,
+        },
+      },
+    }),
     {
       name: 'sections',
       type: 'array',

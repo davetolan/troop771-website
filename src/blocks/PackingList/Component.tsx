@@ -3,6 +3,8 @@ import React from 'react'
 
 import type { PackingListBlock as PackingListBlockProps } from '@/payload-types'
 
+import { CMSLink } from '@/components/Link'
+
 import { PackingListActions } from './Actions.client'
 
 const toFileName = (title?: string | null) => {
@@ -17,6 +19,7 @@ const toFileName = (title?: string | null) => {
 export const PackingListBlock: React.FC<PackingListBlockProps> = ({
   description,
   eyebrow,
+  links,
   sections,
   title,
 }) => {
@@ -42,17 +45,22 @@ export const PackingListBlock: React.FC<PackingListBlockProps> = ({
           {description ? (
             <p className="mt-5 text-base leading-8 text-stone-700">{description}</p>
           ) : null}
-          <PackingListActions
-            fileName={toFileName(title)}
-            sections={visibleSections.map((section) => ({
-              title: section.title,
-              items: (section.items || []).map(({ item, notes, qty }) => ({
-                item,
-                qty: qty || '',
-                notes: notes || '',
-              })),
-            }))}
-          />
+          <div className="no-print mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <PackingListActions
+              fileName={toFileName(title)}
+              sections={visibleSections.map((section) => ({
+                title: section.title,
+                items: (section.items || []).map(({ item, notes, qty }) => ({
+                  item,
+                  qty: qty || '',
+                  notes: notes || '',
+                })),
+              }))}
+            />
+            {links?.map(({ link }, index) => (
+              <CMSLink className="rounded-full" key={index} size="lg" {...link} />
+            ))}
+          </div>
         </div>
 
         <div className="mt-10 grid gap-6">

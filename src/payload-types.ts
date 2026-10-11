@@ -1308,6 +1308,37 @@ export interface PackingListBlock {
   title?: string | null;
   description?: string | null;
   /**
+   * Optional buttons shown beside Save as PDF, e.g. a link to the matching gear guide.
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'gear-pages';
+                value: number | GearPage;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Each section is one table, e.g. "Clothing" or "Sleeping Gear".
    */
   sections?:
@@ -2344,6 +2375,21 @@ export interface PackingListBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   title?: T;
   description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   sections?:
     | T
     | {

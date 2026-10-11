@@ -31,6 +31,7 @@ import * as migration_20261009_160000_add_home_page_content from './20261009_160
 import * as migration_20261009_170000_add_troop_meeting_promo from './20261009_170000_add_troop_meeting_promo';
 import * as migration_20261011_120000_add_packing_list_block from './20261011_120000_add_packing_list_block';
 import * as migration_20261011_121000_upsert_philmont_page from './20261011_121000_upsert_philmont_page';
+import * as migration_20261011_150000_add_packing_list_links from './20261011_150000_add_packing_list_links';
 
 export const migrations = [
   {
@@ -197,5 +198,10 @@ export const migrations = [
     up: migration_20261011_121000_upsert_philmont_page.up,
     down: migration_20261011_121000_upsert_philmont_page.down,
     name: '20261011_121000_upsert_philmont_page',
+  },
+  {
+    up: migration_20261011_150000_add_packing_list_links.up,
+    down: migration_20261011_150000_add_packing_list_links.down,
+    name: '20261011_150000_add_packing_list_links',
   },
 ];

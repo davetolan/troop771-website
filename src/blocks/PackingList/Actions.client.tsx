@@ -8,7 +8,8 @@ export type PackingListCsvSection = {
   items: { item: string; qty: string; notes: string }[]
 }
 
-const csvCell = (value: string) => (/[",\r\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value)
+const csvCell = (value: string) =>
+  /[",\r\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value
 
 const buildCsv = (sections: PackingListCsvSection[]) => {
   const rows: string[][] = [['Item', 'Qty', 'Notes']]
@@ -26,7 +27,9 @@ export const PackingListActions: React.FC<{
   sections: PackingListCsvSection[]
 }> = ({ fileName, sections }) => {
   const downloadCsv = () => {
-    const url = URL.createObjectURL(new Blob([buildCsv(sections)], { type: 'text/csv;charset=utf-8' }))
+    const url = URL.createObjectURL(
+      new Blob([buildCsv(sections)], { type: 'text/csv;charset=utf-8' }),
+    )
     const anchor = document.createElement('a')
 
     anchor.href = url
@@ -36,7 +39,7 @@ export const PackingListActions: React.FC<{
   }
 
   return (
-    <div className="no-print mt-8 flex flex-col gap-3 sm:flex-row">
+    <>
       <button
         className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-950"
         onClick={() => window.print()}
@@ -53,6 +56,6 @@ export const PackingListActions: React.FC<{
         <Download className="h-4 w-4" aria-hidden="true" />
         Download CSV
       </button>
-    </div>
+    </>
   )
 }
