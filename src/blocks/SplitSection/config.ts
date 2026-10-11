@@ -1,6 +1,7 @@
 import type { Block } from 'payload'
 
 import {
+  BlockquoteFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -38,6 +39,7 @@ export const SplitSection: Block = {
         features: ({ rootFeatures }) => [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+          BlockquoteFeature(),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
         ],
