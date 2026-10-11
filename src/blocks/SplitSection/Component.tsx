@@ -66,7 +66,7 @@ export const SplitSectionBlock: React.FC<SplitSectionBlockProps> = ({
               </p>
             ) : null}
             {body ? (
-              <div className={cn('mt-6 rounded-[1.5rem] border p-6', isDark ? 'border-white/10 bg-white/6 [&_p]:text-stone-300 [&_h2]:text-white [&_h3]:text-white [&_li]:text-stone-300' : 'border-stone-200 bg-white/80 [&_p]:text-stone-700 [&_h2]:text-stone-950 [&_h3]:text-stone-950 [&_li]:text-stone-700')}>
+              <div className={cn('mt-6 rounded-[1.5rem] border p-6', isDark ? 'border-white/10 bg-white/6 [&_p]:text-stone-300 [&_h2]:text-white [&_h3]:text-white [&_li]:text-stone-300 [&_blockquote]:border-amber-200 [&_blockquote]:text-white' : 'border-stone-200 bg-white/80 [&_p]:text-stone-700 [&_h2]:text-stone-950 [&_h3]:text-stone-950 [&_li]:text-stone-700 [&_blockquote]:border-[#4f5d3a] [&_blockquote]:text-stone-950')}>
                 <RichText data={body} enableGutter={false} />
               </div>
             ) : null}
