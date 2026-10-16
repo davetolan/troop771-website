@@ -79,7 +79,7 @@ export const plugins: Plugin[] = [
     },
     formOverrides: {
       fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
+        const fields = defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
             return {
               ...field,
@@ -96,6 +96,20 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+
+        return [
+          ...fields,
+          {
+            name: 'exportSubmissions',
+            type: 'ui',
+            admin: {
+              position: 'sidebar',
+              components: {
+                Field: '@/components/ExportSubmissionsButton#ExportSubmissionsButton',
+              },
+            },
+          },
+        ]
       },
       endpoints: [
         {
